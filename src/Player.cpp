@@ -1,6 +1,10 @@
 #include "include/Player.hpp"
 #include "include/Body.hpp"
 #include "include/State.hpp"
+#include "include/Physic.hpp"
+#include <glimac/glm.hpp>
+#include <vector>
+
 
 // Constructors/Destructors
 //  
@@ -33,7 +37,23 @@ void Player::setBody(Body body){
 
 
 void Player::updatePlayer(){
-
+	std::vector<glm::vec3> forces;
+	/*if(this->getState() == Status::idle){
+		this->body.setAcceleration(glm::vec3(0,0,0));
+		this->body.setOrientation(glm::vec3(0,0,0));
+	}
+	if(this->getState() == Status::walk){
+		this->body.setAcceleration(glm::vec3(0,0,0));
+	}
+	if(this->getState() == Status::jump){
+		f = glm::vec3();
+	}
+	if(this->getState() == Status::run){
+		f = glm::vec3();
+	}*/
+	forces.push_back(glm::vec3(0,0,0));
+	forces.push_back(glm::vec3(0,0,0));
+	Physic::updateVerlett(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,0,0));
 }
 
 void Player::idle(){
@@ -51,6 +71,7 @@ void Player::run(){
 void Player::jetpack(){
 	this->setState(State::jetpack);
 }
+
 
 bool Player::catchCube(int cube){
 	return this->m_inventory.addCube(cube);

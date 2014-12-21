@@ -16,6 +16,9 @@ public:
   Player();
   ~Player();
 
+//--------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------GETTERS-SETTERS------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
   State getState() const;
   void setState(State state);
 
@@ -31,7 +34,9 @@ public:
   void jump();
   void run();
   void jetpack();
+
+
   bool catchCube(int cube);
   bool dropCube();
-  bool deleteCube(int cube); 
+  bool deleteCube(int cube);
 };
