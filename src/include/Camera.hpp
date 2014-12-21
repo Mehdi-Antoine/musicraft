@@ -32,4 +32,6 @@ public:
 	void rotateLeft(float degrees);
 	void rotateUp(float degrees);
 
+	void setPosition(glm::vec3 position);
+
 };

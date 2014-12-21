@@ -1,4 +1,5 @@
 #include "include/Body.hpp"
+#include "include/Physic.hpp"
 
 // Constructors/Destructors
 //  
@@ -43,6 +44,12 @@ Body::~Body(){
 // Methods
 //  
 
+void Body::updateBody(std::vector<vec3> forces){
+
+     Physic::updateVerlett(this->getPosition(), this->getSpeed(), forces);
+
+     this->m_camera.setPosition(this->getPosition());
+}
 
 // Accessor methods
 //  

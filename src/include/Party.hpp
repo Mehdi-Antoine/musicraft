@@ -11,7 +11,6 @@ private:
 
 	World world;
 	Player player;
-
 	Camera world_camera;
 
 	//EventHandler event_handler;
