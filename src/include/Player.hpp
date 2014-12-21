@@ -8,6 +8,8 @@ private:
 	Inventory m_inventory;
 	State m_state;
 	Body m_body;
+  int m_dir_x;
+  int m_dir_y;
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------CONSTRUCTOR--------------------------------------------------
@@ -30,10 +32,13 @@ public:
 //--------------------------------------------------------------------------------------------------------------
   void updatePlayer();
   void idle();
-  void move();
+  void walk();
   void jump();
   void run();
   void jetpack();
+
+  void moveFront(int t);
+  void moveLeft(int t);
 
 
   bool catchCube(int cube);

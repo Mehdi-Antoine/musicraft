@@ -59,7 +59,7 @@ void Player::updatePlayer(){
 void Player::idle(){
 	this->setState(State::idle);
 }
-void Player::move(){
+void Player::walk(){
 	this->setState(State::walk);
 }
 void Player::jump(){
@@ -70,6 +70,14 @@ void Player::run(){
 }
 void Player::jetpack(){
 	this->setState(State::jetpack);
+}
+
+void Player::moveFront(int t){
+	this->m_dir_x = t;
+}
+
+void Player::moveLeft(int t){
+	this->m_dir_y = t;
 }
 
 
