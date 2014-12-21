@@ -1,7 +1,7 @@
 #ifndef PlayerManager_h
 #define PlayerManager_h
 
-
+#include "include/Player.hpp"
 
 class PlayerManager {
 

@@ -13,7 +13,7 @@ public:
 
     void update();
 
-    EventHandler();
+    EventHandler(InputManager input, PlayerManager player_manager);
 
 
 private:

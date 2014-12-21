@@ -43,6 +43,8 @@ void EventHandler::update()
     m_input.updateInput();
 }
 
-EventHandler::EventHandler()
+EventHandler::EventHandler(InputManager input, PlayerManager player_manager)
 {
+    m_input = input;
+    m_player_manager = player_manager;
 }
