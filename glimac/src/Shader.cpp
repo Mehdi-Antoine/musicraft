@@ -4,7 +4,6 @@
 #include <stdexcept>
 #include <string>
 #include <sstream>
-#include <iostream>
 
 namespace glimac {
 
@@ -27,7 +26,7 @@ const std::string Shader::getInfoLog() const {
 
 Shader loadShader(GLenum type, const FilePath& filepath) {
     std::ifstream input(filepath.c_str());
-    if(!input.is_open()) {
+    if(!input) {
         throw std::runtime_error("Unable to load the file " + filepath.str());
     }
     

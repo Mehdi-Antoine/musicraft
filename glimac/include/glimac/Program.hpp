@@ -48,11 +48,17 @@ private:
 	GLuint m_nGLId;
 };
 
-// Build a GLSL program from source code
+// Build a GLSL program from source code with vertex shader and fragment shader
 Program buildProgram(const GLchar* vsSrc, const GLchar* fsSrc);
 
-// Load source code from files and build a GLSL program
+// Build a GLSL program from source code with vertex shader, fragment shader, and geometry shader
+Program buildProgram(const GLchar* vsSrc, const GLchar* fsSrc, const GLchar* gsSrc);
+
+// Load source code from files and build a GLSL program with vs an fs
 Program loadProgram(const FilePath& vsFile, const FilePath& fsFile);
+
+// Load source code from files and build a GLSL program with vs, gs and fs
+Program loadProgram(const FilePath& vsFile, const FilePath& fsFile, const FilePath& gsFile); 
 
 
 }
