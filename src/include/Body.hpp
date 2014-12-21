@@ -45,12 +45,12 @@ public:
 //-------------------------------------------------GETTERS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-void getPosition() const;
-void getSpeed() const;
-void getAcceleration() const;
-void getOrientation() const;
-void getHitboxCorners() const;
-void getCamera() const;
+vec3 getPosition() const;
+vec3 getSpeed() const;
+vec3 getAcceleration() const;
+vec3 getOrientation() const;
+std::vector<vec3> getHitboxCorners() const;
+Camera getCamera() const;
 
 
 
@@ -59,11 +59,11 @@ void getCamera() const;
 //--------------------------------------------------------------------------------------------------------------
 
 void setPosition(vec3 & position);
-void setSpeed();
-void setAcceleration();
-void setOrientation();
-void setHitboxCorners();
-void setCamera();
+void setSpeed(vec3 & speed);
+void setAcceleration(vec3 & acceleration);
+void setOrientation(vec3 & orientation);
+void setHitboxCorners(std::vector<vec3> & hitbox_corners);
+void setCamera(Camera & camera);
 
 
 
