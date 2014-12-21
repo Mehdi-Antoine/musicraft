@@ -16,11 +16,14 @@ public:
     bool* getMouse();
     bool getMouse(int mouseButton);
 
+    bool getQuit();
+
     int* getMousePos();
     int getMousePos(int orientation);
 
     int* getMouseRel();
     int getMouseRel(int orientation);
+
 
     InputManager();
 

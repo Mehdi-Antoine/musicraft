@@ -35,6 +35,10 @@ void InputManager::updateInput() {
                 m_key[SDLK_SPACE] = true;
                 break;
 
+            case SDLK_RSHIFT:
+                m_key[SDLK_RSHIFT] = true;
+                break;
+
             default:
                 break;
 
@@ -66,7 +70,11 @@ void InputManager::updateInput() {
                 break;
 
             case SDLK_SPACE:
-                m_key[SDLK_SPACE] = true;
+                m_key[SDLK_SPACE] = false;
+                break;
+
+            case SDLK_RSHIFT:
+                m_key[SDLK_RSHIFT] = false;
                 break;
 
             default:
@@ -130,6 +138,10 @@ bool InputManager::getMouse(int mouseButton)
     return m_mouse_button[mouseButton];
 }
 
+bool InputManager::getQuit() {
+    return m_quit;
+}
+
 int* InputManager::getMousePos()
 {
     return m_mouse_pos;
@@ -162,4 +174,20 @@ int InputManager::getMouseRel(int orientation)
 
 InputManager::InputManager()
 {
+    m_quit = false;
+
+    int i = 0;
+
+    for(i=0;i<2;i++) {
+        m_mouse_pos[i] = 0;
+        m_mouse_pos_rel[i] = 0;
+    }
+
+    for(i=0;i<8;i++) {
+        m_mouse_button[i] = false;
+    }
+
+    for(i=0;i<SDLK_LAST;i++) {
+        m_key[i] = false;
+    }
 }
