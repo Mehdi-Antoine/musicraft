@@ -3,11 +3,13 @@
 // Constructors/Destructors
 //  
 
-Player::Player () {
+Player::Player(){
 
 }
 
-Player::~Player () { }
+Player::~Player(){
+	
+}
 
 //  
 // Methods

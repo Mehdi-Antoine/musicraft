@@ -1,7 +1,6 @@
 #pragma once
 
-class Physic
-{
+class Physic{
 private:
 
 public:

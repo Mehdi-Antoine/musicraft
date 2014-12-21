@@ -1,8 +1,7 @@
 #pragma once
 #include "Physic.hpp"
 
-class Body
-{
+class Body{
 private:
 
 public:

@@ -3,11 +3,13 @@
 // Constructors/Destructors
 //  
 
-Body::Body () {
+Body::Body(){
 
 }
 
-Body::~Body () { }
+Body::~Body(){
+	
+}
 
 //  
 // Methods

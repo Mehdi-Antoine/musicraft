@@ -1,8 +1,7 @@
 #pragma once
 #include "Body.hpp"
 
-class Player
-{
+class Player{
 private:
 
 

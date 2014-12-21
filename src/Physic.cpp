@@ -3,11 +3,13 @@
 // Constructors/Destructors
 //  
 
-Physic::Physic () {
+Physic::Physic(){
 
 }
 
-Physic::~Physic () { }
+Physic::~Physic(){
+
+}
 
 //  
 // Methods
