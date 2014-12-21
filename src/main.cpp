@@ -8,6 +8,7 @@
 #include <glimac/FreeflyCamera.hpp>
 
 #include "include/Player.hpp"
+#include "include/GlslPrograms.hpp"
 
 #include <iostream>
 #include <string>
@@ -16,49 +17,6 @@ using namespace glimac;
 
 #define WINDOW_WIDTH  700
 #define WINDOW_HEIGHT 700
-
-//--------------------------------------------------------------------------------------------------
-//--------------------------------------STRUCTURES--------------------------------------------------
-//--------------------------------------------------------------------------------------------------
-
-struct MyProgram {
-    Program m_Program;
-
-    GLint uPMatrix,
-          uVMatrix;
-
-    GLint uKd,
-          uKs,
-          uShininess;
-
-    GLint uLightPos,
-          uLightIntensity;
-
-    GLint uCameraPos;
-
-    GLint uTexture;
-
-    MyProgram(const FilePath& applicationPath):
-        m_Program(loadProgram(applicationPath.dirPath() + "shaders/square/square.vs.glsl",
-                              applicationPath.dirPath() + "shaders/square/square.gs.glsl",
-                              applicationPath.dirPath() + "shaders/square/square.fs.glsl")) {
-
-        uVMatrix   = glGetUniformLocation(m_Program.getGLId(), "uVMatrix");
-        uPMatrix   = glGetUniformLocation(m_Program.getGLId(), "uPMatrix");
-
-        uKd = glGetUniformLocation(m_Program.getGLId(), "uKd");
-        uKs = glGetUniformLocation(m_Program.getGLId(), "uKs");
-        uShininess = glGetUniformLocation(m_Program.getGLId(), "uShininess");
-
-        uLightPos = glGetUniformLocation(m_Program.getGLId(), "uLightPos_vs");
-        uLightIntensity =  glGetUniformLocation(m_Program.getGLId(), "uLightIntensity");
-
-        uCameraPos =  glGetUniformLocation(m_Program.getGLId(), "uCameraPos");
-        
-        uTexture = glGetUniformLocation(m_Program.getGLId(), "uTexture");
-
-    }
-};
 
 //--------------------------------------------------------------------------------------------------
 //---------------------------------------LE MAIN----------------------------------------------------
@@ -102,9 +60,9 @@ int main(int argc, char** argv){
 
     FilePath applicationPath(argv[0]);
 
-    MyProgram program(applicationPath);
+    SquareProgram squareProgram(applicationPath);
 
-    program.m_Program.use();
+    squareProgram.m_Program.use();
 
 //--------------------------------------------------------------------------------------------------
 //-------------------------------CHARGEMENT DES TEXTURES---------------------------------------------
@@ -177,19 +135,19 @@ int main(int argc, char** argv){
 
     ProjMatrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
 
-    glUniformMatrix4fv(program.uPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix));
+    glUniformMatrix4fv(squareProgram.uPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix));
 
 
     glm::vec3  lightPos = glm::vec3(1, 1, 1);
 
-    glUniform3f(program.uKd, 1, 1, 1);
-    glUniform3f(program.uKs, 1, 1, 1);
-    glUniform1f(program.uShininess, 1);
+    glUniform3f(squareProgram.uKd, 1, 1, 1);
+    glUniform3f(squareProgram.uKs, 1, 1, 1);
+    glUniform1f(squareProgram.uShininess, 1);
 
-    glUniform3f(program.uLightIntensity, 1, 1, 1);
-    glUniform3f(program.uLightPos, 1, 1, 1);
+    glUniform3f(squareProgram.uLightIntensity, 1, 1, 1);
+    glUniform3f(squareProgram.uLightPos, 1, 1, 1);
 
-    glUniform1i(program.uTexture, 0);
+    glUniform1i(squareProgram.uTexture, 0);
 
 //--------------------------------------------------------------------------------------------------
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
@@ -344,20 +302,20 @@ int main(int argc, char** argv){
         VMatrix = freeflyCamera.getViewMatrix();
 
         glm::vec3 cameraPos = freeflyCamera.getPosition();
-        glUniform3fv(program.uCameraPos, 1, glm::value_ptr(cameraPos));
+        glUniform3fv(squareProgram.uCameraPos, 1, glm::value_ptr(cameraPos));
 
         //GESTION LIGHT
         lightPos = glm::vec3(glm::vec4(TAILLE, TAILLE, TAILLE, 1));
 
-        glUniformMatrix4fv(program.uVMatrix,    1, GL_FALSE, glm::value_ptr(VMatrix));
-        glUniformMatrix4fv(program.uPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix));
+        glUniformMatrix4fv(squareProgram.uVMatrix,    1, GL_FALSE, glm::value_ptr(VMatrix));
+        glUniformMatrix4fv(squareProgram.uPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix));
 
-        glUniform3f(program.uKd, 1, 1, 1);
-        glUniform3f(program.uKs, 1, 1, 1);
-        glUniform1f(program.uShininess, 1);
+        glUniform3f(squareProgram.uKd, 1, 1, 1);
+        glUniform3f(squareProgram.uKs, 1, 1, 1);
+        glUniform1f(squareProgram.uShininess, 1);
 
-        glUniform3f(program.uLightIntensity, TAILLE * 10, TAILLE * 10, TAILLE * 10);
-        glUniform3f(program.uLightPos, lightPos.x, lightPos.y, lightPos.z);
+        glUniform3f(squareProgram.uLightIntensity, TAILLE * 10, TAILLE * 10, TAILLE * 10);
+        glUniform3f(squareProgram.uLightPos, lightPos.x, lightPos.y, lightPos.z);
 
         glBindVertexArray(vao);
 
