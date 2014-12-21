@@ -1,8 +1,6 @@
 #include "InputManager.h"
 
 
-
-
 void InputManager::updateInput() {
 
     //Récupération des events
