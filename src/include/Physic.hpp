@@ -1,21 +1,17 @@
 #pragma once
 
-class Physic{
-private:
+#include <vector>
 
-	m_position;
-	m_speed;
-	m_acceleration;
+#include <glimac/glm.hpp>
+
+class Physic{
 
 public:
 
 //--------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------CONSTRUCTOR--------------------------------------------------
+//-------------------------------------------------FUNCTIONS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-  Physic();
-  ~Physic();
-
-  updateVerlett(position, speed, forces);
+  static void updateVerlett(glm::vec3 &position, glm::vec3 &speed, const std::vector<glm::vec3> &forces);
 
 };
