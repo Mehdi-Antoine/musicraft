@@ -6,6 +6,9 @@
 #include <glimac/glm.hpp>
 #include <glimac/Image.hpp>
 #include <glimac/FreeflyCamera.hpp>
+
+#include "include/Player.hpp"
+
 #include <iostream>
 #include <string>
 
