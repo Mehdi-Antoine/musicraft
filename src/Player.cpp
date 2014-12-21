@@ -1,4 +1,5 @@
 #include "include/Player.hpp"
+#include "include/Body.hpp"
 #include "include/State.hpp"
 
 // Constructors/Destructors
@@ -23,24 +24,32 @@ void Player::setState(State state){
 	m_state = state;
 }
 
+Body Player::getBody() const{
+	return this->m_body;
+}
+void Player::setBody(Body body){
+	this->m_body = body;
+}
+
+
 void Player::updatePlayer(){
 
 }
 
 void Player::idle(){
-	this->m_state = State::idle;
+	this->setState(State::idle);
 }
 void Player::move(){
-	this->m_state = State::walk;
+	this->setState(State::walk);
 }
 void Player::jump(){
-	this->m_state = State::jump;
+	this->setState(State::jump);
 }
 void Player::run(){
-	this->m_state = State::run;
+	this->setState(State::run);
 }
 void Player::jetpack(){
-	this->m_state = State::jetpack;
+	this->setState(State::jetpack);
 }
 
 bool Player::catchCube(int cube){
