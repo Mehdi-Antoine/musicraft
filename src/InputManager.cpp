@@ -31,7 +31,9 @@ void InputManager::updateInput() {
                 m_key[SDLK_d] = true;
                 break;
 
-
+            case SDLK_SPACE:
+                m_key[SDLK_SPACE] = true;
+                break;
 
             default:
                 break;
@@ -61,6 +63,10 @@ void InputManager::updateInput() {
 
             case SDLK_d:
                 m_key[SDLK_d] = false;
+                break;
+
+            case SDLK_SPACE:
+                m_key[SDLK_SPACE] = true;
                 break;
 
             default:
