@@ -31,6 +31,7 @@ void Physic::updateVerlett(glm::vec3 position, glm::vec3 speed, const std::vecto
 
     position = new_position;
     speed = new_speed;
+
 }
 
 

@@ -1,15 +1,16 @@
 #pragma once
 #include "Body.hpp"
 #include "Inventory.hpp"
-#include "State.hpp"
+
 
 class Player{
 private:
 	Inventory m_inventory;
-	State m_state;
 	Body m_body;
+  int m_dir_z;
   int m_dir_x;
-  int m_dir_y;
+  bool m_is_running;
+  bool m_is_flying;
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------CONSTRUCTOR--------------------------------------------------
@@ -21,8 +22,6 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------GETTERS-SETTERS------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
-  State getState() const;
-  void setState(State state);
 
   Body getBody() const;
   void setBody(Body body);
@@ -31,15 +30,12 @@ public:
 //---------------------------------------------------METHODS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
   void updatePlayer();
-  void idle();
-  void walk();
-  void jump();
-  void run();
+
   void jetpack();
+  void run();
 
   void moveFront(int t);
   void moveLeft(int t);
-
 
   bool catchCube(int cube);
   bool dropCube();
