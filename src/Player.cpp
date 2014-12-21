@@ -53,7 +53,7 @@ void Player::updatePlayer(){
 	}*/
 	forces.push_back(glm::vec3(0,0,0));
 	forces.push_back(glm::vec3(0,0,0));
-	Physic::updateVerlett(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,0,0));
+	Physic::updateVerlett(glm::vec3(0,0,0), glm::vec3(0,0,0), forces);
 }
 
 void Player::idle(){

@@ -8,8 +8,8 @@
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-//void Physic::updateVerlett(vec3 &position, vec3 &speed, const std::vector<vec3> &forces){
-void Physic::updateVerlett(glm::vec3 &position, glm::vec3 &speed, glm::vec3 &forces){
+void Physic::updateVerlett(glm::vec3 position, glm::vec3 speed, const std::vector<glm::vec3> forces){
+
 
     glm::vec3 old_speed = speed;
 
@@ -21,9 +21,9 @@ void Physic::updateVerlett(glm::vec3 &position, glm::vec3 &speed, glm::vec3 &for
 
     float dt = 1.0 / 30.0;
 
-    //for(int i = 0; i < forces.size(); ++i){
-    	sum_forces += forces;//[i];
-    //}
+    for(int i = 0; i < forces.size(); ++i){
+    	sum_forces += forces[i];
+    }
 
     new_speed = speed + sum_forces * dt;
 
