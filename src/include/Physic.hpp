@@ -3,9 +3,9 @@
 class Physic{
 private:
 
-	m_position;
-	m_speed;
-	m_acceleration;
+	int m_position;
+	int m_speed;
+	int m_acceleration;
 
 public:
 
@@ -16,6 +16,5 @@ public:
   Physic();
   ~Physic();
 
-  updateVerlett(position, speed, forces);
 
 };
