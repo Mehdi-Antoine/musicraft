@@ -24,5 +24,5 @@ GlShader::~GlShader(){
 
 
 void GlShader::useShader() const{
-
+	m_program.use();
 }
