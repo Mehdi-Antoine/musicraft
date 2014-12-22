@@ -10,7 +10,10 @@ using namespace glimac;
 class GlTexture{
 private:
 
-	std::unique_ptr<Image> m_texture_data;
+	glm::vec4* m_texture_data;
+
+	unsigned int m_texture_width,
+		         m_texture_height;
 
 	GLuint m_texture_id;
 	
@@ -19,9 +22,19 @@ public:
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 
 	GlTexture();
+	GlTexture(const GlTexture& gl_texture);
 	GlTexture(glimac::FilePath path);
 
 	~GlTexture();
+
+//--------------------------------------------------GETTERS-----------------------------------------------------
+
+	GLuint getTextureId() const;
+
+	glm::vec4* getTextureData() const;
+	
+	unsigned int getTextureWidth() const;
+	unsigned int getTextureHeight() const;
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
