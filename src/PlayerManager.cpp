@@ -10,7 +10,7 @@ void PlayerManager::movement(int directionFrontBack, int directionRightLeft)
 
 void PlayerManager::flyAndRun(bool run, bool fly) {
     m_player.run(run);
-    m_playe.jetpack(fly);
+    m_player.jetpack(fly);
 }
 
 PlayerManager::PlayerManager(Player player)
