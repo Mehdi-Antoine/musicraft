@@ -2,6 +2,12 @@
 
 #include <vector>
 
+#include "World.hpp"
+#include "GlElement.hpp"
+#include "GlLight.hpp"
+#include "GlTexture.hpp"
+#include "GlShader.hpp"
+#include "GlUniform.hpp"
 
 
 class GlEnvironnement{
@@ -14,28 +20,32 @@ private:
 
 	std::vector<GlLight>   m_lights;
 
-	std::vector<GlShader>  m_shader;
+	std::vector<GlShader>  m_shaders;
 
 	GlUniform              m_projection_matrix,
 			               m_view_matrix;
 
-	char*                  m_dir_path;
+	const char*            m_dir_path;
 
 public:
 
-	GlEnvironnement(char* dirPath);
+//------------------------------------------------CONSTRUCTOR---------------------------------------------------
+
+	GlEnvironnement(const char* dir_path);
 	~GlEnvironnement();
-	
-	void addElement(GlElement gl_element);
 
-	void addLight(GlLight gl_light);
+//-------------------------------------------------FUNCTIONS----------------------------------------------------
 
-	void addTexture(GlLight gl_texture);
+	void addElement(const GlElement gl_element);
 
-	void addShader(GlShader gl_shader);
+	void addLight(const GlLight gl_light);
 
-	void draw();
+	void addTexture(const GlTexture gl_texture);
 
-	void update();
+	void addShader(const GlShader gl_shader);
+
+	void draw() const;
+
+	void update(const World &world);
 
 };

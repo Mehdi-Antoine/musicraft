@@ -1,9 +1,15 @@
 #pragma once
 
+#include <GL/glew.h>
 #include <vector>
 
+#include <glimac/glm.hpp>
 
-enum vboType{ 
+#include "GlShader.hpp"
+
+
+
+enum VboType{ 
 	POSITION, 
 	COLOR
 };
@@ -12,11 +18,11 @@ enum vboType{
 class GlElement{
 private:
 
-	int m_size;
+	int m_vertex_number;
 
-	ShaderProgram m_shaders;
+	ShaderProgram m_shader_program;
 
-	Glenum m_draw_mode;
+	GLenum m_draw_mode;
 
 	GLuint m_vao;
 
@@ -31,8 +37,8 @@ public:
 
 	GlElement(std::vector<glm::vec3> &position_index, 
 			  std::vector<glm::vec3> &color_index, 
-			  char*                  dirPath, 
-			  char*                  shader_type);
+			  char*                  dir_path, 
+			  ShaderProgram          shader_program);
 
 	~GlElement();
 
@@ -43,15 +49,23 @@ public:
 	void setDrawMode(GLenum drawmode);
 
 //--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------GETTERS-----------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+
+	ShaderProgram getShaderProgram() const;
+
+//--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	void bind(vboType type);
+	void bindBuffer(VboType type) const;
 
-	void unbind();
+	void unbindBuffer() const;
 
-	void data(std::vector<glm::vec3> position_index, std::vector<glm::vec3> color_index);
+	void data(const std::vector<glm::vec3> &position_index, const std::vector<glm::vec3> &color_index);
 
-	void draw();
+	void draw() const;
+
+	void update()  const;
 
 };

@@ -1,12 +1,17 @@
-//#include <glimac/SDLWindowManager.hpp>
+#pragma once
+
 #include <GL/glew.h>
-//#include <glimac/common.hpp>
+
 #include <glimac/FilePath.hpp>
 #include <glimac/Program.hpp>
-//#include <glimac/glm.hpp>
-//#include <glimac/Image.hpp>
+
 
 using namespace glimac;
+
+enum ShaderProgram{ 
+  CUBE = 0, 
+  SQUARE = 1
+};
 
 struct SquareProgram {
   
@@ -46,4 +51,21 @@ struct SquareProgram {
         uTexture = glGetUniformLocation(m_Program.getGLId(), "uTexture");
 
     }
+};
+
+class GlShader{
+private:
+
+
+public:
+
+//------------------------------------------------CONSTRUCTOR---------------------------------------------------
+
+  GlShader(char* dirPath, char* name);
+  ~GlShader();
+
+//-------------------------------------------------FUNCTIONS----------------------------------------------------
+
+  void useShader() const;
+
 };

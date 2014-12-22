@@ -59,8 +59,9 @@ int main(int argc, char** argv){
 
     FilePath applicationPath(argv[0]);
 
-    SquareProgram squareProgram(applicationPath);
+    //SquareProgram squareProgram(applicationPath);
 
+    //
     squareProgram.m_Program.use();
 
 //--------------------------------------------------------------------------------------------------
