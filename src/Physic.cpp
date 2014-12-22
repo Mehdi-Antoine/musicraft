@@ -1,37 +1,26 @@
 #include "include/Physic.hpp"
 #include <glimac/glm.hpp>
 #include <vector>
+#include <iostream>
 
-//using namespace glm;
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-void Physic::updateVerlett(glm::vec3 position, glm::vec3 speed, const std::vector<glm::vec3> forces){
+void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & forces){
 
 
-    glm::vec3 old_speed = speed;
-
-    glm::vec3 new_speed = glm::vec3(0,0,0);
-
+    glm::vec3 newspeed = glm::vec3(0,0,0);
     glm::vec3 new_position;
-
-    glm::vec3 sum_forces = glm::vec3(0, 0, 0);
-
     float dt = 1.0 / 30.0;
 
-    for(int i = 0; i < forces.size(); ++i){
-    	sum_forces += forces[i];
-    }
+    newspeed = forces * float(dt);
 
-    new_speed = speed + sum_forces * dt;
+    position = position + speed  * float(100 * dt);
+    speed = newspeed;
 
-    new_position = position + (old_speed + new_speed) * float(0.5 * dt);
-
-    position = new_position;
-    speed = new_speed;
-
+    //std::cout << "force: " << forces.x << " " << forces.y << " " << forces.z << std::endl;
 }
 
 

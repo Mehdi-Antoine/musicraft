@@ -15,6 +15,22 @@ Camera::Camera(float x, float y, float z){
 	Camera::computeDirectionVectors();
 }
 
+Camera::Camera(const Camera & camera){
+     m_Position = camera.getPosition();
+     m_FrontVector = camera.getFrontVector();
+     m_LeftVector = camera.getLeftVector();
+     m_UpVector = camera.getUpVector();
+     m_fPhi = camera.getPhi();
+     m_fTeta = camera.getTheta();
+}
+
+glm::vec3 Camera::getPosition() const{ return m_Position; }
+glm::vec3 Camera::getFrontVector() const{ return m_FrontVector; }
+glm::vec3 Camera::getLeftVector() const{ return m_LeftVector; }
+glm::vec3 Camera::getUpVector() const{ return m_UpVector; }
+float Camera::getPhi() const{ return m_fPhi; }
+float Camera::getTheta() const{ return m_fTeta; }
+
 glm::vec3 Camera::getPosition(){
 	return m_Position;
 }
@@ -60,5 +76,5 @@ glm::mat4 Camera::getViewMatrix(){
 }
 
 void Camera::setPosition(glm::vec3 position){
-	this->m_Position = position;
+	m_Position = position;
 }

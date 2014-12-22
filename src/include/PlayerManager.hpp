@@ -7,13 +7,18 @@ class PlayerManager {
 
 public:
 
+	Player& getPlayer();
+
     void movement(int directionFrontBack, int directionRightLeft);
 
     void flyAndRun(bool run, bool fly);
 
-    PlayerManager(Player player);
+    PlayerManager(Player &player);
 
+    PlayerManager(PlayerManager &playermanager);
     PlayerManager();
+
+
 
 
 private:

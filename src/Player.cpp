@@ -3,13 +3,36 @@
 #include "include/Physic.hpp"
 #include <glimac/glm.hpp>
 #include <vector>
+#include <iostream>
 
 
 // Constructors/Destructors
 //  
 
 Player::Player(){
-	
+	m_dir_x = 0;
+	m_dir_z = 0;
+	m_is_running = false;
+	m_is_flying = false;
+	m_name = 47;
+}
+
+Player::Player(Player &player){
+	m_dir_x = player.getDirX();
+	m_dir_z = player.getDirZ();
+	m_is_running = player.getIsRunning();
+	m_is_flying = player.getIsFlying();
+	m_name = player.getName();
+	m_body = player.getBody();
+
+}
+
+Player::Player(int name){
+	m_dir_x = 0;
+	m_dir_z = 0;
+	m_is_running = false;
+	m_is_flying = false;
+	m_name = name;
 }
 
 Player::~Player(){
@@ -22,28 +45,60 @@ Player::~Player(){
 
 	
 
-Body Player::getBody() const{
-	return this->m_body;
+Body& Player::getBody(){
+	return m_body;
 }
 void Player::setBody(Body body){
-	this->m_body = body;
+	m_body = body;
 }
+
+int Player::getName() const{
+	return m_name;
+}
+void Player::setName(int name){
+	m_name = name;
+}
+
+int Player::getDirZ() const{
+	return m_dir_z;
+}
+void Player::setDirZ(int z){
+	m_dir_z = z;
+}
+
+int Player::getDirX() const{
+	return m_dir_x;
+}
+void Player::setDirX(int x){
+	m_dir_x = x;
+}
+
+bool Player::getIsRunning() const{
+	return m_is_running;
+}
+
+bool Player::getIsFlying() const{
+	return m_is_flying;
+}
+
 
 
 void Player::updatePlayer(){
-	std::vector<glm::vec3> forces;
+	glm::vec3 forces;
 
 	float coeffRunning=0;
-	if(this->m_is_running) coeffRunning = 3.;
-	else coeffRunning = 1.5;
-	forces.push_back(glm::vec3(this->m_dir_x * coeffRunning, 0, this->m_dir_z * coeffRunning));
+	if(m_is_running) coeffRunning = 2; 
+	else coeffRunning = 1;
 
-	float coeffJetpacking=0;
+    float coeffJetpacking=0;
 	if(this->m_is_flying) coeffJetpacking = 3.;
 	else coeffJetpacking = 1.5;
-	forces.push_back(glm::vec3(0, 1 * coeffJetpacking, coeffJetpacking/4));
 
-	this->m_body.updateBody(forces);
+	forces = glm::vec3(-1 * m_dir_x * coeffRunning, -1 * 1 * coeffJetpacking, -1 * m_dir_z * coeffRunning + coeffJetpacking/4);
+
+
+	m_body.updateBody(forces);
+
 }
 
 
@@ -55,10 +110,10 @@ void Player::run(bool is_running){
 }
 
 void Player::moveFront(int t){
-	this->m_dir_z = t;
+	setDirZ(t);
 }
 void Player::moveLeft(int t){
-	this->m_dir_x = t;
+	setDirX(t);
 }
 
 

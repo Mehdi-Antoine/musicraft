@@ -15,9 +15,20 @@ private:
 
 public:
 
+//--------------GETTERS------------------------//
+
+	glm::vec3 getPosition() const;
+	glm::vec3 getFrontVector() const;
+	glm::vec3 getLeftVector() const;
+	glm::vec3 getUpVector() const;
+	float getPhi() const;
+	float getTheta() const;
+
+
 //---------------------------CONSTRUCTOR-------------------------------------
 
 	Camera();
+	Camera(const Camera & camera);
 	Camera(float x, float y, float z);
 
 //----------------------------FUNCTIONS--------------------------------------

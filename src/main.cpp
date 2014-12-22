@@ -8,6 +8,7 @@
 #include <glimac/FreeflyCamera.hpp>
 
 #include "include/Player.hpp"
+#include "include/EventHandler.hpp"
 #include "include/GlslPrograms.hpp"
 
 #include <iostream>
@@ -36,12 +37,6 @@ int main(int argc, char** argv){
     float lastTime;
     int nbFrames = 0;
 
-    //Création des variables clavier et souris SDL
-    int key_z = 0, 
-        key_s = 0,
-        key_q = 0,
-        key_d = 0,
-        click = 0;
 
 
     // Initialize glew for OpenGL3+ support
@@ -117,11 +112,9 @@ int main(int argc, char** argv){
         cube_color[k]    = glm::vec3(k/TAILLE, 0, k%TAILLE);
     }
     
-//--------------------------------------------------------------------------------------------------
-//---------------------------------CONSTRUCTION CAMERA----------------------------------------------
-//--------------------------------------------------------------------------------------------------
 
-    FreeflyCamera freeflyCamera;
+
+
 
 //--------------------------------------------------------------------------------------------------
 //--------------------------CREATION DES VARIABLES UNIFORMES----------------------------------------
@@ -199,6 +192,21 @@ int main(int argc, char** argv){
     
 
 //--------------------------------------------------------------------------------------------------
+//---------------------------------CONSTRUCTION PLAYER----------------------------------------------
+//--------------------------------------------------------------------------------------------------
+    Player player(7);
+
+    Camera camera = player.getBody().getCamera();
+
+    PlayerManager playermanager(player);
+
+    InputManager inputmanager;
+    EventHandler eventhandler(inputmanager, playermanager);
+    std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
+    std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
+
+
+//--------------------------------------------------------------------------------------------------
 //----------------------------------APPLICATION LOOP------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
@@ -208,100 +216,20 @@ int main(int argc, char** argv){
 
         startTime = windowManager.getTime();
 
-        // Event loop:
-        SDL_Event e;
-        while(windowManager.pollEvent(e)){
-            if(e.type == SDL_QUIT) {
-                done = true; // Leave the loop after this iteration
-            }
-            if(e.type == SDL_KEYDOWN){
-
-                if(e.key.keysym.sym == SDLK_ESCAPE){
-                    done = true;
-                }  
-
-                if(e.key.keysym.sym == SDLK_z){
-                    key_z = 1;
-                }                 
-                if(e.key.keysym.sym == SDLK_s){
-                    key_s = 1;
-                }
-                if(e.key.keysym.sym == SDLK_q){
-                    key_q = 1;
-                }                 
-                if(e.key.keysym.sym == SDLK_d){
-                    key_d = 1;
-                }
-                if(e.key.keysym.sym == SDLK_p){
-                    TAILLE++;
-                    std::cout << "TAILLE = " << TAILLE << std::endl;
-                }
-                if(e.key.keysym.sym == SDLK_m){
-                    TAILLE--;
-                    if(TAILLE <= 0) TAILLE = 1;
-
-                    std::cout << "TAILLE = " << TAILLE << std::endl;
-                }
-                    
-            }
-
-            if(e.type == SDL_KEYUP){
-                    
-                if(e.key.keysym.sym == SDLK_z){
-                    key_z = 0;
-                }           
-                if(e.key.keysym.sym == SDLK_s){
-                    key_s = 0;
-                }
-                if(e.key.keysym.sym == SDLK_q){
-                    key_q = 0;
-                }                 
-                if(e.key.keysym.sym == SDLK_d){
-                    key_d = 0;
-                }
-                    
-            }
-
-            if(e.type == SDL_MOUSEBUTTONDOWN){
-                click = 1;
-            }
-
-            if(e.type == SDL_MOUSEBUTTONUP){
-                click = 0;
-            }
-
-            if(e.type == SDL_MOUSEMOTION){
-                if(e.motion.xrel != 0 && click == 1){
-                    //std::cout << e.motion.xrel << std::endl;
-                    freeflyCamera.rotateLeft(-e.motion.xrel/2.);
-                }
-                if(e.motion.yrel != 0 && click == 1){
-                    //std::cout << e.motion.xrel << std::endl;
-                    freeflyCamera.rotateUp(-e.motion.yrel/2.);
-                }
-            }
-        }
-
-        if(key_z && !key_s){
-            freeflyCamera.moveFront(2);
-        }
-        if(key_s && !key_z){
-            freeflyCamera.moveFront(-2);
-        }
-        if(key_q && !key_d){
-            freeflyCamera.moveLeft(2);
-        }
-        if(key_d && !key_q){
-            freeflyCamera.moveLeft(-2);
-        }
+    //event loop
+          eventhandler.update();
+          eventhandler.updatePlayer();
+         
+          std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
+          std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
         //CONSTRUCTION MATRICE V
-        VMatrix = freeflyCamera.getViewMatrix();
+        VMatrix = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getViewMatrix();
 
-        glm::vec3 cameraPos = freeflyCamera.getPosition();
+        glm::vec3 cameraPos = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
         glUniform3fv(squareProgram.uCameraPos, 1, glm::value_ptr(cameraPos));
 
         //GESTION LIGHT
@@ -339,13 +267,13 @@ int main(int argc, char** argv){
 
             float res = ellapsedTime / nbFrames;
 
-            if(res > 0.04){
+           /* if(res > 0.04){
                 std::cout << "Warning ! : ";
             }
 
             std::cout << res << " sec" << std::endl;
             std::cout << 1 / res << " fps" << std::endl<< std::endl;
-
+            */
 
 
             nbFrames = 0;

@@ -10,11 +10,13 @@ class EventHandler {
 
 public:
 
+	PlayerManager getPlayerManager();
+
     void updatePlayer();
 
     void update();
 
-    EventHandler(InputManager input, PlayerManager player_manager);
+    EventHandler(InputManager & input, PlayerManager & player_manager);
 
 
 private:
