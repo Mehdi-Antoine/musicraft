@@ -1,8 +1,8 @@
 #ifndef EventHandler_h
 #define EventHandler_h
 
-#include "InputManager.h"
-#include "PlayerManager.h"
+#include "InputManager.hpp"
+#include "PlayerManager.hpp"
 
 
 class EventHandler {

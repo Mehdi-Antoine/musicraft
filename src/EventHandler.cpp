@@ -1,9 +1,9 @@
-#include "include/EventHandler.h"
+#include "include/EventHandler.hpp"
 
 
 
-void EventHandler::updatePlayer()
-{
+
+void EventHandler::updatePlayer(){
     int directionFrontBack = 0;
     int directionRightLeft = 0;
     bool fly = false;
@@ -38,13 +38,11 @@ void EventHandler::updatePlayer()
 
 }
 
-void EventHandler::update()
-{
+void EventHandler::update(){
     m_input.updateInput();
 }
 
-EventHandler::EventHandler(InputManager input, PlayerManager player_manager)
-{
+EventHandler::EventHandler(InputManager input, PlayerManager player_manager){
     m_input = input;
     m_player_manager = player_manager;
 }

@@ -13,6 +13,8 @@ public:
 
     PlayerManager(Player player);
 
+    PlayerManager();
+
 
 private:
     Player m_player;

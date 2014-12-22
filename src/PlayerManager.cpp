@@ -1,4 +1,4 @@
-#include "include/PlayerManager.h"
+#include "include/PlayerManager.hpp"
 
 
 
@@ -16,4 +16,9 @@ void PlayerManager::flyAndRun(bool run, bool fly) {
 PlayerManager::PlayerManager(Player player)
 {
     m_player = player;
+}
+
+PlayerManager::PlayerManager()
+{
+
 }

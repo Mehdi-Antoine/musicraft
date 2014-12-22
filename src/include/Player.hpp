@@ -31,8 +31,8 @@ public:
 //--------------------------------------------------------------------------------------------------------------
   void updatePlayer();
 
-  void jetpack();
-  void run();
+  void jetpack(bool is_flying);
+  void run(bool is_running);
 
   void moveFront(int t);
   void moveLeft(int t);
