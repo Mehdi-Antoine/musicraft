@@ -26,23 +26,39 @@ void EventHandler::updatePlayer(){
 
     //Marche avant arrière
     if(m_input.getKey(SDLK_z) == true) {
-        std::cout << "Z" << std::endl;
         directionFrontBack++;
     }
     if(m_input.getKey(SDLK_s) == true) {
-        std::cout << "S" << std::endl;
         directionFrontBack--;
     }
 
     //Marche gauche droite
     if(m_input.getKey(SDLK_q) == true) {
-        std::cout << "Q" << std::endl;
         directionRightLeft++;
     }
     if(m_input.getKey(SDLK_d) == true) {
-        std::cout << "D" << std::endl;
         directionRightLeft--;
     }
+
+
+    //mousemotion orientation camera
+    int click = 0;
+    if(m_input.getMouse(1) == true){
+        //std::cout << "m_input.getMouse(1) == true" << std::endl;
+        click = 1;
+    }
+    else click = 0;
+
+    if(m_input.getMouseRel(0) == true && click == 1) {
+        //std::cout << "getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
+        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);
+    }
+    if(m_input.getMouseRel(1) == true && click == 1) {
+        //std::cout << "getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;
+        m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
+    }
+
+
 
     m_player_manager.movement(directionFrontBack, directionRightLeft);
     m_player_manager.flyAndRun(run,fly);
