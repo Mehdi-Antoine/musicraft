@@ -8,7 +8,6 @@
 #include <glimac/FreeflyCamera.hpp>
 
 #include "include/Player.hpp"
-#include "include/GlslPrograms.hpp"
 
 #include <iostream>
 #include <string>
