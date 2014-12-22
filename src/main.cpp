@@ -77,8 +77,8 @@ int main(int argc, char** argv){
 
     std::vector<GlShader> shaders;
 
-    shaders.push_back(dir_path + "cube");
-    shaders.push_back(dir_path + "square");
+    shaders.push_back(GlShader(dir_path + "cube"));
+    shaders.push_back(GlShader(dir_path + "square"));
 
     gl_environnement.addShaderVector(shaders);
 
