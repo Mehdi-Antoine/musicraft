@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <glimac/FilePath.hpp>
+
 #include "World.hpp"
 #include "GlElement.hpp"
 #include "GlLight.hpp"
@@ -25,27 +27,43 @@ private:
 	GlUniform              m_projection_matrix,
 			               m_view_matrix;
 
-	const char*            m_dir_path;
+	FilePath               m_dir_path;
 
 public:
 
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 
-	GlEnvironnement(const char* dir_path);
+	GlEnvironnement(FilePath dir_path);
+
 	~GlEnvironnement();
+//--------------------------------------------------GETTERS-----------------------------------------------------
+
+	glm::mat4 getViewMatrix();
+
+	glm::mat4 getProjectionMatrix();
+
+	
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
-	void addElement(const GlElement gl_element);
+	void addElement(const GlElement &gl_element);
 
-	void addLight(const GlLight gl_light);
+	void addLight(const GlLight &gl_light);
 
-	void addTexture(const GlTexture gl_texture);
+	void addTexture(const GlTexture &gl_texture);	
+	void addTextureVector(const std::vector<GlTexture> &texture_vector);
 
-	void addShader(const GlShader gl_shader);
+	void addShader(const GlShader &gl_shader);
+	void addShaderVector(const std::vector<GlShader> &shader_vector);
 
-	void draw() const;
+
+	void updateViewMatrix(glm::mat4 view_matrix);
+
+	void updateProjectionMatrix(glm::mat4 projection_matrix);
 
 	void update(const World &world);
+
+
+	void draw() const;
 
 };

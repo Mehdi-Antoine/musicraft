@@ -10,7 +10,7 @@
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-GlElement::GlElement(std::vector<glm::vec3> &position_index, std::vector<glm::vec3> &color_index, char* dir_path, ShaderProgram shader_program){
+GlElement::GlElement(std::vector<glm::vec3> &position_index, std::vector<glm::vec3> &color_index, ShaderProgram shader_program, GLenum draw_mode){
 
 	m_vertex_number = position_index.size();
 

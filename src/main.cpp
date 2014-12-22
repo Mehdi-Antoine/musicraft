@@ -7,6 +7,14 @@
 #include <glimac/Image.hpp>
 #include <glimac/FreeflyCamera.hpp>
 
+#include "include/GlEnvironnement.hpp"
+#include "include/GlElement.hpp"
+#include "include/GlShader.hpp"
+#include "include/GlLight.hpp"
+#include "include/GlUniform.hpp"
+#include "include/GlTexture.hpp"
+
+#include "include/World.hpp"
 #include "include/Player.hpp"
 
 #include <iostream>
@@ -24,6 +32,10 @@ using namespace glimac;
 int main(int argc, char** argv){
 
     int TAILLE = 30; //Taille de porc
+
+    FilePath applicationPath(argv[0]);
+
+    FilePath dir_path = applicationPath.dirPath();
 
     // Initialize SDL and open a window
     SDLWindowManager windowManager(WINDOW_WIDTH, WINDOW_HEIGHT, "GLImac");
@@ -53,151 +65,53 @@ int main(int argc, char** argv){
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
-//--------------------------------------------------------------------------------------------------
+//-----------------------------------WORLD CREATION------------------------------------------------
+
+    World world;
+
+//----------------------------------GL ENVIRONNEMENT------------------------------------------------
+
+    GlEnvironnement gl_environnement(dir_path);
+
 //-------------------------------CHARGEMENT DES SHADERS---------------------------------------------
-//--------------------------------------------------------------------------------------------------
 
-    FilePath applicationPath(argv[0]);
+    std::vector<GlShader> shaders;
 
-    //SquareProgram squareProgram(applicationPath);
+    shaders.push_back(dir_path + "cube");
+    shaders.push_back(dir_path + "square");
 
-    //
-    squareProgram.m_Program.use();
+    gl_environnement.addShaderVector(shaders);
 
-//--------------------------------------------------------------------------------------------------
 //-------------------------------CHARGEMENT DES TEXTURES---------------------------------------------
-//--------------------------------------------------------------------------------------------------
 
-    //LOAD DES TEXTURES
+    std::vector<GlTexture> textures;
 
-    std::unique_ptr<Image> textureSting = loadImage(applicationPath.dirPath() + "assets/textures/sting.jpg");
+    textures.push_back(GlTexture(dir_path + "assets/textures/sting.jpg"));
+    textures.push_back(GlTexture(dir_path + "assets/textures/triforce.png"));
 
-    if(textureSting == NULL){
-        std::cerr << "Pas de fichier image chargé pour la texture Sting";
-        return EXIT_FAILURE;
-    }
+    gl_environnement.addTextureVector(textures);
 
-
-    //CREATION DES VARIABLES OPENGL
-
-    GLuint textureSting_id;
-
-    glGenTextures(1, &textureSting_id);
-
-    //LOAD DES TEXTURES DANS OPEN GL
-
-    //Sting
-    glBindTexture(GL_TEXTURE_2D, textureSting_id);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D,  
-                 0,  
-                  GL_RGBA,  
-                  textureSting->getWidth(),  
-                  textureSting->getHeight(),  
-                  0,  
-                  GL_RGBA,  
-                  GL_FLOAT,  
-                  textureSting->getPixels());
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-
-//--------------------------------------------------------------------------------------------------
-//-------------CONSTRUCTION CUBE ET INJECTION DANS UN TABLEAU DE VERTICES-------------------------
-//--------------------------------------------------------------------------------------------------
-
-    glm::vec3 cube_color[TAILLE*TAILLE];
-    glm::vec3 cube_position[TAILLE*TAILLE];
     
-    for(int k=0; k < TAILLE * TAILLE; ++k){
-        cube_position[k] = glm::vec3(2*(k/TAILLE), 0, 2*(k%TAILLE));
-        cube_color[k]    = glm::vec3(k/TAILLE, 0, k%TAILLE);
-    }
-    
-//--------------------------------------------------------------------------------------------------
 //---------------------------------CONSTRUCTION CAMERA----------------------------------------------
-//--------------------------------------------------------------------------------------------------
 
     FreeflyCamera freeflyCamera;
 
-//--------------------------------------------------------------------------------------------------
 //--------------------------CREATION DES VARIABLES UNIFORMES----------------------------------------
-//--------------------------------------------------------------------------------------------------
 
-    glEnable(GL_DEPTH_TEST);
+    glm::mat4 view_matrix = freeflyCamera.getViewMatrix();
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
 
-    glm::mat4  ProjMatrix, 
-               VMatrix;
-    
+    gl_environnement.updateViewMatrix(view_matrix);
+    gl_environnement.updateProjectionMatrix(view_matrix);
 
-    ProjMatrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
-
-    glUniformMatrix4fv(squareProgram.uPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix));
-
-
-    glm::vec3  lightPos = glm::vec3(1, 1, 1);
-
-    glUniform3f(squareProgram.uKd, 1, 1, 1);
-    glUniform3f(squareProgram.uKs, 1, 1, 1);
-    glUniform1f(squareProgram.uShininess, 1);
-
-    glUniform3f(squareProgram.uLightIntensity, 1, 1, 1);
-    glUniform3f(squareProgram.uLightPos, 1, 1, 1);
-
-    glUniform1i(squareProgram.uTexture, 0);
-
-//--------------------------------------------------------------------------------------------------
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
-//--------------------------------------------------------------------------------------------------
 
-    GLuint vbo_cube_color;
-    GLuint vbo_cube_position;
+    GlElement ground(square_positions, square_colors, SQUARE, GL_POINTS);
+    GlElement music_cubes(cube_positions, cube_colors, CUBE, GL_POINTS);
 
-    glGenBuffers(1, &vbo_cube_color);
-    glGenBuffers(1, &vbo_cube_position);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_color);
-    glBufferData(GL_ARRAY_BUFFER, TAILLE * TAILLE * sizeof(glm::vec3), cube_color, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_position);
-    glBufferData(GL_ARRAY_BUFFER, TAILLE * TAILLE * sizeof(glm::vec3), cube_position, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-
-    glBindVertexArray(vao);
-
-    const GLuint VERTEX_ATTR_POSITION = 0;
-    const GLuint VERTEX_ATTR_COLOR = 1;
-
-    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-    glEnableVertexAttribArray(VERTEX_ATTR_COLOR);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_position);
-    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const GLvoid*)(0*sizeof(GL_FLOAT)));
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_color);  
-    glVertexAttribPointer(VERTEX_ATTR_COLOR, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const GLvoid*)(0*sizeof(GL_FLOAT)));
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    /*
-    -param1 : index de l'attribut à spécifier
-    -param2 : le nombre de composante de l'attribut (=nombre de cases dans le tableau pour définir un attribut)
-    -param3 : le type de chaque composante
-    -param4 : mystere pour le moment
-    -param5 : le nombre de cases à sauter avant de passer à la composante suivante de l'attribut
-    -param6 : offset de la première instance de l'attribut
-    */
-
-    glBindVertexArray(0);
-    
-
+    gl_environnement.addElement(ground);
+    gl_environnement.addElement(music_cubes);
+ 
 //--------------------------------------------------------------------------------------------------
 //----------------------------------APPLICATION LOOP------------------------------------------------
 //--------------------------------------------------------------------------------------------------
@@ -208,127 +122,22 @@ int main(int argc, char** argv){
 
         startTime = windowManager.getTime();
 
-        // Event loop:
-        SDL_Event e;
-        while(windowManager.pollEvent(e)){
-            if(e.type == SDL_QUIT) {
-                done = true; // Leave the loop after this iteration
-            }
-            if(e.type == SDL_KEYDOWN){
-
-                if(e.key.keysym.sym == SDLK_ESCAPE){
-                    done = true;
-                }  
-
-                if(e.key.keysym.sym == SDLK_z){
-                    key_z = 1;
-                }                 
-                if(e.key.keysym.sym == SDLK_s){
-                    key_s = 1;
-                }
-                if(e.key.keysym.sym == SDLK_q){
-                    key_q = 1;
-                }                 
-                if(e.key.keysym.sym == SDLK_d){
-                    key_d = 1;
-                }
-                if(e.key.keysym.sym == SDLK_p){
-                    TAILLE++;
-                    std::cout << "TAILLE = " << TAILLE << std::endl;
-                }
-                if(e.key.keysym.sym == SDLK_m){
-                    TAILLE--;
-                    if(TAILLE <= 0) TAILLE = 1;
-
-                    std::cout << "TAILLE = " << TAILLE << std::endl;
-                }
-                    
-            }
-
-            if(e.type == SDL_KEYUP){
-                    
-                if(e.key.keysym.sym == SDLK_z){
-                    key_z = 0;
-                }           
-                if(e.key.keysym.sym == SDLK_s){
-                    key_s = 0;
-                }
-                if(e.key.keysym.sym == SDLK_q){
-                    key_q = 0;
-                }                 
-                if(e.key.keysym.sym == SDLK_d){
-                    key_d = 0;
-                }
-                    
-            }
-
-            if(e.type == SDL_MOUSEBUTTONDOWN){
-                click = 1;
-            }
-
-            if(e.type == SDL_MOUSEBUTTONUP){
-                click = 0;
-            }
-
-            if(e.type == SDL_MOUSEMOTION){
-                if(e.motion.xrel != 0 && click == 1){
-                    //std::cout << e.motion.xrel << std::endl;
-                    freeflyCamera.rotateLeft(-e.motion.xrel/2.);
-                }
-                if(e.motion.yrel != 0 && click == 1){
-                    //std::cout << e.motion.xrel << std::endl;
-                    freeflyCamera.rotateUp(-e.motion.yrel/2.);
-                }
-            }
-        }
-
-        if(key_z && !key_s){
-            freeflyCamera.moveFront(2);
-        }
-        if(key_s && !key_z){
-            freeflyCamera.moveFront(-2);
-        }
-        if(key_q && !key_d){
-            freeflyCamera.moveLeft(2);
-        }
-        if(key_d && !key_q){
-            freeflyCamera.moveLeft(-2);
-        }
+//--------------------------------------CONTROLS----------------------------------------------------
+        
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
-        //CONSTRUCTION MATRICE V
-        VMatrix = freeflyCamera.getViewMatrix();
+//---------------------------------CONSTRUCT V MATRIX-----------------------------------------------
 
-        glm::vec3 cameraPos = freeflyCamera.getPosition();
-        glUniform3fv(squareProgram.uCameraPos, 1, glm::value_ptr(cameraPos));
+        gl_environnement.update(world);
 
-        //GESTION LIGHT
-        lightPos = glm::vec3(glm::vec4(TAILLE, TAILLE, TAILLE, 1));
 
-        glUniformMatrix4fv(squareProgram.uVMatrix,    1, GL_FALSE, glm::value_ptr(VMatrix));
-        glUniformMatrix4fv(squareProgram.uPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix));
-
-        glUniform3f(squareProgram.uKd, 1, 1, 1);
-        glUniform3f(squareProgram.uKs, 1, 1, 1);
-        glUniform1f(squareProgram.uShininess, 1);
-
-        glUniform3f(squareProgram.uLightIntensity, TAILLE * 10, TAILLE * 10, TAILLE * 10);
-        glUniform3f(squareProgram.uLightPos, lightPos.x, lightPos.y, lightPos.z);
-
-        glBindVertexArray(vao);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureSting_id);
+//---------------------------------------DRAW !!!!-----------------------------------------------------
         
-        glDrawArrays(GL_POINTS, 0, TAILLE*TAILLE);
+        gl_environnement.draw();
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-        glBindVertexArray(0);
-
+//---------------------------------------FPS SHOW------------------------------------------------------
         ++nbFrames;
 
         currentTime = windowManager.getTime();
@@ -353,6 +162,7 @@ int main(int argc, char** argv){
             lastTime = windowManager.getTime();
         }
 
+//-----------------------------------FPS FREEZE-------------------------------------------------------
         ellapsedTime = windowManager.getTime() - startTime;
 
         if(ellapsedTime < FRAMERATE_MILLISECONDS){
@@ -365,9 +175,7 @@ int main(int argc, char** argv){
 
     }    
 
-    glDeleteBuffers(1, &vbo_cube_position);
-    glDeleteBuffers(1, &vbo_cube_color);
-    glDeleteVertexArrays(1, &vao);
+//-----------------------------------VBO CLEAN-------------------------------------------------------
 
     return EXIT_SUCCESS;
 }

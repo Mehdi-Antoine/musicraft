@@ -1,3 +1,5 @@
+#include <glimac/FilePath.hpp>
+
 #include "include/GlEnvironnement.hpp"
 
 
@@ -5,7 +7,7 @@
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-GlEnvironnement::GlEnvironnement(const char* dir_path){
+GlEnvironnement::GlEnvironnement(FilePath dir_path){
 
 	m_dir_path = dir_path;
 	
@@ -15,19 +17,19 @@ GlEnvironnement::GlEnvironnement(const char* dir_path){
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-void GlEnvironnement::addElement(const GlElement gl_element){
+void GlEnvironnement::addElement(const GlElement &gl_element){
 	m_elements.push_back(gl_element);
 }
 
-void GlEnvironnement::addLight(const GlLight gl_light){
+void GlEnvironnement::addLight(const GlLight &gl_light){
 	m_lights.push_back(gl_light);
 }
 
-void GlEnvironnement::addTexture(const GlTexture gl_texture){
+void GlEnvironnement::addTexture(const GlTexture &gl_texture){
 	m_textures.push_back(gl_texture);
 }
 
-void GlEnvironnement::addShader(const GlShader gl_shader){
+void GlEnvironnement::addShader(const GlShader &gl_shader){
 	m_shaders.push_back(gl_shader);
 }
 

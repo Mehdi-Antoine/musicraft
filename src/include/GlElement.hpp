@@ -36,9 +36,9 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 
 	GlElement(std::vector<glm::vec3> &position_index, 
-			  std::vector<glm::vec3> &color_index, 
-			  char*                  dir_path, 
-			  ShaderProgram          shader_program);
+			  std::vector<glm::vec3> &color_index,  
+			  ShaderProgram          shader_program,
+			  GLenum                 draw_mode);
 
 	~GlElement();
 
