@@ -77,8 +77,8 @@ int main(int argc, char** argv){
 
     std::vector<GlShader> shaders;
 
-    shaders.push_back(GlShader(dir_path + "cube"));
-    shaders.push_back(GlShader(dir_path + "square"));
+    shaders.push_back(GlShader(dir_path, "cube"));
+    shaders.push_back(GlShader(dir_path, "square"));
 
     gl_environnement.addShaderVector(shaders);
 
@@ -106,11 +106,11 @@ int main(int argc, char** argv){
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
-    GlElement ground(square_positions, square_colors, SQUARE, GL_POINTS);
+   /* GlElement ground(square_positions, square_colors, SQUARE, GL_POINTS);
     GlElement music_cubes(cube_positions, cube_colors, CUBE, GL_POINTS);
 
     gl_environnement.addElement(ground);
-    gl_environnement.addElement(music_cubes);
+    gl_environnement.addElement(music_cubes);*/
  
 //--------------------------------------------------------------------------------------------------
 //----------------------------------APPLICATION LOOP------------------------------------------------

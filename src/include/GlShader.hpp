@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <string>
 
 #include <glimac/FilePath.hpp>
 #include <glimac/Program.hpp>
@@ -13,7 +14,7 @@ enum ShaderProgram{
   SQUARE = 1
 };
 
-struct SquareProgram {
+/*struct SquareProgram {
   
     Program m_Program;
 
@@ -51,17 +52,20 @@ struct SquareProgram {
         uTexture = glGetUniformLocation(m_Program.getGLId(), "uTexture");
 
     }
-};
+};*/
 
 class GlShader{
 private:
-
+  Program m_program;
+  FilePath m_dir_path;
+  std::string m_file;
 
 public:
 
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 
-  GlShader(FilePath dir_path);
+  GlShader(FilePath dir_path, const std::string & file);
+  GlShader(const GlShader & shader);
   ~GlShader();
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
