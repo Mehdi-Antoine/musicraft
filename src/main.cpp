@@ -86,7 +86,8 @@ int main(int argc, char** argv){
 
     std::vector<GlTexture> textures;
 
-    textures.push_back(GlTexture(dir_path + "assets/textures/sting.jpg"));
+    //GlTexture sting(dir_path + "assets/textures/sting.jpg");
+    //textures.push_back(sting);
     textures.push_back(GlTexture(dir_path + "assets/textures/triforce.png"));
 
     gl_environnement.addTextureVector(textures);
