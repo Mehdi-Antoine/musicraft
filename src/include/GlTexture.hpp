@@ -40,8 +40,8 @@ public:
 
 	void load(glimac::FilePath path);
 
-	void use();
+	void use(GLenum texture); //GL_TEXTURE0, GL_TEXTURE1, ...
 
-	void stopUse();
+	void stopUse(GLenum texture); //GL_TEXTURE0, GL_TEXTURE1, ...
 
 };

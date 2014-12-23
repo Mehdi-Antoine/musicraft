@@ -121,16 +121,16 @@ void GlTexture::load(FilePath path){
 	}
 }
 
-void GlTexture::use(){
+void GlTexture::use(GLenum texture){
 
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(texture);
     glBindTexture(GL_TEXTURE_2D, m_texture_id);
 
 }
 
-void GlTexture::stopUse(){
+void GlTexture::stopUse(GLenum texture){
 
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(texture);
     glBindTexture(GL_TEXTURE_2D, 0);
 
 }
