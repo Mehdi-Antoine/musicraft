@@ -1,5 +1,6 @@
 #include "include/Camera.hpp"
 #include <glimac/glm.hpp>
+#include <iostream>
 
 Camera::Camera(){
 	m_Position = glm::vec3(5, 20, 5);
@@ -49,6 +50,7 @@ void Camera::computeDirectionVectors(){
 
 	//U = F × L (produit vectoriel)
 	m_UpVector =    glm::cross(m_FrontVector, m_LeftVector);
+	//std::cout << "M_upVector: " << m_UpVector << std::endl;
 
 }
 

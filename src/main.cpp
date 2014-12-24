@@ -223,7 +223,6 @@ int main(int argc, char** argv){
         eventhandler.update();
         eventhandler.updatePlayer();
 
-        std::cout << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getFrontVector() << std::endl;
 
         //quit ?
         if(eventhandler.getInputManager().getQuit() == true) quit=true;
@@ -249,6 +248,9 @@ int main(int argc, char** argv){
 
         glm::vec3 cameraPos = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
         glUniform3fv(squareProgram.uCameraPos, 1, glm::value_ptr(cameraPos));
+
+std::cout << "-> " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getFrontVector() << std::endl;
+
 
         //GESTION LIGHT
         lightPos = glm::vec3(glm::vec4(TAILLE, TAILLE, TAILLE, 1));
