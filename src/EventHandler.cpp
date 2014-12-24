@@ -7,6 +7,10 @@ PlayerManager EventHandler::getPlayerManager(){
 }
 
 
+InputManager EventHandler::getInputManager(){
+    return m_input;
+}
+
 void EventHandler::updatePlayer(){
     int directionFrontBack = 0;
     int directionRightLeft = 0;
@@ -57,6 +61,8 @@ void EventHandler::updatePlayer(){
         //std::cout << "getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;
         m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
     }
+
+
 
 
 

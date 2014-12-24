@@ -210,15 +210,17 @@ int main(int argc, char** argv){
 //----------------------------------APPLICATION LOOP------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
-    bool done = false;
+    bool quit = false;
 
-    while(!done){
+    while(!quit){
 
         startTime = windowManager.getTime();
 
     //event loop
           eventhandler.update();
           eventhandler.updatePlayer();
+
+          if(eventhandler.getInputManager().getQuit() == true) quit=true;
          
           //std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
           //std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;

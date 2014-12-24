@@ -26,6 +26,7 @@ public:
 
 
     InputManager();
+    InputManager(InputManager & input);
 
 private:
 

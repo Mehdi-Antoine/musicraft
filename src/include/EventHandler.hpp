@@ -11,6 +11,7 @@ class EventHandler {
 public:
 
 	PlayerManager getPlayerManager();
+	InputManager getInputManager();
 
     void updatePlayer();
 

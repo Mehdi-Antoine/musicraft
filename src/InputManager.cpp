@@ -191,3 +191,23 @@ InputManager::InputManager()
         m_key[i] = false;
     }
 }
+
+InputManager::InputManager(InputManager & input)
+{
+    m_quit = input.getQuit();
+
+    int i = 0;
+
+    for(i=0;i<2;i++) {
+        m_mouse_pos[i] = 0;
+        m_mouse_pos_rel[i] = 0;
+    }
+
+    for(i=0;i<8;i++) {
+        m_mouse_button[i] = false;
+    }
+
+    for(i=0;i<SDLK_LAST;i++) {
+        m_key[i] = false;
+    }
+}
