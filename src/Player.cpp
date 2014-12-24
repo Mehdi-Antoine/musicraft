@@ -96,7 +96,6 @@ void Player::updatePlayer(){
 
 	forces = glm::vec3(-1 * m_dir_x * coeffRunning, coeffJetpacking, -1 * m_dir_z * coeffRunning + coeffJetpacking/4);
 
-
 	m_body.updateBody(forces);
 
 }

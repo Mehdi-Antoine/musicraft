@@ -190,6 +190,7 @@ int main(int argc, char** argv){
 
     glBindVertexArray(0);
     
+/*DEBUT MODIF MOTEUR BASIQUE*/
 
 //--------------------------------------------------------------------------------------------------
 //---------------------------------CONSTRUCTION PLAYER----------------------------------------------
@@ -216,12 +217,27 @@ int main(int argc, char** argv){
 
         startTime = windowManager.getTime();
 
-    //event loop
-          eventhandler.update();
-          eventhandler.updatePlayer();
 
-          if(eventhandler.getInputManager().getQuit() == true) quit=true;
-         
+
+    //event loop
+        eventhandler.update();
+        eventhandler.updatePlayer();
+
+        std::cout << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getFrontVector() << std::endl;
+
+        //quit ?
+        if(eventhandler.getInputManager().getQuit() == true) quit=true;
+        
+
+
+
+/*FIN MODIF MOTEUR BASIQUE*/
+
+
+
+
+
+
           //std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
           //std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
 

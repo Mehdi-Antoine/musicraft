@@ -53,12 +53,12 @@ void EventHandler::updatePlayer(){
     }
     else click = 0;
 
-    if(m_input.getMouseRel(0) == true && click == 1) {
+    if(m_input.getMouseRel(0) != 0 && click == 1) {
         //std::cout << "getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
         m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);
     }
-    if(m_input.getMouseRel(1) == true && click == 1) {
-        //std::cout << "getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;
+    if(m_input.getMouseRel(1) != 0 && click == 1) {
+        //std::cout << "getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;   
         m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
     }
 
