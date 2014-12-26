@@ -24,7 +24,7 @@ private:
 
 	std::vector<GlShader>  m_shaders;
 
-	GlUniform              m_projection_matrix,
+	GlUniformMat4          m_projection_matrix,
 			               m_view_matrix;
 
 	FilePath               m_dir_path;

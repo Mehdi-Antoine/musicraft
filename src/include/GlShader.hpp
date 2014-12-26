@@ -1,10 +1,14 @@
 #pragma once
 
+#include <vector>
+
 #include <GL/glew.h>
 #include <string>
 
 #include <glimac/FilePath.hpp>
 #include <glimac/Program.hpp>
+
+#include "GlUniform.hpp"
 
 
 using namespace glimac;
@@ -14,51 +18,19 @@ enum ShaderProgram{
   SQUARE = 1
 };
 
-/*struct SquareProgram {
-  
-    Program m_Program;
+enum UniformType{ 
+  VEC3, 
+  MAT4,
+  FLOAT
+};
 
-    GLint uPMatrix,
-          uVMatrix;
-
-    GLint uKd,
-          uKs,
-          uShininess;
-
-    GLint uLightPos,
-          uLightIntensity;
-
-    GLint uCameraPos;
-
-    GLint uTexture;
-
-    SquareProgram(const FilePath& applicationPath):
-        m_Program(loadProgram(applicationPath.dirPath() + "shaders/square/square.vs.glsl",
-                              applicationPath.dirPath() + "shaders/square/square.gs.glsl",
-                              applicationPath.dirPath() + "shaders/square/square.fs.glsl")) {
-
-        uVMatrix   = glGetUniformLocation(m_Program.getGLId(), "uVMatrix");
-        uPMatrix   = glGetUniformLocation(m_Program.getGLId(), "uPMatrix");
-
-        uKd = glGetUniformLocation(m_Program.getGLId(), "uKd");
-        uKs = glGetUniformLocation(m_Program.getGLId(), "uKs");
-        uShininess = glGetUniformLocation(m_Program.getGLId(), "uShininess");
-
-        uLightPos = glGetUniformLocation(m_Program.getGLId(), "uLightPos_vs");
-        uLightIntensity =  glGetUniformLocation(m_Program.getGLId(), "uLightIntensity");
-
-        uCameraPos =  glGetUniformLocation(m_Program.getGLId(), "uCameraPos");
-        
-        uTexture = glGetUniformLocation(m_Program.getGLId(), "uTexture");
-
-    }
-};*/
 
 class GlShader{
 private:
   Program m_program;
   FilePath m_dir_path;
   std::string m_file;
+  std::vector <GlUniform *> m_uniforms;
 
 public:
 
@@ -71,5 +43,9 @@ public:
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
   void useShader() const;
+
+  GLenum getProgramId() const;
+
+  void addUniform(UniformType uniform_type, const char* uniform_name);
 
 };

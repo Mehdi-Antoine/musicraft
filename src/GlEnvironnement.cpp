@@ -1,6 +1,12 @@
 #include <glimac/FilePath.hpp>
 
+#include "include/World.hpp"
 #include "include/GlEnvironnement.hpp"
+#include "include/GlTexture.hpp"
+#include "include/GlLight.hpp"
+#include "include/GlElement.hpp"
+#include "include/GlShader.hpp"
+#include "include/GlUniform.hpp"
 
 
 //--------------------------------------------------------------------------------------------------------------
@@ -10,6 +16,10 @@
 GlEnvironnement::GlEnvironnement(FilePath dir_path){
 
 	m_dir_path = dir_path;
+	
+}
+
+GlEnvironnement::~GlEnvironnement(){
 	
 }
 
@@ -29,8 +39,20 @@ void GlEnvironnement::addTexture(const GlTexture &gl_texture){
 	m_textures.push_back(gl_texture);
 }
 
+void GlEnvironnement::addTextureVector(const std::vector<GlTexture> &texture_vector){
+	for(int i = 0; i< texture_vector.size(); ++i){
+		m_textures.push_back(texture_vector[i]);
+	}
+}
+
 void GlEnvironnement::addShader(const GlShader &gl_shader){
 	m_shaders.push_back(gl_shader);
+}
+
+void GlEnvironnement::addShaderVector(const std::vector<GlShader> &shader_vector){
+	for(int i =0; i < shader_vector.size(); ++i){
+		addShader(shader_vector[i]);
+	}
 }
 
 void GlEnvironnement::draw() const{

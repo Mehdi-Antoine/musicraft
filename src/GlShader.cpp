@@ -1,4 +1,7 @@
+#include <vector>
+
 #include "include/GlShader.hpp"
+#include "include/GlUniform.hpp"
 
 using namespace glimac;
 
@@ -25,4 +28,25 @@ GlShader::~GlShader(){
 
 void GlShader::useShader() const{
 	m_program.use();
+}
+
+GLenum GlShader::getProgramId() const{
+	return m_program.getGLId();
+}
+
+void GlShader::addUniform(UniformType uniform_type, const char* uniform_name){
+	if(uniform_type == VEC3){
+		GlUniformVec3 uniform(getProgramId(), uniform_name);
+		m_uniforms.push_back(&uniform);
+	}
+	else if(uniform_type == MAT4){
+		GlUniformMat4 uniform(getProgramId(), uniform_name);
+		m_uniforms.push_back(&uniform);
+	}
+	else if(uniform_type == FLOAT){
+		GlUniformFloat uniform(getProgramId(), uniform_name);
+		m_uniforms.push_back(&uniform);
+	}
+
+
 }

@@ -17,6 +17,10 @@ GlTexture::GlTexture(){
 	m_texture_id = 0;
 }
 
+GlTexture::~GlTexture(){
+	
+}
+
 GlTexture::GlTexture(const GlTexture& gl_texture){
 	m_texture_data = gl_texture.getTextureData();
 
