@@ -10,8 +10,8 @@ class EventHandler {
 
 public:
 
-	PlayerManager getPlayerManager();
-	InputManager getInputManager();
+	PlayerManager& getPlayerManager();
+	InputManager& getInputManager();
 
     void updatePlayer();
 

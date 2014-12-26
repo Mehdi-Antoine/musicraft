@@ -2,12 +2,12 @@
 #include "include/EventHandler.hpp"
 
 
-PlayerManager EventHandler::getPlayerManager(){
+PlayerManager& EventHandler::getPlayerManager(){
     return m_player_manager;
 }
 
 
-InputManager EventHandler::getInputManager(){
+InputManager& EventHandler::getInputManager(){
     return m_input;
 }
 

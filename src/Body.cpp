@@ -36,7 +36,7 @@ Body::Body(vec3 position, vec3 speed, vec3 acceleration, vec3 orientation){
 
 }
 
-Body::Body(const Body & body){
+Body::Body(Body & body){
      m_position = body.getPosition();
      m_speed = body.getSpeed();
      m_acceleration = body.getAcceleration();
@@ -83,8 +83,8 @@ std::vector<vec3> Body::getHitboxCorners() const{
      return this->m_hitbox_corners;
 }
 
-Camera Body::getCamera() const{
-     return this->m_camera;
+Camera & Body::getCamera(){
+     return m_camera;
 }
 
 

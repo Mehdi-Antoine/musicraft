@@ -15,15 +15,17 @@ Player::Player(){
 	m_is_running = false;
 	m_is_flying = false;
 	m_name = 47;
+	std::cout << "ooo" << std::endl;
 }
 
-Player::Player(Player &player){
+Player::Player(Player & player){
 	m_dir_x = player.getDirX();
 	m_dir_z = player.getDirZ();
 	m_is_running = player.getIsRunning();
 	m_is_flying = player.getIsFlying();
 	m_name = player.getName();
 	m_body = player.getBody();
+	std::cout << "iii " << player.getBody().getCamera().getUpVector() << std::endl;
 
 }
 
@@ -33,6 +35,7 @@ Player::Player(int name){
 	m_is_running = false;
 	m_is_flying = false;
 	m_name = name;
+	std::cout << "ppp" << std::endl;
 }
 
 Player::~Player(){

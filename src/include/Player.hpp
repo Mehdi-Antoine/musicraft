@@ -50,7 +50,7 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 
   Player();
-  Player(Player &player);
+  Player(Player & player);
   Player(int name);
   ~Player();
 
