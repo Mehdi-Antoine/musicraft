@@ -8,7 +8,7 @@
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & forces){
+void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & forces, int m_dir_z, int m_dir_x, glm::vec3 left_vector, glm::vec3 front_vector){
 
 
     glm::vec3 newspeed = glm::vec3(0,0,0);
@@ -18,6 +18,10 @@ void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & fo
     newspeed = forces * float(dt);
 
     position = position + speed  * float(100 * dt);
+
+    if(m_dir_x !=0) position += (float)m_dir_x * left_vector;
+    if(m_dir_z !=0) position += (float)m_dir_z * front_vector;
+
     speed = newspeed;
 
     //std::cout << "force: " << forces.x << " " << forces.y << " " << forces.z << std::endl;

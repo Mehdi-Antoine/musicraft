@@ -34,10 +34,15 @@ glm::vec3 Camera::getLeftVector() const{ return m_LeftVector; }
 glm::vec3 Camera::getUpVector() const{ return m_UpVector; }
 float Camera::getPhi() const{ return m_fPhi; }
 float Camera::getTheta() const{ return m_fTeta; }
-
+/*
 glm::vec3 Camera::getPosition(){
 	return m_Position;
+}*/
+
+glm::vec3 & Camera::getPtPosition(){
+	return m_Position;
 }
+
 
 void Camera::computeDirectionVectors(){
 
@@ -66,14 +71,15 @@ void Camera::moveFront(float t){
 }
 
 void Camera::rotateLeft(float degrees){
+	//if(m_fPhi + glm::radians(degrees)> M_PI + 1 || m_fPhi + glm::radians(degrees)< M_PI -1) return;
 	m_fPhi += glm::radians(degrees);
 	computeDirectionVectors();
-
 }
 
 void Camera::rotateUp(float degrees){
+	//if(m_fTeta + glm::radians(degrees) > 0.80 || m_fTeta + glm::radians(degrees) < -0.80) return;
 	m_fTeta += glm::radians(degrees);
-	computeDirectionVectors();
+	computeDirectionVectors();								    
 }
 
 glm::mat4 Camera::getViewMatrix(){
