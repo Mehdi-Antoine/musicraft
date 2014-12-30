@@ -10,6 +10,7 @@
 #include "GlTexture.hpp"
 #include "GlShader.hpp"
 #include "GlUniform.hpp"
+#include "GlGlobalUniform.hpp"
 
 
 class GlEnvironnement{
@@ -24,8 +25,7 @@ private:
 
 	std::vector<GlShader>  m_shaders;
 
-	GlUniformMat4          m_projection_matrix,
-			               m_view_matrix;
+	GlGlobalUniform        m_global_uniforms;
 
 	FilePath               m_dir_path;
 
@@ -42,8 +42,6 @@ public:
 
 	glm::mat4 getProjectionMatrix();
 
-	
-
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
 	void addElement(const GlElement &gl_element);
@@ -56,10 +54,11 @@ public:
 	void addShader(const GlShader &gl_shader);
 	void addShaderVector(const std::vector<GlShader> &shader_vector);
 
+	void addGlobalUniform(const GlGlobalUniform &gl_global_uniform);
 
-	void updateViewMatrix(glm::mat4 view_matrix);
+	void updateViewMatrix(const glm::mat4 &view_matrix);
 
-	void updateProjectionMatrix(glm::mat4 projection_matrix);
+	void updateProjectionMatrix(const glm::mat4 &projection_matrix);
 
 	void update(const World &world);
 

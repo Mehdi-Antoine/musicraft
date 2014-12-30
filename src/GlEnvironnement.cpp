@@ -55,6 +55,10 @@ void GlEnvironnement::addShaderVector(const std::vector<GlShader> &shader_vector
 	}
 }
 
+void GlEnvironnement::addGlobalUniform(const GlGlobalUniform &gl_global_uniform){
+	m_global_uniforms = gl_global_uniform;
+}
+
 void GlEnvironnement::draw() const{
 
 	for (int i = 0; i < m_elements.size(); ++i){
@@ -63,6 +67,14 @@ void GlEnvironnement::draw() const{
 		m_elements[i].draw();
 	}
 
+}
+
+void GlEnvironnement::updateViewMatrix(const glm::mat4 &view_matrix){
+	m_global_uniforms.updateViewMatrix(view_matrix);
+}
+
+void GlEnvironnement::updateProjectionMatrix(const glm::mat4 &projection_matrix){
+	m_global_uniforms.updateProjectionMatrix(projection_matrix);
 }
 
 void GlEnvironnement::update(const World &world){
