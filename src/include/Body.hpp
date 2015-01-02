@@ -28,7 +28,7 @@ vec3 getSpeed() const;
 vec3 getAcceleration() const;
 vec3 getOrientation() const;
 std::vector<vec3> getHitboxCorners() const;
-Camera getCamera() const;
+Camera & getCamera();
 
 
 
@@ -47,7 +47,7 @@ void setCamera(Camera & camera);
 //-------------------------------------------------METHODS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-void updateBody(vec3 forces);
+void updateBody(vec3 forces, int m_dir_z, int m_dir_x);
 
 
 //--------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ void updateBody(vec3 forces);
        vec3 orientation = vec3(0,0,0)
   );
 
-  Body(const Body & body);
+  Body(Body & body);
 
   ~Body();
 

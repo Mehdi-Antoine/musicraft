@@ -1,7 +1,9 @@
 #include "include/Camera.hpp"
 #include <glimac/glm.hpp>
+#include <iostream>
 
 Camera::Camera(){
+	std::cout << "0" << std::endl;
 	m_Position = glm::vec3(5, 20, 5);
 	m_fPhi = M_PI;
 	m_fTeta = 0;
@@ -9,6 +11,7 @@ Camera::Camera(){
 }
 
 Camera::Camera(float x, float y, float z){
+	std::cout << "1" << std::endl;
 	m_Position = glm::vec3(x, y, z);
 	m_fPhi = M_PI;
 	m_fTeta = 0;
@@ -16,6 +19,7 @@ Camera::Camera(float x, float y, float z){
 }
 
 Camera::Camera(const Camera & camera){
+	 std::cout << "2" << std::endl;
      m_Position = camera.getPosition();
      m_FrontVector = camera.getFrontVector();
      m_LeftVector = camera.getLeftVector();
@@ -30,10 +34,15 @@ glm::vec3 Camera::getLeftVector() const{ return m_LeftVector; }
 glm::vec3 Camera::getUpVector() const{ return m_UpVector; }
 float Camera::getPhi() const{ return m_fPhi; }
 float Camera::getTheta() const{ return m_fTeta; }
-
+/*
 glm::vec3 Camera::getPosition(){
 	return m_Position;
+}*/
+
+glm::vec3 & Camera::getPtPosition(){
+	return m_Position;
 }
+
 
 void Camera::computeDirectionVectors(){
 
@@ -49,6 +58,7 @@ void Camera::computeDirectionVectors(){
 
 	//U = F × L (produit vectoriel)
 	m_UpVector =    glm::cross(m_FrontVector, m_LeftVector);
+	//std::cout << "M_upVector: " << m_UpVector << std::endl;
 
 }
 
@@ -61,14 +71,15 @@ void Camera::moveFront(float t){
 }
 
 void Camera::rotateLeft(float degrees){
+	//if(m_fPhi + glm::radians(degrees)> M_PI + 1 || m_fPhi + glm::radians(degrees)< M_PI -1) return;
 	m_fPhi += glm::radians(degrees);
 	computeDirectionVectors();
-
 }
 
 void Camera::rotateUp(float degrees){
+	//if(m_fTeta + glm::radians(degrees) > 0.80 || m_fTeta + glm::radians(degrees) < -0.80) return;
 	m_fTeta += glm::radians(degrees);
-	computeDirectionVectors();
+	computeDirectionVectors();								    
 }
 
 glm::mat4 Camera::getViewMatrix(){

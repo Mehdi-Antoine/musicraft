@@ -16,7 +16,7 @@
 
 using namespace glimac;
 
-#define WINDOW_WIDTH  700
+#define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 700
 
 //--------------------------------------------------------------------------------------------------
@@ -190,6 +190,7 @@ int main(int argc, char** argv){
 
     glBindVertexArray(0);
     
+/*DEBUT MODIF MOTEUR BASIQUE*/
 
 //--------------------------------------------------------------------------------------------------
 //---------------------------------CONSTRUCTION PLAYER----------------------------------------------
@@ -205,21 +206,28 @@ int main(int argc, char** argv){
     std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
     std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
 
-
+    Camera freeflycamera;
 //--------------------------------------------------------------------------------------------------
 //----------------------------------APPLICATION LOOP------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
-    bool done = false;
+    bool quit = false;
 
-    while(!done){
+    while(!quit){
 
         startTime = windowManager.getTime();
 
+
     //event loop
-          eventhandler.update();
-          eventhandler.updatePlayer();
-         
+        eventhandler.update();
+        eventhandler.updatePlayer();
+
+        //quit ?
+        if(eventhandler.getInputManager().getQuit() == true) quit=true;
+            
+
+/*FIN MODIF MOTEUR BASIQUE*/
+
           //std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
           //std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
 
@@ -231,6 +239,9 @@ int main(int argc, char** argv){
 
         glm::vec3 cameraPos = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
         glUniform3fv(squareProgram.uCameraPos, 1, glm::value_ptr(cameraPos));
+
+//std::cout << "-> " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getFrontVector() << std::endl;
+
 
         //GESTION LIGHT
         lightPos = glm::vec3(glm::vec4(TAILLE, TAILLE, TAILLE, 1));

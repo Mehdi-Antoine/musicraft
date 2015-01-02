@@ -36,7 +36,7 @@ Body::Body(vec3 position, vec3 speed, vec3 acceleration, vec3 orientation){
 
 }
 
-Body::Body(const Body & body){
+Body::Body(Body & body){
      m_position = body.getPosition();
      m_speed = body.getSpeed();
      m_acceleration = body.getAcceleration();
@@ -54,10 +54,19 @@ Body::~Body(){
 // Methods
 //  
 
-void Body::updateBody(vec3 forces){
-     updateVerlett(m_position, m_speed, forces);
+void Body::updateBody(vec3 forces, int m_dir_z, int m_dir_x){
+     
+     //updateVerlett(m_position, m_speed, forces);
+     //m_camera.setPosition(m_position);
 
-     m_camera.setPosition(m_position);
+     //updateVerlett(m_camera.getPtPosition(), m_speed, forces);
+     updateVerlett(m_camera.getPtPosition(), m_speed, forces, m_dir_z, m_dir_x, m_camera.getLeftVector(), m_camera.getFrontVector());
+     //m_camera.setPosition(m_position);
+     
+     //m_orientation = m_camera.getFrontVector();
+
+
+
 }
 
 // Accessor methods
@@ -83,8 +92,8 @@ std::vector<vec3> Body::getHitboxCorners() const{
      return this->m_hitbox_corners;
 }
 
-Camera Body::getCamera() const{
-     return this->m_camera;
+Camera & Body::getCamera(){
+     return m_camera;
 }
 
 

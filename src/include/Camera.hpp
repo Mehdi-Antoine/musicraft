@@ -18,6 +18,7 @@ public:
 //--------------GETTERS------------------------//
 
 	glm::vec3 getPosition() const;
+	glm::vec3 & getPtPosition();
 	glm::vec3 getFrontVector() const;
 	glm::vec3 getLeftVector() const;
 	glm::vec3 getUpVector() const;
@@ -35,7 +36,7 @@ public:
 
 	void computeDirectionVectors();
 	glm::mat4 getViewMatrix();
-	glm::vec3 getPosition();
+	//glm::vec3 getPosition();
 
 	void moveLeft(float t);
 	void moveFront(float t);
