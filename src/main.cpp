@@ -15,11 +15,7 @@
 
 #include "include/World.hpp"
 #include "include/Player.hpp"
-<<<<<<< HEAD
 #include "include/EventHandler.hpp"
-#include "include/GlslPrograms.hpp"
-=======
->>>>>>> gl_environnement
 
 #include <iostream>
 #include <string>
@@ -105,21 +101,6 @@ int main(int argc, char** argv){
 
     std::cout << "OK." << std::endl << std::endl;
 
-<<<<<<< HEAD
-    glm::vec3 cube_color[TAILLE*TAILLE];
-    glm::vec3 cube_position[TAILLE*TAILLE];
-    
-    for(int k=0; k < TAILLE * TAILLE; ++k){
-        cube_position[k] = glm::vec3(2*(k/TAILLE), 0, 2*(k%TAILLE));
-        cube_color[k]    = glm::vec3(k/TAILLE, 0, k%TAILLE);
-    }
-    
-=======
-//---------------------------------CONSTRUCTION CAMERA----------------------------------------------
->>>>>>> gl_environnement
-
-
-
 
 //--------------------------CREATION DES VARIABLES UNIFORMES----------------------------------------
 
@@ -127,9 +108,7 @@ int main(int argc, char** argv){
 
     std::cout << "  GLOBAL MATRIX" << std::endl;
 
-    glm::mat4 view_matrix = freeflyCamera.getViewMatrix();
     glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
-    glm::vec3 camera_position = freeflyCamera.getPosition();
 
     std::cout << "      création global_matrix" << std::endl;
     GlGlobalUniformMatrix global_matrix;
@@ -143,8 +122,8 @@ int main(int argc, char** argv){
     global_matrix.attachProgram(square_shader.getProgramId());
     std::cout << "      ok!" << std::endl;
 
-    std::cout << "      global_matrix.update()" << std::endl;
-    global_matrix.update(projection_matrix, view_matrix, camera_position);
+    std::cout << "      global_matrix.updateProjectionMatrix()" << std::endl;
+    global_matrix.updateProjectionMatrix(projection_matrix);
     std::cout << "      ok!" << std::endl;
 
 
@@ -187,24 +166,19 @@ int main(int argc, char** argv){
     }
     std::cout << "OK." << std::endl << std::endl;
 
-<<<<<<< HEAD
-    glBindVertexArray(0);
-    
-/*DEBUT MODIF MOTEUR BASIQUE*/
-=======
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
     GlElement ground(squares_position, squares_color, SQUARE, GL_POINTS);
     std::cout << "OK." << std::endl << std::endl;
->>>>>>> gl_environnement
 
 //--------------------------------------------------------------------------------------------------
 //---------------------------------CONSTRUCTION PLAYER----------------------------------------------
 //--------------------------------------------------------------------------------------------------
+
     Player player(7);
 
-    Camera camera = player.getBody().getCamera();
+    //Camera camera = player.getBody().getCamera();
 
     PlayerManager playermanager(player);
 
@@ -213,10 +187,9 @@ int main(int argc, char** argv){
     std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
     std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
 
-    Camera freeflycamera;
-//--------------------------------------------------------------------------------------------------
-//----------------------------------APPLICATION LOOP------------------------------------------------
-//--------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------
+//----------------------------------APPLICATION LOOP---------------------------------------------------
+//-----------------------------------------------------------------------------------------------------
 
     bool quit = false;
 
@@ -224,88 +197,28 @@ int main(int argc, char** argv){
 
         startTime = windowManager.getTime();
 
-<<<<<<< HEAD
-=======
-//--------------------------------------CONTROLS----------------------------------------------------
-        SDL_Event e;
-        while(windowManager.pollEvent(e)){
-            if(e.type == SDL_QUIT) {
-                done = true; // Leave the loop after this iteration
-            }
-            if(e.type == SDL_KEYDOWN){
-
-                if(e.key.keysym.sym == SDLK_ESCAPE){
-                    done = true;
-                }  
-
-                if(e.key.keysym.sym == SDLK_z){
-                    key_z = 1;
-                }                 
-                if(e.key.keysym.sym == SDLK_s){
-                    key_s = 1;
-                }
-                if(e.key.keysym.sym == SDLK_q){
-                    key_q = 1;
-                }                 
-                if(e.key.keysym.sym == SDLK_d){
-                    key_d = 1;
-                }
-                if(e.key.keysym.sym == SDLK_p){
-                    TAILLE++;
-                    std::cout << "TAILLE = " << TAILLE << std::endl;
-                }
-                if(e.key.keysym.sym == SDLK_m){
-                    TAILLE--;
-                    if(TAILLE <= 0) TAILLE = 1;
-
-                    std::cout << "TAILLE = " << TAILLE << std::endl;
-                }
-                    
-            }
->>>>>>> gl_environnement
-
-    //event loop
+//-----------------------------------EVENT HANDLER-----------------------------------------------------
         eventhandler.update();
         eventhandler.updatePlayer();
 
         //quit ?
         if(eventhandler.getInputManager().getQuit() == true) quit=true;
             
-
-/*FIN MODIF MOTEUR BASIQUE*/
-
-          //std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
-          //std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        
-<<<<<<< HEAD
-        //CONSTRUCTION MATRICE V
-        VMatrix = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getViewMatrix();
 
-        glm::vec3 cameraPos = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
-        glUniform3fv(squareProgram.uCameraPos, 1, glm::value_ptr(cameraPos));
+//---------------------------------CONSTRUCT V MATRIX--------------------------------------------------
 
-//std::cout << "-> " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getFrontVector() << std::endl;
+        glm::mat4 view_matrix = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getViewMatrix();
 
+        glm::vec3 camera_position = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
 
-        //GESTION LIGHT
-        lightPos = glm::vec3(glm::vec4(TAILLE, TAILLE, TAILLE, 1));
-=======
-//---------------------------------CONSTRUCT V MATRIX-----------------------------------------------
->>>>>>> gl_environnement
+//----------------------------------UPDATE UNIFORMS----------------------------------------------------
 
-        //gl_environnement.update(world);
-
+        global_matrix.updateViewMatrix(view_matrix);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
-        
-        //gl_environnement.draw();
 
-        global_matrix.updateViewMatrix(freeflyCamera.getViewMatrix());
-
-        //texture_sting.use(GL_TEXTURE0);
         texture_rouge.use(GL_TEXTURE0);
 
         ground.draw();
@@ -323,19 +236,12 @@ int main(int argc, char** argv){
 
             float res = ellapsedTime / nbFrames;
 
-           /* if(res > 0.04){
+           if(res > 0.04){
                 std::cout << "Warning ! : ";
             }
 
             std::cout << res << " sec" << std::endl;
             std::cout << 1 / res << " fps" << std::endl<< std::endl;
-<<<<<<< HEAD
-            */
-
-=======
-
-            std::cout << "camera : " << freeflyCamera.getPosition() << std::endl;
->>>>>>> gl_environnement
 
             nbFrames = 0;
 
@@ -343,6 +249,7 @@ int main(int argc, char** argv){
         }
 
 //-----------------------------------FPS FREEZE-------------------------------------------------------
+
         ellapsedTime = windowManager.getTime() - startTime;
 
         if(ellapsedTime < FRAMERATE_MILLISECONDS){
