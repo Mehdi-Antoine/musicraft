@@ -3,7 +3,6 @@
 #include <iostream>
 
 Camera::Camera(){
-	std::cout << "0" << std::endl;
 	m_Position = glm::vec3(5, 20, 5);
 	m_fPhi = M_PI;
 	m_fTeta = 0;
@@ -11,7 +10,6 @@ Camera::Camera(){
 }
 
 Camera::Camera(float x, float y, float z){
-	std::cout << "1" << std::endl;
 	m_Position = glm::vec3(x, y, z);
 	m_fPhi = M_PI;
 	m_fTeta = 0;
@@ -19,7 +17,6 @@ Camera::Camera(float x, float y, float z){
 }
 
 Camera::Camera(const Camera & camera){
-	 std::cout << "2" << std::endl;
      m_Position = camera.getPosition();
      m_FrontVector = camera.getFrontVector();
      m_LeftVector = camera.getLeftVector();
