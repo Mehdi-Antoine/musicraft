@@ -7,9 +7,19 @@
 #include <glimac/Image.hpp>
 #include <glimac/FreeflyCamera.hpp>
 
+#include "include/GlEnvironnement.hpp"
+#include "include/GlElement.hpp"
+#include "include/GlShader.hpp"
+#include "include/GlUniform.hpp"
+#include "include/GlTexture.hpp"
+
+#include "include/World.hpp"
 #include "include/Player.hpp"
+<<<<<<< HEAD
 #include "include/EventHandler.hpp"
 #include "include/GlslPrograms.hpp"
+=======
+>>>>>>> gl_environnement
 
 #include <iostream>
 #include <string>
@@ -25,7 +35,11 @@ using namespace glimac;
 
 int main(int argc, char** argv){
 
-    int TAILLE = 30; //Taille de porc
+    int TAILLE = 20; //Taille de porc
+
+    FilePath applicationPath(argv[0]);
+
+    FilePath dir_path = applicationPath.dirPath();
 
     // Initialize SDL and open a window
     SDLWindowManager windowManager(WINDOW_WIDTH, WINDOW_HEIGHT, "GLImac");
@@ -46,64 +60,52 @@ int main(int argc, char** argv){
         return EXIT_FAILURE;
     }
 
+    std::cout << std::endl;
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
-    std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
+    std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl << std::endl;
 
-//--------------------------------------------------------------------------------------------------
+//-----------------------------------WORLD CREATION------------------------------------------------
+
+    //World world;
+
+//----------------------------------GL ENVIRONNEMENT------------------------------------------------
+
+    //GlEnvironnement gl_environnement(dir_path);
+
 //-------------------------------CHARGEMENT DES SHADERS---------------------------------------------
-//--------------------------------------------------------------------------------------------------
 
-    FilePath applicationPath(argv[0]);
+    //std::vector<GlShader> shaders;
 
-    SquareProgram squareProgram(applicationPath);
+    //shaders.push_back(GlShader(dir_path, "cube"));
+    //shaders.push_back(GlShader(dir_path, "square"));
 
-    squareProgram.m_Program.use();
+    //gl_environnement.addShaderVector(shaders);
 
-//--------------------------------------------------------------------------------------------------
+    std::cout << "CREATION SHADER..." << std::endl;
+
+    GlShader square_shader(dir_path, "square");
+
+    square_shader.useShader();
+
+    std::cout << "OK." << std::endl << std::endl;
+
 //-------------------------------CHARGEMENT DES TEXTURES---------------------------------------------
-//--------------------------------------------------------------------------------------------------
 
-    //LOAD DES TEXTURES
+    //std::vector<GlTexture> textures;
 
-    std::unique_ptr<Image> textureSting = loadImage(applicationPath.dirPath() + "assets/textures/sting.jpg");
+    //textures.push_back(GlTexture(dir_path + "assets/textures/triforce.png"));
+    //textures.push_back(GlTexture(dir_path + "assets/textures/sting.jpg"));
 
-    if(textureSting == NULL){
-        std::cerr << "Pas de fichier image chargé pour la texture Sting";
-        return EXIT_FAILURE;
-    }
+    //gl_environnement.addTextureVector(textures);
 
+    std::cout << "CREATION TEXTURE..." << std::endl;
 
-    //CREATION DES VARIABLES OPENGL
+    GlTexture texture_sting(dir_path + "assets/textures/sting.jpg");
+    GlTexture texture_rouge(dir_path + "assets/textures/rouge01.jpg");
 
-    GLuint textureSting_id;
+    std::cout << "OK." << std::endl << std::endl;
 
-    glGenTextures(1, &textureSting_id);
-
-    //LOAD DES TEXTURES DANS OPEN GL
-
-    //Sting
-    glBindTexture(GL_TEXTURE_2D, textureSting_id);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D,  
-                 0,  
-                  GL_RGBA,  
-                  textureSting->getWidth(),  
-                  textureSting->getHeight(),  
-                  0,  
-                  GL_RGBA,  
-                  GL_FLOAT,  
-                  textureSting->getPixels());
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-
-//--------------------------------------------------------------------------------------------------
-//-------------CONSTRUCTION CUBE ET INJECTION DANS UN TABLEAU DE VERTICES-------------------------
-//--------------------------------------------------------------------------------------------------
-
+<<<<<<< HEAD
     glm::vec3 cube_color[TAILLE*TAILLE];
     glm::vec3 cube_position[TAILLE*TAILLE];
     
@@ -112,85 +114,90 @@ int main(int argc, char** argv){
         cube_color[k]    = glm::vec3(k/TAILLE, 0, k%TAILLE);
     }
     
+=======
+//---------------------------------CONSTRUCTION CAMERA----------------------------------------------
+>>>>>>> gl_environnement
 
 
 
 
-//--------------------------------------------------------------------------------------------------
 //--------------------------CREATION DES VARIABLES UNIFORMES----------------------------------------
-//--------------------------------------------------------------------------------------------------
 
-    glEnable(GL_DEPTH_TEST);
+    std::cout << "CREATION VARIABLE UNIFORME..." << std::endl;
 
-    glm::mat4  ProjMatrix, 
-               VMatrix;
-    
+    std::cout << "  GLOBAL MATRIX" << std::endl;
 
-    ProjMatrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
+    glm::mat4 view_matrix = freeflyCamera.getViewMatrix();
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
+    glm::vec3 camera_position = freeflyCamera.getPosition();
 
-    glUniformMatrix4fv(squareProgram.uPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix));
+    std::cout << "      création global_matrix" << std::endl;
+    GlGlobalUniformMatrix global_matrix;
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_matrix.init()" << std::endl;
+    global_matrix.init("global_matrix", 1);
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_matrix.attachProgram(square_shader)" << std::endl;
+    global_matrix.attachProgram(square_shader.getProgramId());
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_matrix.update()" << std::endl;
+    global_matrix.update(projection_matrix, view_matrix, camera_position);
+    std::cout << "      ok!" << std::endl;
 
 
-    glm::vec3  lightPos = glm::vec3(1, 1, 1);
+    std::cout << "  GLOBAL LIGHT" << std::endl;
 
-    glUniform3f(squareProgram.uKd, 1, 1, 1);
-    glUniform3f(squareProgram.uKs, 1, 1, 1);
-    glUniform1f(squareProgram.uShininess, 1);
+    std::cout << "      création global_light" << std::endl;
+    GlGlobalUniformLight global_light;
+    std::cout << "      ok!" << std::endl;
 
-    glUniform3f(squareProgram.uLightIntensity, 1, 1, 1);
-    glUniform3f(squareProgram.uLightPos, 1, 1, 1);
+    std::cout << "      global_light.init()" << std::endl;
+    global_light.init("global_light", 2);
+    std::cout << "      ok!" << std::endl;
 
-    glUniform1i(squareProgram.uTexture, 0);
+    std::cout << "      global_light.attachProgram(square_shader)" << std::endl;
+    global_light.attachProgram(square_shader.getProgramId());
+    std::cout << "      ok!" << std::endl;
 
-//--------------------------------------------------------------------------------------------------
-//-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
-//--------------------------------------------------------------------------------------------------
+    std::cout << "      global_light.update()" << std::endl;
 
-    GLuint vbo_cube_color;
-    GLuint vbo_cube_position;
+    glm::vec3 position  = vec3(1, 1, 1);
+    glm::vec3 intensity = vec3(0, 0, 0);
+    glm::vec3 ks        = vec3(1, 0, 1);
+    float shininess     = 1;
 
-    glGenBuffers(1, &vbo_cube_color);
-    glGenBuffers(1, &vbo_cube_position);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_color);
-    glBufferData(GL_ARRAY_BUFFER, TAILLE * TAILLE * sizeof(glm::vec3), cube_color, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_position);
-    glBufferData(GL_ARRAY_BUFFER, TAILLE * TAILLE * sizeof(glm::vec3), cube_position, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    global_light.update(position, intensity, ks, shininess);
+    std::cout << "      ok!" << std::endl;
 
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
+    std::cout << "OK." << std::endl << std::endl;
 
-    glBindVertexArray(vao);
+//-------------CONSTRUCTION CUBE ET INJECTION DANS UN TABLEAU DE VERTICES---------------------------
 
-    const GLuint VERTEX_ATTR_POSITION = 0;
-    const GLuint VERTEX_ATTR_COLOR = 1;
+    std::cout << "CREATION INDICES CUBES..." << std::endl;
+    std::vector<glm::vec3> squares_color;
+    std::vector<glm::vec3> squares_position;
 
-    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-    glEnableVertexAttribArray(VERTEX_ATTR_COLOR);
+    for (int k = 0; k < TAILLE * TAILLE; ++k){
+        squares_position.push_back(glm::vec3(2*(k/TAILLE), 0, 2*(k%TAILLE)));        
+        squares_color.push_back(glm::vec3(k/TAILLE, 0, k%TAILLE));
+    }
+    std::cout << "OK." << std::endl << std::endl;
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_position);
-    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const GLvoid*)(0*sizeof(GL_FLOAT)));
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_color);  
-    glVertexAttribPointer(VERTEX_ATTR_COLOR, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const GLvoid*)(0*sizeof(GL_FLOAT)));
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    /*
-    -param1 : index de l'attribut à spécifier
-    -param2 : le nombre de composante de l'attribut (=nombre de cases dans le tableau pour définir un attribut)
-    -param3 : le type de chaque composante
-    -param4 : mystere pour le moment
-    -param5 : le nombre de cases à sauter avant de passer à la composante suivante de l'attribut
-    -param6 : offset de la première instance de l'attribut
-    */
-
+<<<<<<< HEAD
     glBindVertexArray(0);
     
 /*DEBUT MODIF MOTEUR BASIQUE*/
+=======
+//-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
+
+    std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
+    GlElement ground(squares_position, squares_color, SQUARE, GL_POINTS);
+    std::cout << "OK." << std::endl << std::endl;
+>>>>>>> gl_environnement
 
 //--------------------------------------------------------------------------------------------------
 //---------------------------------CONSTRUCTION PLAYER----------------------------------------------
@@ -217,6 +224,45 @@ int main(int argc, char** argv){
 
         startTime = windowManager.getTime();
 
+<<<<<<< HEAD
+=======
+//--------------------------------------CONTROLS----------------------------------------------------
+        SDL_Event e;
+        while(windowManager.pollEvent(e)){
+            if(e.type == SDL_QUIT) {
+                done = true; // Leave the loop after this iteration
+            }
+            if(e.type == SDL_KEYDOWN){
+
+                if(e.key.keysym.sym == SDLK_ESCAPE){
+                    done = true;
+                }  
+
+                if(e.key.keysym.sym == SDLK_z){
+                    key_z = 1;
+                }                 
+                if(e.key.keysym.sym == SDLK_s){
+                    key_s = 1;
+                }
+                if(e.key.keysym.sym == SDLK_q){
+                    key_q = 1;
+                }                 
+                if(e.key.keysym.sym == SDLK_d){
+                    key_d = 1;
+                }
+                if(e.key.keysym.sym == SDLK_p){
+                    TAILLE++;
+                    std::cout << "TAILLE = " << TAILLE << std::endl;
+                }
+                if(e.key.keysym.sym == SDLK_m){
+                    TAILLE--;
+                    if(TAILLE <= 0) TAILLE = 1;
+
+                    std::cout << "TAILLE = " << TAILLE << std::endl;
+                }
+                    
+            }
+>>>>>>> gl_environnement
 
     //event loop
         eventhandler.update();
@@ -234,6 +280,7 @@ int main(int argc, char** argv){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
+<<<<<<< HEAD
         //CONSTRUCTION MATRICE V
         VMatrix = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getViewMatrix();
 
@@ -245,29 +292,27 @@ int main(int argc, char** argv){
 
         //GESTION LIGHT
         lightPos = glm::vec3(glm::vec4(TAILLE, TAILLE, TAILLE, 1));
+=======
+//---------------------------------CONSTRUCT V MATRIX-----------------------------------------------
+>>>>>>> gl_environnement
 
-        glUniformMatrix4fv(squareProgram.uVMatrix,    1, GL_FALSE, glm::value_ptr(VMatrix));
-        glUniformMatrix4fv(squareProgram.uPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix));
+        //gl_environnement.update(world);
 
-        glUniform3f(squareProgram.uKd, 1, 1, 1);
-        glUniform3f(squareProgram.uKs, 1, 1, 1);
-        glUniform1f(squareProgram.uShininess, 1);
 
-        glUniform3f(squareProgram.uLightIntensity, TAILLE * 10, TAILLE * 10, TAILLE * 10);
-        glUniform3f(squareProgram.uLightPos, lightPos.x, lightPos.y, lightPos.z);
-
-        glBindVertexArray(vao);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureSting_id);
+//---------------------------------------DRAW !!!!-----------------------------------------------------
         
-        glDrawArrays(GL_POINTS, 0, TAILLE*TAILLE);
+        //gl_environnement.draw();
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        global_matrix.updateViewMatrix(freeflyCamera.getViewMatrix());
 
-        glBindVertexArray(0);
+        //texture_sting.use(GL_TEXTURE0);
+        texture_rouge.use(GL_TEXTURE0);
 
+        ground.draw();
+
+        texture_rouge.stopUse(GL_TEXTURE0);
+
+//---------------------------------------FPS SHOW------------------------------------------------------
         ++nbFrames;
 
         currentTime = windowManager.getTime();
@@ -284,14 +329,20 @@ int main(int argc, char** argv){
 
             std::cout << res << " sec" << std::endl;
             std::cout << 1 / res << " fps" << std::endl<< std::endl;
+<<<<<<< HEAD
             */
 
+=======
+
+            std::cout << "camera : " << freeflyCamera.getPosition() << std::endl;
+>>>>>>> gl_environnement
 
             nbFrames = 0;
 
             lastTime = windowManager.getTime();
         }
 
+//-----------------------------------FPS FREEZE-------------------------------------------------------
         ellapsedTime = windowManager.getTime() - startTime;
 
         if(ellapsedTime < FRAMERATE_MILLISECONDS){
@@ -301,12 +352,9 @@ int main(int argc, char** argv){
         // Update the display
         windowManager.swapBuffers();
 
-
     }    
 
-    glDeleteBuffers(1, &vbo_cube_position);
-    glDeleteBuffers(1, &vbo_cube_color);
-    glDeleteVertexArrays(1, &vao);
+//-----------------------------------VBO CLEAN-------------------------------------------------------
 
     return EXIT_SUCCESS;
 }
