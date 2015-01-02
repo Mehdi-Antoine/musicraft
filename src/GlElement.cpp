@@ -12,6 +12,8 @@
 
 GlElement::GlElement(std::vector<glm::vec3> &position_index, std::vector<glm::vec3> &color_index, ShaderProgram shader_program, GLenum draw_mode){
 
+	setDrawMode(draw_mode);
+
 	m_vertex_number = position_index.size();
 
 	m_shader_program = shader_program;
@@ -69,9 +71,9 @@ void GlElement::setDrawMode(GLenum drawmode){
 //--------------------------------------------------GETTERS-----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	ShaderProgram GlElement::getShaderProgram() const{
-		return m_shader_program;
-	}
+ShaderProgram GlElement::getShaderProgram() const{
+	return m_shader_program;
+}
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------FUNCTIONS----------------------------------------------------

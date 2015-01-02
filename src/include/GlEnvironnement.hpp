@@ -6,7 +6,6 @@
 
 #include "World.hpp"
 #include "GlElement.hpp"
-#include "GlLight.hpp"
 #include "GlTexture.hpp"
 #include "GlShader.hpp"
 #include "GlUniform.hpp"
@@ -21,11 +20,11 @@ private:
 
 	std::vector<GlTexture> m_textures;
 
-	std::vector<GlLight>   m_lights;
-
 	std::vector<GlShader>  m_shaders;
 
-	GlGlobalUniform        m_global_uniforms;
+	GlGlobalUniformMatrix  m_global_matrix;
+	
+	GlGlobalUniformLight   m_global_light;
 
 	FilePath               m_dir_path;
 
@@ -46,15 +45,13 @@ public:
 
 	void addElement(const GlElement &gl_element);
 
-	void addLight(const GlLight &gl_light);
-
 	void addTexture(const GlTexture &gl_texture);	
 	void addTextureVector(const std::vector<GlTexture> &texture_vector);
 
 	void addShader(const GlShader &gl_shader);
 	void addShaderVector(const std::vector<GlShader> &shader_vector);
 
-	void addGlobalUniform(const GlGlobalUniform &gl_global_uniform);
+	void addGlobalUniformMatrix(const GlGlobalUniformMatrix &global_matrix);
 
 	void updateViewMatrix(const glm::mat4 &view_matrix);
 

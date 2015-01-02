@@ -44,8 +44,8 @@ public:
 
   void useShader() const;
 
-  GLenum getProgramId() const;
+  GLuint getProgramId() const;
 
-  void addUniform(UniformType uniform_type, const char* uniform_name);
+  void linkUniform(UniformType uniform_type, const char* uniform_name);
 
 };

@@ -10,7 +10,6 @@
 #include "include/GlEnvironnement.hpp"
 #include "include/GlElement.hpp"
 #include "include/GlShader.hpp"
-#include "include/GlLight.hpp"
 #include "include/GlUniform.hpp"
 #include "include/GlTexture.hpp"
 
@@ -31,7 +30,7 @@ using namespace glimac;
 
 int main(int argc, char** argv){
 
-    int TAILLE = 30; //Taille de porc
+    int TAILLE = 20; //Taille de porc
 
     FilePath applicationPath(argv[0]);
 
@@ -62,57 +61,126 @@ int main(int argc, char** argv){
         return EXIT_FAILURE;
     }
 
+    std::cout << std::endl;
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
-    std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
+    std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl << std::endl;
 
 //-----------------------------------WORLD CREATION------------------------------------------------
 
-    World world;
+    //World world;
 
 //----------------------------------GL ENVIRONNEMENT------------------------------------------------
 
-    GlEnvironnement gl_environnement(dir_path);
+    //GlEnvironnement gl_environnement(dir_path);
 
 //-------------------------------CHARGEMENT DES SHADERS---------------------------------------------
 
-    std::vector<GlShader> shaders;
+    //std::vector<GlShader> shaders;
 
-    shaders.push_back(GlShader(dir_path, "cube"));
-    shaders.push_back(GlShader(dir_path, "square"));
+    //shaders.push_back(GlShader(dir_path, "cube"));
+    //shaders.push_back(GlShader(dir_path, "square"));
 
-    gl_environnement.addShaderVector(shaders);
+    //gl_environnement.addShaderVector(shaders);
+
+    std::cout << "CREATION SHADER..." << std::endl;
+
+    GlShader square_shader(dir_path, "square");
+
+    square_shader.useShader();
+
+    std::cout << "OK." << std::endl << std::endl;
 
 //-------------------------------CHARGEMENT DES TEXTURES---------------------------------------------
 
-    std::vector<GlTexture> textures;
+    //std::vector<GlTexture> textures;
 
-    //GlTexture sting(dir_path + "assets/textures/sting.jpg");
-    //textures.push_back(sting);
-    textures.push_back(GlTexture(dir_path + "assets/textures/triforce.png"));
+    //textures.push_back(GlTexture(dir_path + "assets/textures/triforce.png"));
+    //textures.push_back(GlTexture(dir_path + "assets/textures/sting.jpg"));
 
-    gl_environnement.addTextureVector(textures);
+    //gl_environnement.addTextureVector(textures);
 
-    
+    std::cout << "CREATION TEXTURE..." << std::endl;
+
+    GlTexture texture_sting(dir_path + "assets/textures/sting.jpg");
+
+    std::cout << "OK." << std::endl << std::endl;
+
 //---------------------------------CONSTRUCTION CAMERA----------------------------------------------
 
     FreeflyCamera freeflyCamera;
 
 //--------------------------CREATION DES VARIABLES UNIFORMES----------------------------------------
 
+    std::cout << "CREATION VARIABLE UNIFORME..." << std::endl;
+
+    std::cout << "  GLOBAL MATRIX" << std::endl;
+
     glm::mat4 view_matrix = freeflyCamera.getViewMatrix();
     glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
+    glm::vec3 camera_position = freeflyCamera.getPosition();
 
-    gl_environnement.updateViewMatrix(view_matrix);
-    gl_environnement.updateProjectionMatrix(view_matrix);
+    std::cout << "      création global_matrix" << std::endl;
+    GlGlobalUniformMatrix global_matrix;
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_matrix.init()" << std::endl;
+    global_matrix.init("global_matrix", 1);
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_matrix.attachProgram(square_shader)" << std::endl;
+    global_matrix.attachProgram(square_shader.getProgramId());
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_matrix.update()" << std::endl;
+    global_matrix.update(projection_matrix, view_matrix, camera_position);
+    std::cout << "      ok!" << std::endl;
+
+
+    std::cout << "  GLOBAL LIGHT" << std::endl;
+
+    std::cout << "      création global_light" << std::endl;
+    GlGlobalUniformLight global_light;
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_light.init()" << std::endl;
+    global_light.init("global_light", 2);
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_light.attachProgram(square_shader)" << std::endl;
+    global_light.attachProgram(square_shader.getProgramId());
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "      global_light.update()" << std::endl;
+
+    glm::vec3 position  = vec3(TAILLE, TAILLE, TAILLE);
+    glm::vec3 intensity = vec3(TAILLE, TAILLE, TAILLE);
+    glm::vec3 ks        = vec3(1,      1,      1);
+    float shininess     = 1;
+
+
+    global_light.update(position, intensity, ks, shininess);
+    std::cout << "      ok!" << std::endl;
+
+    std::cout << "OK." << std::endl << std::endl;
+
+//-------------CONSTRUCTION CUBE ET INJECTION DANS UN TABLEAU DE VERTICES---------------------------
+
+    std::cout << "CREATION INDICES CUBES..." << std::endl;
+    std::vector<glm::vec3> squares_color;
+    std::vector<glm::vec3> squares_position;
+
+    for (int k = 0; k < TAILLE * TAILLE; ++k){
+        squares_position.push_back(glm::vec3(2*(k/TAILLE), 0, 2*(k%TAILLE)));        
+        squares_color.push_back(glm::vec3(k/TAILLE, 0, k%TAILLE));
+    }
+    std::cout << "OK." << std::endl << std::endl;
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
-   /* GlElement ground(square_positions, square_colors, SQUARE, GL_POINTS);
-    GlElement music_cubes(cube_positions, cube_colors, CUBE, GL_POINTS);
+    std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
+    GlElement ground(squares_position, squares_color, SQUARE, GL_POINTS);
+    std::cout << "OK." << std::endl << std::endl;
 
-    gl_environnement.addElement(ground);
-    gl_environnement.addElement(music_cubes);*/
- 
 //--------------------------------------------------------------------------------------------------
 //----------------------------------APPLICATION LOOP------------------------------------------------
 //--------------------------------------------------------------------------------------------------
@@ -124,19 +192,111 @@ int main(int argc, char** argv){
         startTime = windowManager.getTime();
 
 //--------------------------------------CONTROLS----------------------------------------------------
-        
+        SDL_Event e;
+        while(windowManager.pollEvent(e)){
+            if(e.type == SDL_QUIT) {
+                done = true; // Leave the loop after this iteration
+            }
+            if(e.type == SDL_KEYDOWN){
+
+                if(e.key.keysym.sym == SDLK_ESCAPE){
+                    done = true;
+                }  
+
+                if(e.key.keysym.sym == SDLK_z){
+                    key_z = 1;
+                }                 
+                if(e.key.keysym.sym == SDLK_s){
+                    key_s = 1;
+                }
+                if(e.key.keysym.sym == SDLK_q){
+                    key_q = 1;
+                }                 
+                if(e.key.keysym.sym == SDLK_d){
+                    key_d = 1;
+                }
+                if(e.key.keysym.sym == SDLK_p){
+                    TAILLE++;
+                    std::cout << "TAILLE = " << TAILLE << std::endl;
+                }
+                if(e.key.keysym.sym == SDLK_m){
+                    TAILLE--;
+                    if(TAILLE <= 0) TAILLE = 1;
+
+                    std::cout << "TAILLE = " << TAILLE << std::endl;
+                }
+                    
+            }
+
+            if(e.type == SDL_KEYUP){
+                    
+                if(e.key.keysym.sym == SDLK_z){
+                    key_z = 0;
+                }           
+                if(e.key.keysym.sym == SDLK_s){
+                    key_s = 0;
+                }
+                if(e.key.keysym.sym == SDLK_q){
+                    key_q = 0;
+                }                 
+                if(e.key.keysym.sym == SDLK_d){
+                    key_d = 0;
+                }
+                    
+            }
+
+            if(e.type == SDL_MOUSEBUTTONDOWN){
+                click = 1;
+            }
+
+            if(e.type == SDL_MOUSEBUTTONUP){
+                click = 0;
+            }
+
+            if(e.type == SDL_MOUSEMOTION){
+                if(e.motion.xrel != 0 && click == 1){
+                    //std::cout << e.motion.xrel << std::endl;
+                    freeflyCamera.rotateLeft(-e.motion.xrel/2.);
+                }
+                if(e.motion.yrel != 0 && click == 1){
+                    //std::cout << e.motion.xrel << std::endl;
+                    freeflyCamera.rotateUp(-e.motion.yrel/2.);
+                }
+            }
+        }
+
+        if(key_z && !key_s){
+            freeflyCamera.moveFront(2);
+        }
+        if(key_s && !key_z){
+            freeflyCamera.moveFront(-2);
+        }
+        if(key_q && !key_d){
+            freeflyCamera.moveLeft(2);
+        }
+        if(key_d && !key_q){
+            freeflyCamera.moveLeft(-2);
+        }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
 //---------------------------------CONSTRUCT V MATRIX-----------------------------------------------
 
-        gl_environnement.update(world);
+        //gl_environnement.update(world);
 
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
         
-        gl_environnement.draw();
+        //gl_environnement.draw();
+
+        global_matrix.updateViewMatrix(freeflyCamera.getViewMatrix());
+
+        texture_sting.use(GL_TEXTURE0);
+
+        ground.draw();
+
+        texture_sting.stopUse(GL_TEXTURE0);
 
 //---------------------------------------FPS SHOW------------------------------------------------------
         ++nbFrames;
@@ -156,7 +316,7 @@ int main(int argc, char** argv){
             std::cout << res << " sec" << std::endl;
             std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
-
+            std::cout << "camera : " << freeflyCamera.getPosition() << std::endl;
 
             nbFrames = 0;
 
@@ -172,7 +332,6 @@ int main(int argc, char** argv){
 
         // Update the display
         windowManager.swapBuffers();
-
 
     }    
 

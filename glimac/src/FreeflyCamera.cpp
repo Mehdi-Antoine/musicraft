@@ -2,7 +2,7 @@
 #include <glimac/glm.hpp>
 
 FreeflyCamera::FreeflyCamera(){
-	m_Position = glm::vec3(5, 20, 5);
+	m_Position = glm::vec3(5, 20, 80);
 	m_fPhi = M_PI;
 	m_fTeta = 0;
 	FreeflyCamera::computeDirectionVectors();
