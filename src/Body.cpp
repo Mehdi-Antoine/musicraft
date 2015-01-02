@@ -54,18 +54,17 @@ Body::~Body(){
 // Methods
 //  
 
-void Body::updateBody(vec3 forces, int m_dir_z, int m_dir_x){
+void Body::updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float coeffJetpacking){
      
-     //updateVerlett(m_position, m_speed, forces);
-     //m_camera.setPosition(m_position);
+     glm::vec3 forces(0,0,0);
 
-     //updateVerlett(m_camera.getPtPosition(), m_speed, forces);
-     updateVerlett(m_camera.getPtPosition(), m_speed, forces, m_dir_z, m_dir_x, m_camera.getLeftVector(), m_camera.getFrontVector());
-     //m_camera.setPosition(m_position);
-     
-     //m_orientation = m_camera.getFrontVector();
+     glm::vec3 player_direction = coeffRunning * m_dir_z * m_camera.getFrontVector() + coeffRunning * m_dir_x * m_camera.getLeftVector() + glm::vec3(0, coeffRunning * coeffJetpacking, 0);
+     glm::vec3 gravity(0, -1, 0);
+
+     forces = player_direction + gravity;
 
 
+     updateVerlett(m_camera.getPtPosition(), m_speed, forces, 1.0/30.0);
 
 }
 

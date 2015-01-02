@@ -84,20 +84,16 @@ bool Player::getIsFlying() const{
 
 
 void Player::updatePlayer(){
-	glm::vec3 forces;
-
+	
 	float coeffRunning=0;
 	if(m_is_running) coeffRunning = 2; 
 	else coeffRunning = 1;
 
     float coeffJetpacking=0;
-	if(m_is_flying) coeffJetpacking = 1;
+	if(m_is_flying) coeffJetpacking = 2;
 	else coeffJetpacking = 0;
-  
-	forces = glm::vec3(-1 * m_dir_x * coeffRunning , coeffJetpacking, -1 * m_dir_z * coeffRunning + coeffJetpacking/4);	
 
-
-	m_body.updateBody(forces, m_dir_z, m_dir_x);
+	m_body.updateBody(m_dir_x, m_dir_z, coeffRunning, coeffJetpacking);
 
 }
 

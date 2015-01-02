@@ -47,7 +47,8 @@ void setCamera(Camera & camera);
 //-------------------------------------------------METHODS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-void updateBody(vec3 forces, int m_dir_z, int m_dir_x);
+//void updateBody(vec3 forces);
+void updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float coeffJetpacking);
 
 
 //--------------------------------------------------------------------------------------------------------------
