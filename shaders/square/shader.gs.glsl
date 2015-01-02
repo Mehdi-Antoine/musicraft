@@ -19,7 +19,7 @@ out vec3 g_Normal;
 out vec2 g_TexCoords;
 out vec3 g_Position;
 
-const float f = 1.f;
+const float f = 0.5;
 
 const vec3 normal_up = vec3(0,1,0);
 
@@ -56,7 +56,7 @@ void main()
     mv_position = v_matrix * m_position;
     gl_Position = p_matrix * mv_position;
     g_Position = vec3(m_position);
-    g_Color = vertex[0].color;  
+    g_Color = vec3(1,0,0);//vertex[0].color;  
     g_Normal = normal_up; 
     g_TexCoords = texCoord[0];   
     EmitVertex();
@@ -65,7 +65,7 @@ void main()
     mv_position = v_matrix * m_position;
     gl_Position = p_matrix * mv_position;
     g_Position = vec3(m_position);
-    g_Color = vertex[0].color;
+    g_Color = vec3(0,1,0);//vertex[0].color;
     g_Normal = normal_up;  
     g_TexCoords = texCoord[1];   
     EmitVertex(); 
@@ -74,7 +74,7 @@ void main()
     mv_position = v_matrix * m_position;
     gl_Position = p_matrix * mv_position;
     g_Position = vec3(m_position);
-    g_Color = vertex[0].color; 
+    g_Color = vec3(0,0,1);//vertex[0].color; 
     g_Normal = normal_up;  
     g_TexCoords = texCoord[2];    
     EmitVertex();           
@@ -83,7 +83,7 @@ void main()
     mv_position = v_matrix * m_position;
     gl_Position = p_matrix * mv_position;
     g_Position = vec3(m_position);
-    g_Color = vertex[0].color;  
+    g_Color = vec3(1,0,0);//vertex[0].color;  
     g_Normal = normal_up; 
     g_TexCoords = texCoord[3];     
     EmitVertex();

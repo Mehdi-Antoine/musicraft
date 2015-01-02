@@ -8,11 +8,15 @@
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 
 /*
 
 void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & forces, int m_dir_z, int m_dir_x, glm::vec3 left_vector, glm::vec3 front_vector){
+=======
+>>>>>>> chunk
 
+void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & forces, int m_dir_z, int m_dir_x, glm::vec3 left_vector, glm::vec3 front_vector){
 
     glm::vec3 newspeed = glm::vec3(0,0,0);
     glm::vec3 new_position;
@@ -44,5 +48,7 @@ void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & fo
 
     speed = new_speed;
 }
+
+
 
 
