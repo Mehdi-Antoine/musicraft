@@ -25,8 +25,6 @@ using namespace glimac;
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 700
 
-//Petit test pour maximilien
-
 //--------------------------------------------------------------------------------------------------
 //---------------------------------------LE MAIN----------------------------------------------------
 //--------------------------------------------------------------------------------------------------
@@ -48,8 +46,6 @@ int main(int argc, char** argv){
     float currentTime;
     float lastTime;
     int nbFrames = 0;
-
-
 
     // Initialize glew for OpenGL3+ support
     GLenum glewInitError = glewInit();
