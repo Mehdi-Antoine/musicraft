@@ -23,7 +23,7 @@ layout(std140) uniform global_matrix{
 
 uniform sampler2D uTexture;
 
-out vec3 fFragColor;
+out vec4 fFragColor;
 
 vec3 blinnPhong(){
 
@@ -48,5 +48,5 @@ vec3 blinnPhong(){
 }
 
 void main() {
-    fFragColor = g_Color;//texture(uTexture, g_TexCoords).rgb;//camera_position; //max(blinnPhong(), 0) + 0.01 * g_Color;
+    fFragColor = vec4(g_Color, 1);//texture(uTexture, g_TexCoords).rgb;//camera_position; //max(blinnPhong(), 0) + 0.01 * g_Color;
 }

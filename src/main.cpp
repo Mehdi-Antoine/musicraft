@@ -60,6 +60,8 @@ int main(int argc, char** argv){
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl << std::endl;
 
+    glEnable(GL_DEPTH_TEST);
+
 //-----------------------------------WORLD CREATION------------------------------------------------
 
     //World world;
@@ -82,8 +84,6 @@ int main(int argc, char** argv){
     GlShader square_shader(dir_path, "square");
 
     GlShader cube_shader(dir_path, "cube");
-
-    cube_shader.useShader();
 
     std::cout << "OK." << std::endl << std::endl;
 
@@ -161,30 +161,44 @@ int main(int argc, char** argv){
 //-------------CONSTRUCTION CUBE ET INJECTION DANS UN TABLEAU DE VERTICES---------------------------
 
     std::cout << "CREATION INDICES CUBES..." << std::endl;
-    std::vector<glm::vec3> squares_color;
-    std::vector<glm::vec3> squares_position;
+
+    std::vector<glm::vec3> sol_color;
+    std::vector<glm::vec3> sol_position;
+
+    std::vector<glm::vec3> norris_color;
+    std::vector<glm::vec3> norris_position;
 
 //-----------------------------------CREATION CHUNK-------------------------------------------------
 
-    Chunk chunk;
+    
+    Chunk chunk_sol;
 
     for (int x = 0; x < Chunk::m_size; ++x)
     {
         for (int z = 0; z < Chunk::m_size; ++z)
         {
-            for (int y = 0; y < Chunk::m_size; ++y)
-            {
-                if(chunk.getCubeType(x, y, z) != EMPTY){ //Si le Cube à l'indice X, Y, Z n'est pas un cube vide
-                    squares_position.push_back(glm::vec3(x, y, z)); //on l'ajoute au vector des positions à dessiner
-                    squares_color.push_back(glm::vec3(1,0,0)); //on l'ajoute au vector des couleurs à dessiner           
-                }
-            }
+            chunk_sol.setCubeType(x, 0, z, SOLID); //chunk_sol[x][0][z] = SOLID;
+            sol_position.push_back(glm::vec3(x, 0, z)); 
+            sol_color.push_back(glm::vec3(1,0,0));        
         }
     }
+
+    Chunk chunk_norris;
+
+    for(int i = 0; i < 20; ++i){
+        for(int z = 10; z < 20; ++z){
+            chunk_sol.setCubeType(i+20, i+1, z, SOLID);
+            norris_position.push_back(glm::vec3(i+20,i+1,z));
+            norris_color.push_back(glm::vec3(1,0,0));
+        }    
+    }
+
+
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
-    GlElement ground(squares_position, squares_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
+    GlElement ground(sol_position, sol_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
+    GlElement norris(norris_position, norris_color, CUBE, GL_POINTS); //On charge ce vector dans un vbo
     std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
@@ -218,7 +232,7 @@ int main(int argc, char** argv){
 
         //quit ?
         if(eventhandler.getInputManager().getQuit() == true) quit=true;
-            
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -233,10 +247,14 @@ int main(int argc, char** argv){
         global_matrix.updateViewMatrix(view_matrix);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
-
+    
         texture_sting.use(GL_TEXTURE0);
 
+        square_shader.useShader();
         ground.draw();
+
+        cube_shader.useShader();
+        norris.draw();
 
         texture_sting.stopUse(GL_TEXTURE0);
 

@@ -4,7 +4,7 @@
 
 #include <glimac/glm.hpp>
 
-#define SIZE 10 
+#define SIZE 50 
 
 enum CubeType{ 
   EMPTY,
@@ -28,7 +28,7 @@ public:
 //--------------------------------------------------GETTERS-----------------------------------------------------
 
 	CubeType getCubeType(float x, float y, float z) const;
-	//CubeType getCubeType(const glm::vec3 &position) const;
+	CubeType getCubeType(const glm::vec3 &position) const;
 
 //--------------------------------------------------SETTERS-----------------------------------------------------
 

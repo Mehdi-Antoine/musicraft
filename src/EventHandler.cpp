@@ -31,7 +31,7 @@ void EventHandler::updatePlayer(){
         run = true;
     }
 
-    //Marche avant arrière
+    //Marche avant arriï¿½re
     if(m_input.getKey(SDLK_z) == true) {
         directionFrontBack++;
     }
@@ -61,12 +61,16 @@ void EventHandler::updatePlayer(){
     if( 
             (m_input.getMouseRel(0) != 0 && m_input.getMouseRel(0) != 1 && m_input.getMouseRel(0) != -1)
         ||
-            (m_input.getMousePos(0) < COIN || m_input.getMousePos(0) > WINDOW_WIDTH - COIN)
-           
-
+            (m_input.getMousePos(0) < COIN || m_input.getMousePos(0) > (WINDOW_WIDTH - COIN)) 
     ){
-        //std::cout << "getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
-        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);   
+        if(m_input.getMouseRel(0) < 0 && m_input.getMousePos(0) < (WINDOW_WIDTH/2 - 200)){
+            std::cout << "gauche getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
+            m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);
+        }  
+        if(m_input.getMouseRel(0) > 0 && m_input.getMousePos(0) >= (WINDOW_WIDTH/2 + 200)){
+            std::cout << "droite getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
+            m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);
+        }  
     }
 
 
@@ -77,8 +81,14 @@ void EventHandler::updatePlayer(){
             (m_input.getMousePos(1) < COIN || m_input.getMousePos(1) > WINDOW_HEIGHT - COIN)
     
     ){
-        //std::cout << "getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;   
-        m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
+        if(m_input.getMouseRel(1) > 0 && m_input.getMousePos(1) >= (WINDOW_HEIGHT/2 + 200)){
+            std::cout << "bas getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;   
+            m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
+        }
+        if(m_input.getMouseRel(1) < 0 && m_input.getMousePos(1) < (WINDOW_HEIGHT/2 - 200)){
+            std::cout << "haut getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;   
+            m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
+        }
     }
 
 

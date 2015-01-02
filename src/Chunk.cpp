@@ -13,14 +13,8 @@ Chunk::Chunk(CubeType cube_type){
 		for (int y = 0; y < Chunk::m_size; ++y)
 		{
 			for (int z = 0; z < Chunk::m_size; ++z)
-			{
-				if(y == 0 || y == 4){
-					m_chunk[x][y][z] = SOLID;
-				}
-				else{
-					m_chunk[x][y][z] = cube_type;
-				}
-				
+			{		
+				m_chunk[x][y][z] = cube_type;				
 			}
 		}
 	}
@@ -40,7 +34,6 @@ CubeType Chunk::getCubeType(float x, float y, float z) const{
 	return m_chunk[getIndex(x)][getIndex(y)][getIndex(z)];
 }
 
-/*
 CubeType Chunk::getCubeType(const glm::vec3 &position) const{
 
 	return m_chunk[getIndex(position.x)]
@@ -48,7 +41,6 @@ CubeType Chunk::getCubeType(const glm::vec3 &position) const{
 				  [getIndex(position.z)];
 
 }
-*/
 
 //--------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------SETTERS-----------------------------------------------------
