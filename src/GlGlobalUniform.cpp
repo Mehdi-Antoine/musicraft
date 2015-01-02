@@ -187,3 +187,4 @@ void GlGlobalUniformLight::update(const glm::vec3 position, const glm::vec3 inte
     updateKs(ks);
     updateShininess(shininess);
 }
+

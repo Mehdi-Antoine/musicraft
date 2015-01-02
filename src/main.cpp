@@ -102,6 +102,7 @@ int main(int argc, char** argv){
     std::cout << "CREATION TEXTURE..." << std::endl;
 
     GlTexture texture_sting(dir_path + "assets/textures/sting.jpg");
+    GlTexture texture_rouge(dir_path + "assets/textures/rouge01.jpg");
 
     std::cout << "OK." << std::endl << std::endl;
 
@@ -152,9 +153,9 @@ int main(int argc, char** argv){
 
     std::cout << "      global_light.update()" << std::endl;
 
-    glm::vec3 position  = vec3(TAILLE, TAILLE, TAILLE);
-    glm::vec3 intensity = vec3(TAILLE, TAILLE, TAILLE);
-    glm::vec3 ks        = vec3(1,      1,      1);
+    glm::vec3 position  = vec3(1, 1, 1);
+    glm::vec3 intensity = vec3(0, 0, 0);
+    glm::vec3 ks        = vec3(1, 0, 1);
     float shininess     = 1;
 
 
@@ -292,11 +293,12 @@ int main(int argc, char** argv){
 
         global_matrix.updateViewMatrix(freeflyCamera.getViewMatrix());
 
-        texture_sting.use(GL_TEXTURE0);
+        //texture_sting.use(GL_TEXTURE0);
+        texture_rouge.use(GL_TEXTURE0);
 
         ground.draw();
 
-        texture_sting.stopUse(GL_TEXTURE0);
+        texture_rouge.stopUse(GL_TEXTURE0);
 
 //---------------------------------------FPS SHOW------------------------------------------------------
         ++nbFrames;

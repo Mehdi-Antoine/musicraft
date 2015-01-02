@@ -9,8 +9,9 @@ in Vertex
 } vertex[];
 
 layout(std140) uniform global_matrix{
-    mat4 globalPMatrix;
-    mat4 globalVMatrix;
+    mat4 p_matrix;
+    mat4 v_matrix;
+    vec3 camera_position;
 };
 
 out vec3 g_Color;
@@ -20,7 +21,7 @@ out vec3 g_Position;
 
 const float f = 1.f;
 
-const vec3 normalUp = vec3(0,1,0);
+const vec3 normal_up = vec3(0,1,0);
 
 const int elements[] = int[]
 (
@@ -46,44 +47,44 @@ void main()
         vec2(1, 1)
     );
 
-    vec4 Mposition;
-    vec4 MVposition;
+    vec4 m_position;
+    vec4 mv_position;
 
-    mat4 VPMatrix = globalPMatrix * globalVMatrix;
+    mat4 VPMatrix = p_matrix * v_matrix;
 
-    Mposition = (vertices[0] + vertex[0].position);
-    MVposition = globalVMatrix * Mposition;
-    gl_Position = globalPMatrix * MVposition;
-    g_Position = vec3(Mposition);
+    m_position = (vertices[0] + vertex[0].position);
+    mv_position = v_matrix * m_position;
+    gl_Position = p_matrix * mv_position;
+    g_Position = vec3(m_position);
     g_Color = vertex[0].color;  
-    g_Normal = normalUp; 
+    g_Normal = normal_up; 
     g_TexCoords = texCoord[0];   
     EmitVertex();
 
-    Mposition = (vertices[1] + vertex[0].position);
-    MVposition = globalVMatrix * Mposition;
-    gl_Position = globalPMatrix * MVposition;
-    g_Position = vec3(Mposition);
+    m_position = (vertices[1] + vertex[0].position);
+    mv_position = v_matrix * m_position;
+    gl_Position = p_matrix * mv_position;
+    g_Position = vec3(m_position);
     g_Color = vertex[0].color;
-    g_Normal = normalUp;  
+    g_Normal = normal_up;  
     g_TexCoords = texCoord[1];   
     EmitVertex(); 
 
-    Mposition = (vertices[2] + vertex[0].position);
-    MVposition = globalVMatrix * Mposition;
-    gl_Position = globalPMatrix * MVposition;
-    g_Position = vec3(Mposition);
+    m_position = (vertices[2] + vertex[0].position);
+    mv_position = v_matrix * m_position;
+    gl_Position = p_matrix * mv_position;
+    g_Position = vec3(m_position);
     g_Color = vertex[0].color; 
-    g_Normal = normalUp;  
+    g_Normal = normal_up;  
     g_TexCoords = texCoord[2];    
     EmitVertex();           
 
-    Mposition = (vertices[3] + vertex[0].position);
-    MVposition = globalVMatrix * Mposition;
-    gl_Position = globalPMatrix * MVposition;
-    g_Position = vec3(Mposition);
+    m_position = (vertices[3] + vertex[0].position);
+    mv_position = v_matrix * m_position;
+    gl_Position = p_matrix * mv_position;
+    g_Position = vec3(m_position);
     g_Color = vertex[0].color;  
-    g_Normal = normalUp; 
+    g_Normal = normal_up; 
     g_TexCoords = texCoord[3];     
     EmitVertex();
   

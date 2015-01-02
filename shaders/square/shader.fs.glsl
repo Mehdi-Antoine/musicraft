@@ -14,7 +14,12 @@ layout(std140) uniform global_light{
     float light_shininess;
 };
 
-uniform vec3 uCameraPos;
+layout(std140) uniform global_matrix{
+    mat4 p_matrix;
+    mat4 v_matrix;
+    vec3 camera_position;
+};
+
 
 uniform sampler2D uTexture;
 
@@ -30,7 +35,7 @@ vec3 blinnPhong(){
 
 	float L = (light_intensity) / (1 + d + d * d);
 
-	vec3 w0 = normalize(uCameraPos - g_Position);
+	vec3 w0 = normalize(camera_position - g_Position);
 
 	vec3 halfVector = (w + w0) / 2;
 
@@ -43,5 +48,5 @@ vec3 blinnPhong(){
 }
 
 void main() {
-    fFragColor = max(blinnPhong(), 0) + 0.01 * g_Color;
+    fFragColor = texture(uTexture, g_TexCoords).rgb;//camera_position; //max(blinnPhong(), 0) + 0.01 * g_Color;
 }
