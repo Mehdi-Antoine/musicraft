@@ -1,6 +1,9 @@
 #include <iostream>
 #include "include/EventHandler.hpp"
 
+#define WINDOW_WIDTH  800
+#define WINDOW_HEIGHT 700
+#define COIN 50
 
 PlayerManager& EventHandler::getPlayerManager(){
     return m_player_manager;
@@ -53,19 +56,30 @@ void EventHandler::updatePlayer(){
     }
     else click = 0;
 
+    //std::cout << "0: " << m_input.getMousePos(0) << " ||| 1:" << m_input.getMousePos(1) << std::endl;
     //if( (m_input.getMouseRel(0) > 1 || m_input.getMouseRel(0) < -1 ) && click == 1 ) {
-    if( m_input.getMouseRel(0) != 0 && click == 1 ) {
-        std::cout << "getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
-        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);
+    if( 
+            (m_input.getMouseRel(0) != 0 && m_input.getMouseRel(0) != 1 && m_input.getMouseRel(0) != -1)
+        ||
+            (m_input.getMousePos(0) < COIN || m_input.getMousePos(0) > WINDOW_WIDTH - COIN)
+           
+
+    ){
+        //std::cout << "getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
+        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);   
     }
-    if( (m_input.getMouseRel(1) > 1 || m_input.getMouseRel(1) < -1 ) && click == 1) {
-    //if( m_input.getMouseRel(1) != 0  && click == 1) {
-        std::cout << "getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;   
+
+
+    //if( (m_input.getMouseRel(1) > 1 || m_input.getMouseRel(1) < -1 ) /*&& click == 1*/) {
+    if( 
+            (m_input.getMouseRel(1) != 0 && m_input.getMouseRel(1) != 1 && m_input.getMouseRel(1) != -1)
+        ||
+            (m_input.getMousePos(1) < COIN || m_input.getMousePos(1) > WINDOW_HEIGHT - COIN)
+    
+    ){
+        //std::cout << "getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;   
         m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
     }
-
-
-
 
 
     m_player_manager.movement(directionFrontBack, directionRightLeft);

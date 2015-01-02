@@ -16,7 +16,7 @@
 
 using namespace glimac;
 
-#define WINDOW_WIDTH  700
+#define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 700
 
 //--------------------------------------------------------------------------------------------------
@@ -222,27 +222,9 @@ int main(int argc, char** argv){
         eventhandler.update();
         eventhandler.updatePlayer();
 
-        //std::cout << eventhandler.getPlayerManager().getPlayer().getBody().getOrientation() << std::endl;
-        //std::cout << eventhandler.getPlayerManager().getPlayer().getBody().getPosition() << " <<>> ";
-        std::cout << "POS--> " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition() << std::endl;
-        std::cout << "Phi--> " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPhi() << std::endl;
-        std::cout << "FRO--> " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getFrontVector() << std::endl;
-        std::cout << "LEF--> " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getLeftVector() << std::endl;
-/*
-std::cout << "-> " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPhi();
-std::cout << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getTheta();
-std::cout << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getFrontVector();
-std::cout << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getLeftVector();
-std::cout << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getUpVector() << std::endl;
- */
-
-
-
         //quit ?
         if(eventhandler.getInputManager().getQuit() == true) quit=true;
             
-
-
 
 /*FIN MODIF MOTEUR BASIQUE*/
 

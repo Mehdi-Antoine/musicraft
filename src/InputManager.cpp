@@ -5,6 +5,14 @@ void InputManager::updateInput() {
 
     //Récupération des events
     while(SDL_PollEvent(&m_event)) {
+
+
+        //position souris
+        m_mouse_pos[0] = m_event.button.x;
+        m_mouse_pos[1] = m_event.button.y;
+
+
+
         //Quel type d'event
         switch(m_event.type) {
 
