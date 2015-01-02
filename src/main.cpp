@@ -13,6 +13,8 @@
 #include "include/GlUniform.hpp"
 #include "include/GlTexture.hpp"
 
+#include "include/Chunk.hpp"
+
 #include "include/World.hpp"
 #include "include/Player.hpp"
 #include "include/EventHandler.hpp"
@@ -79,7 +81,9 @@ int main(int argc, char** argv){
 
     GlShader square_shader(dir_path, "square");
 
-    square_shader.useShader();
+    GlShader cube_shader(dir_path, "cube");
+
+    cube_shader.useShader();
 
     std::cout << "OK." << std::endl << std::endl;
 
@@ -116,8 +120,9 @@ int main(int argc, char** argv){
     global_matrix.init("global_matrix", 1);
     std::cout << "      ok!" << std::endl;
 
-    std::cout << "      global_matrix.attachProgram(square_shader)" << std::endl;
+    std::cout << "      global_matrix.attachProgram" << std::endl;
     global_matrix.attachProgram(square_shader.getProgramId());
+    global_matrix.attachProgram(cube_shader.getProgramId());
     std::cout << "      ok!" << std::endl;
 
     std::cout << "      global_matrix.updateProjectionMatrix()" << std::endl;
@@ -135,8 +140,9 @@ int main(int argc, char** argv){
     global_light.init("global_light", 2);
     std::cout << "      ok!" << std::endl;
 
-    std::cout << "      global_light.attachProgram(square_shader)" << std::endl;
+    std::cout << "      global_light.attachProgram" << std::endl;
     global_light.attachProgram(square_shader.getProgramId());
+    global_light.attachProgram(cube_shader.getProgramId());
     std::cout << "      ok!" << std::endl;
 
     std::cout << "      global_light.update()" << std::endl;
@@ -158,16 +164,27 @@ int main(int argc, char** argv){
     std::vector<glm::vec3> squares_color;
     std::vector<glm::vec3> squares_position;
 
-    for (int k = 0; k < TAILLE * TAILLE; ++k){
-        squares_position.push_back(glm::vec3(2*(k/TAILLE), 0, 2*(k%TAILLE)));        
-        squares_color.push_back(glm::vec3(k/TAILLE, 0, k%TAILLE));
-    }
-    std::cout << "OK." << std::endl << std::endl;
+//-----------------------------------CREATION CHUNK-------------------------------------------------
 
+    Chunk chunk;
+
+    for (int x = 0; x < Chunk::m_size; ++x)
+    {
+        for (int z = 0; z < Chunk::m_size; ++z)
+        {
+            for (int y = 0; y < Chunk::m_size; ++y)
+            {
+                if(chunk.getCubeType(x, y, z) != EMPTY){ //Si le Cube à l'indice X, Y, Z n'est pas un cube vide
+                    squares_position.push_back(glm::vec3(x, y, z)); //on l'ajoute au vector des positions à dessiner
+                    squares_color.push_back(glm::vec3(1,0,0)); //on l'ajoute au vector des couleurs à dessiner           
+                }
+            }
+        }
+    }
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
-    GlElement ground(squares_position, squares_color, SQUARE, GL_POINTS);
+    GlElement ground(squares_position, squares_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
     std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
@@ -217,11 +234,11 @@ int main(int argc, char** argv){
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
 
-        texture_rouge.use(GL_TEXTURE0);
+        texture_sting.use(GL_TEXTURE0);
 
         ground.draw();
 
-        texture_rouge.stopUse(GL_TEXTURE0);
+        texture_sting.stopUse(GL_TEXTURE0);
 
 //---------------------------------------FPS SHOW------------------------------------------------------
         ++nbFrames;

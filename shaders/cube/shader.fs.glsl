@@ -48,5 +48,5 @@ vec3 blinnPhong(){
 }
 
 void main() {
-    fFragColor = g_Color;//texture(uTexture, g_TexCoords).rgb;//camera_position; //max(blinnPhong(), 0) + 0.01 * g_Color;
+    fFragColor = texture(uTexture, g_TexCoords).rgb;//camera_position; //max(blinnPhong(), 0) + 0.01 * g_Color;
 }
