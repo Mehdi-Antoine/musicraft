@@ -194,13 +194,22 @@ int main(int argc, char** argv){
     for (int x = 0; x < 32; ++x)
     { 
         int y = 1;
+<<<<<<< HEAD
+        int z = 63;
+=======
         int z = 31;
+<<<<<<< HEAD
 
         cubeType = x % 2 + 1;
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
         cube_type.push_back(cubeType);         
+=======
+>>>>>>> 0f0ecb9996dfeefd896c0db42178a89a5b999eb9
+        chunk_sol.setCubeType(x, y, z, SOLID);
+        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+>>>>>>> e276bdd3bc09fb607b76411e0e889a58c428926c
     }
 
     for (int z = 0; z < 32; ++z)
@@ -217,7 +226,11 @@ int main(int argc, char** argv){
 
     for (int z = 0; z < 32 ; ++z)
     {   
+<<<<<<< HEAD
+        int x = 63;
+=======
         int x = 31;
+>>>>>>> 0f0ecb9996dfeefd896c0db42178a89a5b999eb9
         int y = 1;
 
         cubeType = x % 2 + 1;
