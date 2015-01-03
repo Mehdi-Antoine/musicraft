@@ -189,7 +189,7 @@ int main(int argc, char** argv){
     for (int x = 0; x < 64; ++x)
     { 
         int y = 1;
-        int z = 9;
+        int z = 63;
         chunk_sol.setCubeType(x, y, z, SOLID);
         sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
     }
@@ -204,7 +204,7 @@ int main(int argc, char** argv){
 
     for (int z = 0; z < 64; ++z)
     {   
-        int x = 9;
+        int x = 63;
         int y = 1;
         chunk_sol.setCubeType(x, y, z, SOLID);
         sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
@@ -286,7 +286,7 @@ int main(int argc, char** argv){
     
         texture_sting.use(GL_TEXTURE0);
 
-        cube_shader.useShader();
+        square_shader.useShader();
         ground.draw();
 
        // cube_shader.useShader();
