@@ -22,6 +22,9 @@ void InputManager::updateInput() {
 
             //Quelle touche
             switch(m_event.key.keysym.sym) {
+            case SDLK_TAB:
+                m_key[SDLK_TAB] = true;
+                break;
 
             case SDLK_z:
                 m_key[SDLK_z] = true;
@@ -60,6 +63,10 @@ void InputManager::updateInput() {
 
             //Quelle touche
             switch(m_event.key.keysym.sym) {
+            
+            case SDLK_TAB:
+                m_key[SDLK_TAB] = false;
+                break;
 
             case SDLK_z:
                 m_key[SDLK_z] = false;

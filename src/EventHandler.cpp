@@ -23,6 +23,9 @@ void EventHandler::updatePlayer(World &world){
 
     //m_player_manager.movement(directionFrontBack, directionRightLeft);
     //m_player_manager.flyAndRun(run,fly);
+    if(m_input.getKey(SDLK_TAB) == true) {
+        m_player_manager.getPlayer().getInventory().show();
+    }
 
     //Saut et sprint
     if(m_input.getKey(SDLK_SPACE) == true) {
@@ -32,7 +35,7 @@ void EventHandler::updatePlayer(World &world){
         run = true;
     }
 
-    //Marche avant arri�re
+    //Marche avant arrière
     if(m_input.getKey(SDLK_z) == true) {
         directionFrontBack++;
     }

@@ -82,6 +82,9 @@ bool Player::getIsFlying() const{
 	return m_is_flying;
 }
 
+Inventory Player::getInventory(){
+	return m_inventory;
+}
 
 
 void Player::updatePlayer(World &world){

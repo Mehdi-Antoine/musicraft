@@ -1,9 +1,9 @@
 #pragma once
-#include <vector>
+#include <map>
 
 class Inventory {
 private:
-	std::vector<int> m_list;
+	std::map<int, int> m_list;
 	int m_current_cube;
 	int m_max_size;
 public:
@@ -11,7 +11,7 @@ public:
 	~Inventory();
 
 	bool isEmpty() const;
-	int size() const;
+	int getNumberCubes() const;
 	int getCurrentCube();
 	void setCurrentCube(int cube);
 
@@ -20,7 +20,7 @@ public:
 	bool removeCube(int cube);
 	bool removeCurrentCube();
 
-
+	void show() const;
 
 
 	/* data */
