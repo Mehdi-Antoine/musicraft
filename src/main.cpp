@@ -169,9 +169,9 @@ int main(int argc, char** argv){
     
     Chunk chunk_sol;
 
-    for (int x = 0; x < 10; ++x)
+    for (int x = 0; x < 256; ++x)
     {
-        for (int z = 0; z < 10; ++z)
+        for (int z = 0; z < 256; ++z)
         {   
             int y = 0;
             chunk_sol.setCubeType(x, y, z, SOLID);
@@ -179,14 +179,14 @@ int main(int argc, char** argv){
         }
     }
 
-    for (int x = 0; x < 10; ++x)
+    for (int x = 0; x < 256; ++x)
     { 
         int y = 1;
         int z = 0;
         chunk_sol.setCubeType(x, y, z, SOLID);
         sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
     }
-    for (int x = 0; x < 10; ++x)
+    for (int x = 0; x < 256; ++x)
     { 
         int y = 1;
         int z = 9;
@@ -194,7 +194,7 @@ int main(int argc, char** argv){
         sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
     }
 
-    for (int z = 0; z < 10; ++z)
+    for (int z = 0; z < 256; ++z)
     {   
         int x = 0;
         int y = 1;
@@ -202,7 +202,7 @@ int main(int argc, char** argv){
         sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
     }
 
-    for (int z = 0; z < 10; ++z)
+    for (int z = 0; z < 256; ++z)
     {   
         int x = 9;
         int y = 1;
