@@ -8,12 +8,11 @@
 Inventory::Inventory()
 	: m_max_size(50), m_current_cube(-1)
 {
-	std::cout << "Création inventaire..." <<std::endl;
-	for(int i=0; i < 5;i++){
+	for(int i=0; i < m_max_size/2;i++){
 		this->addCube(1);
 		this->addCube(2);
-		this->addCube(3);
 	}
+	this->addCube(3);
 
 }
 
@@ -46,7 +45,7 @@ void Inventory::setCurrentCube(int cube){
 }
 
 bool Inventory::addCube(int cube){
-	if (this->getNumberCubes() <= m_max_size){
+	if (this->getNumberCubes() < m_max_size){
 		if(m_list.find(cube) == m_list.end()){
 			if(m_list.size() >= m_max_size){
 				std::cout << "Plus de place pour un nouveau cube!"<< std::endl;
