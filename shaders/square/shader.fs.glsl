@@ -1,7 +1,7 @@
 #version 330
 
 in vec3 g_Position;
-flat in int g_Type;
+in vec3 g_Color;
 in vec3 g_Normal;
 in vec2 g_TexCoords;
 
@@ -42,18 +42,7 @@ vec3 blinnPhong(){
 
 	halfVector = normalize(halfVector);
 
-	vec3 uTexture;
-
-	int type = g_Type;
-
-	if(type == 1){
-		uTexture = texture(uTexture1, g_TexCoords).rgb;
-	}
-	if(type == 2){
-		uTexture = texture(uTexture2, g_TexCoords).rgb;
-	}
-
-	vec3 color = L * (uTexture * max(dot(w, n), 0) + light_ks * pow(max(dot(halfVector, n), 0), light_shininess));
+	vec3 color = L * (texture(uTexture1, g_TexCoords).rgb * max(dot(w, n), 0) + light_ks * pow(max(dot(halfVector, n), 0), light_shininess));
 
 	return color;
 
@@ -61,16 +50,6 @@ vec3 blinnPhong(){
 
 void main() {
 	
-	vec4 uTexture;
 
-	int type = g_Type;
-
-	if(type == 1){
-		uTexture = vec4(texture(uTexture1, g_TexCoords).rgb, 1);
-	}
-	if(type == 2){
-		uTexture = vec4(texture(uTexture2, g_TexCoords).rgb, 1);
-	}
-
-    fFragColor = uTexture;//texture(uTexture, g_TexCoords).rgb;//camera_position; //max(blinnPhong(), 0) + 0.01 * g_Color;
+    fFragColor = vec4(texture(uTexture1, g_TexCoords).rgb, 1);//texture(uTexture, g_TexCoords).rgb;//camera_position; //max(blinnPhong(), 0) + 0.01 * g_Color;
 }

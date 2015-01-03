@@ -27,7 +27,7 @@ private:
 
 	GLuint m_vao;
 
-	GLuint m_type_vbo;
+	GLuint m_color_vbo;
 	GLuint m_position_vbo;
 
 public:
@@ -37,7 +37,7 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 
 	GlElement(std::vector<glm::vec3> &position_index, 
-			  std::vector<GLubyte>   &type_index,  
+			  std::vector<glm::vec3> &color_index,  
 			  ShaderProgram          shader_program,
 			  GLenum                 draw_mode);
 
@@ -63,7 +63,7 @@ public:
 
 	void unbindBuffer() const;
 
-	void data(const std::vector<glm::vec3> &position_index, const std::vector<GLubyte> &type_index);
+	void data(const std::vector<glm::vec3> &position_index, const std::vector<glm::vec3> &color_index);
 
 	void draw() const;
 

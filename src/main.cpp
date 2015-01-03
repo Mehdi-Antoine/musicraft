@@ -158,7 +158,7 @@ int main(int argc, char** argv){
 
     std::cout << "CREATION INDICES CUBES..." << std::endl;
 
-    std::vector<GLubyte> cube_type;
+    std::vector<glm::vec3> cube_color;
     std::vector<glm::vec3> cube_position;
 
 //-----------------------------------CREATION CHUNK-------------------------------------------------
@@ -176,7 +176,7 @@ int main(int argc, char** argv){
             cubeType = x % 2 + 1;
             chunk.setCubeType(x, y, z, cubeType);
             cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-            cube_type.push_back(cubeType);      
+            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));      
         }
     }
 
@@ -189,7 +189,7 @@ int main(int argc, char** argv){
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
-        cube_type.push_back(cubeType);          
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));          
     }
     for (int x = 0; x < 32; ++x)
     { 
@@ -201,7 +201,7 @@ int main(int argc, char** argv){
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
-        cube_type.push_back(cubeType);         
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
     }
 
     for (int z = 0; z < 32; ++z)
@@ -213,7 +213,7 @@ int main(int argc, char** argv){
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
-        cube_type.push_back(cubeType);         
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
     }
 
     for (int z = 0; z < 32 ; ++z)
@@ -225,7 +225,7 @@ int main(int argc, char** argv){
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-        cube_type.push_back(cubeType);        
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
     }
 
 
@@ -238,7 +238,7 @@ int main(int argc, char** argv){
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
-    GlElement ground(cube_position, cube_type, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
+    GlElement ground(cube_position, cube_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
     std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
@@ -291,8 +291,10 @@ int main(int argc, char** argv){
         texture_sting.use(GL_TEXTURE0);
         texture_rouge.use(GL_TEXTURE1);
 
+        std::cout << "draw ! " << std::endl;
         cube_shader.useShader();
         ground.draw();
+        std::cout << "ok ! " << std::endl;
 
         texture_sting.stopUse(GL_TEXTURE0);
         texture_rouge.stopUse(GL_TEXTURE1);
