@@ -11,8 +11,7 @@
 
 enum VboType{ 
 	POSITION, 
-	COLOR,
-	TYPE
+	COLOR
 };
 
 

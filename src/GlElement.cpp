@@ -43,7 +43,7 @@ GlElement::GlElement(std::vector<glm::vec3> &position_index, std::vector<glm::ve
     glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const GLvoid*)(0*sizeof(GL_FLOAT)));
     unbindBuffer();
 
-    bindBuffer(TYPE); 
+    bindBuffer(COLOR); 
     glVertexAttribPointer(VERTEX_ATTR_COLOR, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const GLvoid*)(0*sizeof(GL_FLOAT)));
     unbindBuffer();
 
@@ -109,12 +109,12 @@ void GlElement::data(const std::vector<glm::vec3> &position_index, const std::ve
 
 	m_vertex_number = position_index.size();
 
-	bindBuffer(TYPE);
-	glBufferData(GL_ARRAY_BUFFER, m_vertex_number * sizeof(glm::vec3), color_index.data(), GL_STATIC_DRAW);
+	bindBuffer(COLOR);
+	glBufferData(GL_ARRAY_BUFFER, m_vertex_number * sizeof(glm::vec3), position_index.data(), GL_STATIC_DRAW);
 	unbindBuffer();
 
 	bindBuffer(POSITION);
-	glBufferData(GL_ARRAY_BUFFER, m_vertex_number * sizeof(glm::vec3), position_index.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_vertex_number * sizeof(glm::vec3), color_index.data(), GL_STATIC_DRAW);
 	unbindBuffer();
 
 }
