@@ -8,7 +8,8 @@
 
 enum CubeType{ 
   EMPTY = 0,
-  SOLID = 1
+  BASIC = 1,
+  STING = 2
 };
 
 class Chunk{

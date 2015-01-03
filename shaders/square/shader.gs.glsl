@@ -5,7 +5,7 @@ layout(triangle_strip, max_vertices=4) out;
 in Vertex 
 { 
     vec4 position;
-    vec3 color;
+    int type;
 } vertex[];
 
 layout(std140) uniform global_matrix{
@@ -14,7 +14,7 @@ layout(std140) uniform global_matrix{
     vec3 camera_position;
 };
 
-out vec3 g_Color;
+flat out int g_Type;
 out vec3 g_Normal;
 out vec2 g_TexCoords;
 out vec3 g_Position;
@@ -56,7 +56,7 @@ void main()
     mv_position = v_matrix * m_position;
     gl_Position = p_matrix * mv_position;
     g_Position = vec3(m_position);
-    g_Color = vec3(1,0,0);//vertex[0].color;  
+    g_Type = vertex[0].type;
     g_Normal = normal_up; 
     g_TexCoords = texCoord[0];   
     EmitVertex();
@@ -65,7 +65,7 @@ void main()
     mv_position = v_matrix * m_position;
     gl_Position = p_matrix * mv_position;
     g_Position = vec3(m_position);
-    g_Color = vec3(0,1,0);//vertex[0].color;
+    g_Type = vertex[0].type;
     g_Normal = normal_up;  
     g_TexCoords = texCoord[1];   
     EmitVertex(); 
@@ -74,7 +74,7 @@ void main()
     mv_position = v_matrix * m_position;
     gl_Position = p_matrix * mv_position;
     g_Position = vec3(m_position);
-    g_Color = vec3(0,0,1);//vertex[0].color; 
+    g_Type = vertex[0].type;
     g_Normal = normal_up;  
     g_TexCoords = texCoord[2];    
     EmitVertex();           
@@ -83,7 +83,7 @@ void main()
     mv_position = v_matrix * m_position;
     gl_Position = p_matrix * mv_position;
     g_Position = vec3(m_position);
-    g_Color = vec3(1,0,0);//vertex[0].color;  
+    g_Type = vertex[0].type; 
     g_Normal = normal_up; 
     g_TexCoords = texCoord[3];     
     EmitVertex();

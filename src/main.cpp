@@ -158,24 +158,25 @@ int main(int argc, char** argv){
 
     std::cout << "CREATION INDICES CUBES..." << std::endl;
 
-    std::vector<glm::vec3> sol_color;
-    std::vector<glm::vec3> sol_position;
-
-    std::vector<glm::vec3> norris_color;
-    std::vector<glm::vec3> norris_position;
+    std::vector<GLubyte> cube_type;
+    std::vector<glm::vec3> cube_position;
 
 //-----------------------------------CREATION CHUNK-------------------------------------------------
 
-    
-    Chunk chunk_sol;
+    Chunk chunk;
+
+    char cubeType;
 
     for (int x = 0; x < 32; ++x)
     {
         for (int z = 0; z < 32; ++z)
         {   
             int y = 0;
-            chunk_sol.setCubeType(x, y, z, SOLID);
-            sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+
+            cubeType = x % 2 + 1;
+            chunk.setCubeType(x, y, z, cubeType);
+            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+            cube_type.push_back(cubeType);      
         }
     }
 
@@ -183,31 +184,47 @@ int main(int argc, char** argv){
     { 
         int y = 1;
         int z = 0;
-        chunk_sol.setCubeType(x, y, z, SOLID);
-        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
+        cube_type.push_back(cubeType);          
     }
     for (int x = 0; x < 32; ++x)
     { 
         int y = 1;
         int z = 31;
-        chunk_sol.setCubeType(x, y, z, SOLID);
-        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
+        cube_type.push_back(cubeType);         
     }
 
     for (int z = 0; z < 32; ++z)
     {   
         int x = 0;
         int y = 1;
-        chunk_sol.setCubeType(x, y, z, SOLID);
-        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
+        cube_type.push_back(cubeType);         
     }
 
     for (int z = 0; z < 32 ; ++z)
     {   
         int x = 31;
         int y = 1;
-        chunk_sol.setCubeType(x, y, z, SOLID);
-        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+        cube_type.push_back(cubeType);        
     }
 
 
@@ -215,14 +232,12 @@ int main(int argc, char** argv){
 
     World world;
 
-    world.addChunk(chunk_sol);
-    //world.addChunk(chunk_norris);
+    world.addChunk(chunk);
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
-    GlElement ground(sol_position, sol_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
-    //GlElement norris(norris_position, norris_color, CUBE, GL_POINTS); //On charge ce vector dans un vbo
+    GlElement ground(cube_position, cube_type, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
     std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
@@ -231,7 +246,7 @@ int main(int argc, char** argv){
 
     Player player(7);
 
-    //Camera camera = player.getBody().getCamera();
+    Camera camera = player.getBody().getCamera();
 
     PlayerManager playermanager(player);
 
@@ -273,14 +288,13 @@ int main(int argc, char** argv){
 //---------------------------------------DRAW !!!!-----------------------------------------------------
     
         texture_sting.use(GL_TEXTURE0);
+        texture_rouge.use(GL_TEXTURE1);
 
-        square_shader.useShader();
+        cube_shader.useShader();
         ground.draw();
 
-       // cube_shader.useShader();
-        //norris.draw();
-
         texture_sting.stopUse(GL_TEXTURE0);
+        texture_rouge.stopUse(GL_TEXTURE1);
 
 //---------------------------------------FPS SHOW------------------------------------------------------
         ++nbFrames;
