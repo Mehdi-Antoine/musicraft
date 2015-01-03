@@ -169,15 +169,49 @@ int main(int argc, char** argv){
     
     Chunk chunk_sol;
 
-    for (int x = 0; x < Chunk::m_size; ++x)
+    for (int x = 0; x < 10; ++x)
     {
-        for (int z = 0; z < Chunk::m_size; ++z)
-        {
-            chunk_sol.setCubeType(x, 0, z, SOLID); //chunk_sol[x][0][z] = SOLID;
-            sol_position.push_back(glm::vec3(x, 0, z)); 
-            sol_color.push_back(glm::vec3(1,0,0));        
+        for (int z = 0; z < 10; ++z)
+        {   
+            int y = 0;
+            chunk_sol.setCubeType(x, y, z, SOLID);
+            sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
         }
     }
+
+    for (int x = 0; x < 10; ++x)
+    { 
+        int y = 1;
+        int z = 0;
+        chunk_sol.setCubeType(x, y, z, SOLID);
+        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+    }
+    for (int x = 0; x < 10; ++x)
+    { 
+        int y = 1;
+        int z = 9;
+        chunk_sol.setCubeType(x, y, z, SOLID);
+        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+    }
+
+    for (int z = 0; z < 10; ++z)
+    {   
+        int x = 0;
+        int y = 1;
+        chunk_sol.setCubeType(x, y, z, SOLID);
+        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+    }
+
+    for (int z = 0; z < 10; ++z)
+    {   
+        int x = 9;
+        int y = 1;
+        chunk_sol.setCubeType(x, y, z, SOLID);
+        sol_position.push_back(glm::vec3(x * 2, y * 2, z * 2));        
+    }
+
+
+
 
     Chunk chunk_norris;
 
@@ -200,7 +234,7 @@ int main(int argc, char** argv){
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
     GlElement ground(sol_position, sol_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
-    GlElement norris(norris_position, norris_color, CUBE, GL_POINTS); //On charge ce vector dans un vbo
+    //GlElement norris(norris_position, norris_color, CUBE, GL_POINTS); //On charge ce vector dans un vbo
     std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
@@ -252,11 +286,11 @@ int main(int argc, char** argv){
     
         texture_sting.use(GL_TEXTURE0);
 
-        square_shader.useShader();
+        cube_shader.useShader();
         ground.draw();
 
-        cube_shader.useShader();
-        norris.draw();
+       // cube_shader.useShader();
+        //norris.draw();
 
         texture_sting.stopUse(GL_TEXTURE0);
 
