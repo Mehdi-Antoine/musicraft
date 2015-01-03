@@ -1,4 +1,6 @@
 #include "include/Body.hpp"
+#include "include/Chunk.hpp"
+#include "include/World.hpp"
 #include "include/Physic.hpp"
 #include <iostream>
 
@@ -54,7 +56,7 @@ Body::~Body(){
 // Methods
 //  
 
-void Body::updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float coeffJetpacking){
+void Body::updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float coeffJetpacking, World &world){
      
      glm::vec3 forces(0,0,0);
 
@@ -63,6 +65,12 @@ void Body::updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float co
 
      forces = player_direction + gravity;
 
+
+     glm::vec3 feets_position = m_camera.getPosition();
+
+     Chunk chunk_sol = world.getChunk(0);
+
+     collisionSeeker(forces, m_speed, chunk_sol, feets_position);
 
      updateVerlett(m_camera.getPtPosition(), m_speed, forces, 1.0/30.0);
 

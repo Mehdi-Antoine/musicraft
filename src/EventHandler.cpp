@@ -1,4 +1,5 @@
 #include <iostream>
+#include "include/World.hpp"
 #include "include/EventHandler.hpp"
 
 #define WINDOW_WIDTH  800
@@ -14,7 +15,7 @@ InputManager& EventHandler::getInputManager(){
     return m_input;
 }
 
-void EventHandler::updatePlayer(){
+void EventHandler::updatePlayer(World &world){
     int directionFrontBack = 0;
     int directionRightLeft = 0;
     bool fly = false;
@@ -96,7 +97,7 @@ void EventHandler::updatePlayer(){
     m_player_manager.movement(directionFrontBack, directionRightLeft);
     m_player_manager.flyAndRun(run,fly);
 
-    m_player_manager.getPlayer().updatePlayer();   
+    m_player_manager.getPlayer().updatePlayer(world);   
 }
 
 void EventHandler::update(){

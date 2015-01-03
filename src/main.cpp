@@ -75,6 +75,9 @@ int main(int argc, char** argv){
     }
     std::cout << "Count : " << squares_position.size()<< std::endl;
 
+    glEnable(GL_DEPTH_TEST);
+
+
 //----------------------------------GL ENVIRONNEMENT------------------------------------------------
 
     //GlEnvironnement gl_environnement(dir_path);
@@ -175,7 +178,26 @@ int main(int argc, char** argv){
         squares_position.push_back(glm::vec3(2*(k/TAILLE), 0, 2*(k%TAILLE)));        
         squares_color.push_back(glm::vec3(k/TAILLE, 0, k%TAILLE));
     }
+
     std::cout << "OK." << std::endl << std::endl;*/
+
+
+    /*Chunk chunk_norris;
+
+    for(int i = 0; i < 20; ++i){
+        for(int z = 10; z < 20; ++z){
+            chunk_sol.setCubeType(i+20, i+1, z, SOLID);
+            norris_position.push_back(glm::vec3(i+20,i+1,z));
+            norris_color.push_back(glm::vec3(1,0,0));
+        }    
+    }*/
+
+//-----------------------------------WORLD CREATION-------------------------------------------------
+
+    /*World world;
+
+    world.addChunk(chunk_sol);
+    world.addChunk(chunk_norris);*/
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
@@ -210,7 +232,7 @@ int main(int argc, char** argv){
 
 //-----------------------------------EVENT HANDLER-----------------------------------------------------
         eventhandler.update();
-        eventhandler.updatePlayer();
+        eventhandler.updatePlayer(world);
 
         //quit ?
         if(eventhandler.getInputManager().getQuit() == true) quit=true;

@@ -2,8 +2,10 @@
 #include <glimac/glm.hpp>
 #include <vector>
 
+#include "World.hpp"
 #include "Physic.hpp"
 #include "Camera.hpp"
+#include "Chunk.hpp"
 
 using namespace glm;
 
@@ -48,7 +50,7 @@ void setCamera(Camera & camera);
 //--------------------------------------------------------------------------------------------------------------
 
 //void updateBody(vec3 forces);
-void updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float coeffJetpacking);
+void updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float coeffJetpacking, World &world);
 
 
 //--------------------------------------------------------------------------------------------------------------
