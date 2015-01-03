@@ -16,7 +16,7 @@ out vec3 g_Position;
 uniform mat4 uVMatrix;
 uniform mat4 uPMatrix;
 
-const float f = 1.f;
+const float f = 2.f;
 
 const int elements[] = int[]
 (

@@ -47,14 +47,12 @@ void Octree::insert(Octree &tree){
 }
 
 void Octree::getAllCoordinates(std::vector<glm::vec3> &centres){
-	if(cubeType != 0){
-		std::cout << "x : " << coo[0] << " y : "<< coo[1] << " z : " << coo[2] << std::endl;
-		centres.push_back(coo);
-	}
-	else{
-		for(int i = 0; i < 8; ++i)
-			if(children[i] != NULL)
+	for(int i = 0; i < 8; ++i){
+		if(children[i] != NULL)
+			/*if(cubeType != 1)
 				children[i]->getAllCoordinates(centres);
+			else*/
+				centres.push_back(children[i]->coo);
 	}
 }
 
@@ -62,9 +60,9 @@ void Octree::genAllCoordinates(float taille){
 	taille *= 0.5;
 	for(int i = 0; i < 8; ++i){
 		if(children[i] != NULL){
-			children[i]->coo[0] = coo[0] + (((i&1)*2)-1)*taille;
-			children[i]->coo[1] = coo[1] + ((((i&(1<<1))>>1)*2)-1)*taille;
-			children[i]->coo[2] = coo[2] + ((((i&(1<<2))>>2)*2)-1)*taille;
+			children[i]->coo[0] = coo[0] + (((i&1)*2)-1)*taille*2;
+			children[i]->coo[1] = coo[1] - ((((i&(1<<1))>>1)*2)-1)*taille*2;
+			children[i]->coo[2] = coo[2] + ((((i&(1<<2))>>2)*2)-1)*taille*2;
 			children[i]->genAllCoordinates(taille);
 		}
 	}
