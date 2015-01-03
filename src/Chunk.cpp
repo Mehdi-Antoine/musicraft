@@ -11,12 +11,15 @@ Chunk::Chunk(){
 }
 
 Chunk::Chunk(std::vector<glm::vec3> &centres){
-	profondeur = 7;
+	profondeur = 0;
 	int etage = 0;
 	root = Octree();
 	root.coo = glm::vec3(0,0,0);
 	int middle = pow(2, profondeur);
-	genTerrain(root, etage, middle, centres);
+	//genTerrain(root, etage, middle, centres);
+	genFlatFloor(root, 0);
+	root.genAllCoordinates(middle);
+	root.getAllCoordinates(centres);
 }
 
 void Chunk::genFlatFloor(Octree &subTree, int etage){
@@ -70,8 +73,8 @@ void Chunk::genTerrain(Octree &subTree, int etage, float taille, std::vector<glm
 
 void Chunk::fillTerrain(Octree &subTree, int etage, float taille,int x, int z, int height, std::vector<glm::vec3> &centres){
 	int middle = pow(2, profondeur);
-	
-	for(int i = height+middle/2; i > 0; --i){
+	//std::cout << height << std::endl;
+	for(int i = height-1; i <= height; ++i){
 
 		int left, near, bottom;
 

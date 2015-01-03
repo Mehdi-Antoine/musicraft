@@ -72,7 +72,8 @@ int main(int argc, char** argv){
         squares_color.push_back(glm::vec3(1,1,1));
     }
     std::cout << "Count : " << squares_position.size()<< std::endl;
-
+    glm::vec3 test = glm::vec3(-.5, 15.5, 15.5);
+    std::cout << "pos : " << (int)chunk_norris.getCubeType(test) << std::endl;
     glEnable(GL_DEPTH_TEST);
 
     World world;

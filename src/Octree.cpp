@@ -81,6 +81,7 @@ char Octree::getCubeType(Octree &subTree, int etage, const int taille, glm::vec3
 	//std::cout << index << std::endl;
 	//std::cout<< "etage : " << etage << " profondeur : " << profondeur << std::endl;
 	//std::cout << pos[0] << " " <<pos[1] << " " << pos[2] << std::endl;
+	//std::cout << subTree.coo[0] << " " <<subTree.coo[1] << " " << subTree.coo[2] << std::endl;
 
 	if(subTree.children[index] != NULL){
 		if(etage < profondeur)
