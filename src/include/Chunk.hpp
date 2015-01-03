@@ -4,17 +4,17 @@
 
 #include <glimac/glm.hpp>
 
-#define SIZE 64 
+#define SIZE 128 
 
 enum CubeType{ 
-  EMPTY,
-  SOLID
+  EMPTY = 0,
+  SOLID = 1
 };
 
 class Chunk{
 private:
 
-	CubeType m_chunk[SIZE][SIZE][SIZE];
+	char m_chunk[SIZE][SIZE][SIZE];
 	
 public:
 
@@ -22,17 +22,17 @@ public:
 
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 
-	Chunk(CubeType cube_type = EMPTY);
+	Chunk(char cube_type = 0);
 	~Chunk();
 
 //--------------------------------------------------GETTERS-----------------------------------------------------
 
-	CubeType getCubeType(float x, float y, float z) const;
-	CubeType getCubeType(const glm::vec3 &position) const;
+	char getCubeType(float x, float y, float z) const;
+	char getCubeType(const glm::vec3 &position) const;
 
 //--------------------------------------------------SETTERS-----------------------------------------------------
 
-	void setCubeType(int x, int y, int z, CubeType cube_type);
+	void setCubeType(int x, int y, int z, char cube_type);
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
