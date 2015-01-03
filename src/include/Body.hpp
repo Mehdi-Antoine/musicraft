@@ -57,7 +57,7 @@ void updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float coeffJet
 //-------------------------------------------------CONSTRUCTOR--------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-  Body(vec3 position = vec3(128,0,128),
+  Body(vec3 position = vec3(127.5,128,127.5),
        vec3 speed = vec3(0,0,0),
        vec3 acceleration = vec3(0,0,0),
        vec3 orientation = vec3(0,0,0)

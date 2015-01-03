@@ -35,9 +35,9 @@ bool Octree::isLeaf(){
 }
 
 void Octree::insert(char type){
-	if(isLeaf()){
+	//if(isLeaf()){
 		cubeType = type;
-	}
+	//}
 }
 
 void Octree::insert(Octree &tree){
@@ -46,13 +46,20 @@ void Octree::insert(Octree &tree){
 	}
 }
 
-void Octree::getAllCoordinates(std::vector<glm::vec3> &centres){
+void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const int profondeur){
 	for(int i = 0; i < 8; ++i){
-		if(children[i] != NULL)
-			/*if(cubeType != 1)
-				children[i]->getAllCoordinates(centres);
-			else*/
+		if(children[i] != NULL){
+			if(etage < profondeur){
+				std::cout << "etage : " << etage << " profondeur : " << profondeur << std::endl;
+				children[i]->getAllCoordinates(centres, etage+1, profondeur);
+			}
+			else{
+				std::cout << "PUSH" << std::endl;
 				centres.push_back(children[i]->coo);
+			}
+		}
+		else
+			std::cout << "babar " << i << std::endl;
 	}
 }
 
@@ -69,25 +76,32 @@ void Octree::genAllCoordinates(float taille){
 }
 
 char Octree::getCubeType(Octree &subTree, int etage, const int taille, glm::vec3 &pos, const int profondeur){
+
+	// Trouver les bonnes positions
+
 	int left, near, bottom;
 
 	(pos[0]	< subTree.coo[0]) ? left = 0 : left = 1;
-	(pos[1] < subTree.coo[1]) ? bottom = 0 : bottom = 1;
+	(pos[1] < subTree.coo[1]) ? bottom = 1 : bottom = 0;
 	(pos[2] < subTree.coo[2]) ? near = 0 : near = 1;
 	int index = (left|(bottom<<1))|(near<<2);
 
 	//std::cout << index << std::endl;
 	//std::cout<< "etage : " << etage << " profondeur : " << profondeur << std::endl;
-	//std::cout << pos[0] << " " <<pos[1] << " " << pos[2] << std::endl;
-	//std::cout << subTree.coo[0] << " " <<subTree.coo[1] << " " << subTree.coo[2] << std::endl;
+	std::cout << "p: "<< pos[0] << " " <<pos[1] << " " << pos[2] << std::endl;
+	
 
 	if(subTree.children[index] != NULL){
+		//std::cout << subTree.children[index]->coo[0] << " " <<subTree.children[index]->coo[1] << " " << subTree.children[index]->coo[2] << std::endl;
 		if(etage < profondeur)
 			return Octree::getCubeType(*subTree.children[index], etage+1, taille*0.5, pos, profondeur);
-		else
+		else{
+			//std::cout << subTree.coo[0] << " " <<subTree.coo[1] << " " << subTree.coo[2] << std::endl;
 			return 1;
+		}
 	}
 	else{
+		std::cout << subTree.coo[0] << " " <<subTree.coo[1] << " " << subTree.coo[2] << std::endl;
 		return 0;
 	}
 }

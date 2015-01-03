@@ -11,15 +11,15 @@ Chunk::Chunk(){
 }
 
 Chunk::Chunk(std::vector<glm::vec3> &centres){
-	profondeur = 7;
+	profondeur = 8;
 	int etage = 0;
 	root = Octree();
 	root.coo = glm::vec3(0,0,0);
 	int taille = pow(2, profondeur);
-	genTerrain(root, etage, taille);
+	genTerrain(root, etage, taille, centres);
 	//genFlatFloor(root, 0);
-	root.genAllCoordinates(taille);
-	root.getAllCoordinates(centres);
+	//root.genAllCoordinates(taille);
+	//root.getAllCoordinates(centres, etage, profondeur);
 }
 
 void Chunk::genFlatFloor(Octree &subTree, int etage){
@@ -48,7 +48,7 @@ void Chunk::genFlatFloor(Octree &subTree, int etage){
 	}
 }
 
-void Chunk::genTerrain(Octree &subTree, int etage, float taille){
+void Chunk::genTerrain(Octree &subTree, int etage, float taille, std::vector<glm::vec3> &centres){
 	
 	double persistence = .3;
     double frequency = 500;
@@ -66,15 +66,15 @@ void Chunk::genTerrain(Octree &subTree, int etage, float taille){
 				height = middle-1;
 			if(height < -middle/2)
 				height = -middle/2;
-			Chunk::fillTerrain(subTree, etage, taille, x, z, height);
+			Chunk::fillTerrain(subTree, etage, taille, x, z, height, centres);
 		}
 	}
 }
 
-void Chunk::fillTerrain(Octree &subTree, int etage, float taille,int x, int z, int height){
+void Chunk::fillTerrain(Octree &subTree, int etage, float taille,int x, int z, int height, std::vector<glm::vec3> &centres){
 	int middle = pow(2, profondeur);
 	
-	for(int i = height-1; i <= height; ++i){
+	for(int i = height; i <= height; ++i){
 
 		int left, near, bottom;
 
@@ -92,15 +92,16 @@ void Chunk::fillTerrain(Octree &subTree, int etage, float taille,int x, int z, i
 		}
 
 		subTree.children[index]->coo[0] = subTree.coo[0] + ((left*2)-1)*taille;
-		subTree.children[index]->coo[1] = subTree.coo[1] - ((bottom*2)-1)*taille;
+		subTree.children[index]->coo[1] = subTree.coo[1] + ((bottom*2)-1)*taille;
 		subTree.children[index]->coo[2] = subTree.coo[2] + ((near*2)-1)*taille;
 
 		taille *= 0.5;
 
 		if(etage < profondeur){
-			Chunk::fillTerrain(*subTree.children[index], etage+1, taille, x, z, height);
+			Chunk::fillTerrain(*subTree.children[index], etage+1, taille, x, z, height, centres);
 		}
 		else{
+			centres.push_back(subTree.children[index]->coo);
 			subTree.children[index]->insert(1);
 		}
 
