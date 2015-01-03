@@ -48,7 +48,7 @@ void Chunk::genFlatFloor(Octree &subTree, int etage){
 void Chunk::genTerrain(Octree &subTree, int etage, float taille, std::vector<glm::vec3> &centres){
 	
 	double persistence = .3;
-    double frequency = 50;
+    double frequency = 500;
     double amplitude = 5;
     int octaves = 5;
     int randomseed = 0;

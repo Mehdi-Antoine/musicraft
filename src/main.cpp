@@ -90,7 +90,7 @@ int main(int argc, char** argv){
 
     std::cout << "CREATION SHADER..." << std::endl;
 
-    GlShader square_shader(dir_path, "square");
+    GlShader square_shader(dir_path, "cube");
 
     square_shader.useShader();
 
