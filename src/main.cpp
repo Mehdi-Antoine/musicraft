@@ -62,10 +62,6 @@ int main(int argc, char** argv){
 
     glEnable(GL_DEPTH_TEST);
 
-//-----------------------------------WORLD CREATION------------------------------------------------
-
-    //World world;
-
 //----------------------------------GL ENVIRONNEMENT------------------------------------------------
 
     //GlEnvironnement gl_environnement(dir_path);
@@ -193,6 +189,12 @@ int main(int argc, char** argv){
         }    
     }
 
+//-----------------------------------WORLD CREATION-------------------------------------------------
+
+    World world;
+
+    world.addChunk(chunk_sol);
+    world.addChunk(chunk_norris);
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
@@ -228,7 +230,7 @@ int main(int argc, char** argv){
 
 //-----------------------------------EVENT HANDLER-----------------------------------------------------
         eventhandler.update();
-        eventhandler.updatePlayer();
+        eventhandler.updatePlayer(world);
 
         //quit ?
         if(eventhandler.getInputManager().getQuit() == true) quit=true;

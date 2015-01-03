@@ -1,5 +1,6 @@
 #include "include/Player.hpp"
 #include "include/Body.hpp"
+#include "include/World.hpp"
 #include "include/Physic.hpp"
 #include <glimac/glm.hpp>
 #include <vector>
@@ -83,7 +84,7 @@ bool Player::getIsFlying() const{
 
 
 
-void Player::updatePlayer(){
+void Player::updatePlayer(World &world){
 	
 	float coeffRunning=0;
 	if(m_is_running) coeffRunning = 2; 
@@ -93,7 +94,7 @@ void Player::updatePlayer(){
 	if(m_is_flying) coeffJetpacking = 2;
 	else coeffJetpacking = 0;
 
-	m_body.updateBody(m_dir_x, m_dir_z, coeffRunning, coeffJetpacking);
+	m_body.updateBody(m_dir_x, m_dir_z, coeffRunning, coeffJetpacking, world);
 
 }
 

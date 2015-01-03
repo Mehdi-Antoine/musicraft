@@ -3,6 +3,7 @@
 
 #include "InputManager.hpp"
 #include "PlayerManager.hpp"
+#include "World.hpp"
 
 
 class EventHandler {
@@ -13,7 +14,7 @@ public:
 	PlayerManager& getPlayerManager();
 	InputManager& getInputManager();
 
-    void updatePlayer();
+    void updatePlayer(World &world);
 
     void update();
 

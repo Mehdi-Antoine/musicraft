@@ -1,5 +1,6 @@
 #pragma once
 #include "Body.hpp"
+#include "World.hpp"
 #include "Inventory.hpp"
 
 
@@ -7,7 +8,9 @@
 class Player{
 private:
 	Inventory m_inventory;
+
 	Body m_body;
+
   int m_dir_z;
   int m_dir_x;
   bool m_is_running;
@@ -33,7 +36,7 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------METHODS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
-  void updatePlayer();
+  void updatePlayer(World &world);
 
   void jetpack(bool is_flying);
   void run(bool is_running);
