@@ -65,9 +65,7 @@ int main(int argc, char** argv){
 //-----------------------------------WORLD CREATION------------------------------------------------
 
     std::vector<glm::vec3> squares_position;
-    Chunk world = Chunk(squares_position);
-    //world.root.genAllCoordinates(CHUNK_SIZE);
-    
+    Chunk chunk_norris = Chunk(squares_position);
 
     std::vector<glm::vec3> squares_color;
     for(unsigned int i = 0; i < squares_position.size(); ++i){
@@ -76,6 +74,10 @@ int main(int argc, char** argv){
     std::cout << "Count : " << squares_position.size()<< std::endl;
 
     glEnable(GL_DEPTH_TEST);
+
+    World world;
+
+    world.addChunk(chunk_norris);
 
 
 //----------------------------------GL ENVIRONNEMENT------------------------------------------------
@@ -192,12 +194,6 @@ int main(int argc, char** argv){
         }    
     }*/
 
-//-----------------------------------WORLD CREATION-------------------------------------------------
-
-    /*World world;
-
-    world.addChunk(chunk_sol);
-    world.addChunk(chunk_norris);*/
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 

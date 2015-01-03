@@ -27,7 +27,7 @@ void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & fo
     speed = new_speed;
 }
 
-void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chunk, const glm::vec3 &position){
+void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, Chunk& chunk, const glm::vec3 &position){
 
 	glm::vec3 next_speed = speed;
 
@@ -35,7 +35,7 @@ void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chu
 
 	updateVerlett(next_position, next_speed, forces, 1.0/10);
 
-	if(chunk.getCubeType(next_position) != EMPTY){
+	if(chunk.getCubeType(next_position) != 0){
 		std::cout << "COLLISION BIATCH !!" << std::endl;
 		forces = forces + glm::vec3(0, - forces.y + 0.000001, 0);
 	}

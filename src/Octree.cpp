@@ -69,3 +69,26 @@ void Octree::genAllCoordinates(float taille){
 		}
 	}
 }
+
+char Octree::getCubeType(Octree &subTree, int etage, const int taille, glm::vec3 &pos, const int profondeur){
+	int left, near, bottom;
+
+	(pos[0]	< subTree.coo[0]) ? left = 0 : left = 1;
+	(pos[1] < subTree.coo[1]) ? bottom = 0 : bottom = 1;
+	(pos[2] < subTree.coo[2]) ? near = 0 : near = 1;
+	int index = (left|(bottom<<1))|(near<<2);
+
+	//std::cout << index << std::endl;
+	//std::cout<< "etage : " << etage << " profondeur : " << profondeur << std::endl;
+	//std::cout << pos[0] << " " <<pos[1] << " " << pos[2] << std::endl;
+
+	if(subTree.children[index] != NULL){
+		if(etage < profondeur)
+			return Octree::getCubeType(*subTree.children[index], etage+1, taille*0.5, pos, profondeur);
+		else
+			return 1;
+	}
+	else{
+		return 0;
+	}
+}
