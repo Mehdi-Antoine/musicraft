@@ -62,14 +62,14 @@ void EventHandler::updatePlayer(World &world){
 
     int WINDOW_WIDTH = world.getWindowWidth();
     int WINDOW_HEIGHT = world.getWindowHeight();
-    float angle = 3.0;
+    float angle = 1.5;
 
     float rel_x = m_input.getMouseRel(0);
     float rel_y = m_input.getMouseRel(1);
-    /*if(rel_x > 3) rel_x = 3;
-    else if(rel_x < -3) rel_x = -3;
-    if(rel_y > 3) rel_y = 3;
-    else if(rel_y < -3) rel_y = -3;*/
+    if(rel_x > angle) rel_x = angle;
+    else if(rel_x < -angle) rel_x = -angle;
+    if(rel_y > angle) rel_y = angle;
+    else if(rel_y < -angle) rel_y = -angle;
 
     if(rel_x != 0 && rel_x != -1 && rel_x != 1){
         m_player_manager.getPlayer().getBody().getCamera().rotateLeft(-rel_x);

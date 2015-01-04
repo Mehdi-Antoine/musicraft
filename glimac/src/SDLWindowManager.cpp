@@ -16,11 +16,13 @@ SDLWindowManager::SDLWindowManager(uint32_t width, uint32_t height, const char* 
     uint32_t height_ = 768;
 
     //if(!SDL_SetVideoMode(width_, height_, 32, SDL_OPENGL)) {
-    //if(!SDL_SetVideoMode(0, 0, 32, SDL_RESIZABLE | SDL_FULLSCREEN | SDL_OPENGL)) {
-    if(!SDL_SetVideoMode(0, 0, 32, SDL_RESIZABLE | SDL_OPENGL)) {
+    if(!SDL_SetVideoMode(0, 0, 32, SDL_RESIZABLE | SDL_FULLSCREEN | SDL_OPENGL)) {
+    //if(!SDL_SetVideoMode(0, 0, 32, SDL_RESIZABLE | SDL_OPENGL)) {
         std::cerr << SDL_GetError() << std::endl;
         return;
     }
+
+    SDL_ShowCursor(SDL_DISABLE);
 
     SDL_WM_SetCaption(title, nullptr);
 }
