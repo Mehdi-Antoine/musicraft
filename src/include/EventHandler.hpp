@@ -14,9 +14,9 @@ public:
 	PlayerManager& getPlayerManager();
 	InputManager& getInputManager();
 
-    void updatePlayer(World &world);
+	void update();
 
-    void update();
+    void updatePlayer(World &world);
 
     EventHandler(InputManager & input, PlayerManager & player_manager);
 

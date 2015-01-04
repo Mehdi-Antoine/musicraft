@@ -7,7 +7,11 @@
 //--------------------------------------------------------------------------------------------------------------
 
 World::World(){
+	
+}
 
+World::World(int width, int height)
+: m_window_width(width), m_window_height(height){
 }
 
 World::~World(){
@@ -26,6 +30,14 @@ Chunk& World::getChunk(int index){
 
 std::vector<Chunk>& World::getChunkVector(){
 
+}
+
+int World::getWindowWidth() const{
+	return m_window_width;
+}
+
+int World::getWindowHeight() const{
+	return m_window_height;
 }
 
 //--------------------------------------------------------------------------------------------------------------

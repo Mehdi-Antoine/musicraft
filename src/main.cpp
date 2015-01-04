@@ -24,14 +24,16 @@
 
 using namespace glimac;
 
-#define WINDOW_WIDTH  800
-#define WINDOW_HEIGHT 700
+#define WINDOW_WIDTH_ 1024
+#define WINDOW_HEIGHT_ 768
+
 
 //--------------------------------------------------------------------------------------------------
 //---------------------------------------LE MAIN----------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
 int main(int argc, char** argv){
+
 
     int TAILLE = 20; //Taille de porc
 
@@ -40,7 +42,15 @@ int main(int argc, char** argv){
     FilePath dir_path = applicationPath.dirPath();
 
     // Initialize SDL and open a window
-    SDLWindowManager windowManager(WINDOW_WIDTH, WINDOW_HEIGHT, "GLImac");
+    //SDLWindowManager windowManager(WINDOW_WIDTH, WINDOW_HEIGHT, "musicraft");
+    SDLWindowManager windowManager(WINDOW_WIDTH_, WINDOW_HEIGHT_, "MUSICRAFT");
+    const SDL_VideoInfo* info = SDL_GetVideoInfo();
+    const int WINDOW_WIDTH  = info->current_w;
+    const int WINDOW_HEIGHT = info->current_h; 
+
+    std::cout << "w: " << WINDOW_WIDTH << " h: " << WINDOW_HEIGHT <<std::endl;
+
+
 
     unsigned int FRAMERATE_MILLISECONDS = 1000 / 35;
     unsigned int startTime;
@@ -230,7 +240,7 @@ int main(int argc, char** argv){
 
 //-----------------------------------WORLD CREATION-------------------------------------------------
 
-    World world;
+    World world(WINDOW_WIDTH,WINDOW_HEIGHT);
 
     world.addChunk(chunk);
 
@@ -311,8 +321,8 @@ int main(int argc, char** argv){
                 std::cout << "Warning ! : ";
             }
 
-            std::cout << res << " sec" << std::endl;
-            std::cout << 1 / res << " fps" << std::endl<< std::endl;
+            //std::cout << res << " sec" << std::endl;
+            //std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
             nbFrames = 0;
 

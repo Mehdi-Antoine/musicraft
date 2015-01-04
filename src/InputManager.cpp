@@ -12,6 +12,7 @@ void InputManager::updateInput() {
         m_mouse_pos[0] = m_event.button.x;
         m_mouse_pos[1] = m_event.button.y;
 
+        //std::cout << "mouse pos: " << m_mouse_pos[0] << std::endl;
 
 
         //Quel type d'event
