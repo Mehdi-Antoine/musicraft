@@ -1,4 +1,5 @@
 #include "include/InputManager.hpp"
+#include <iostream>
 
 
 void InputManager::updateInput() {
@@ -45,6 +46,10 @@ void InputManager::updateInput() {
 
             case SDLK_RSHIFT:
                 m_key[SDLK_RSHIFT] = true;
+                break;
+
+            case SDLK_ESCAPE:
+                m_quit = true;
                 break;
 
             default:
@@ -101,7 +106,7 @@ void InputManager::updateInput() {
 
         case SDL_MOUSEBUTTONDOWN:
             m_mouse_button[m_event.button.button]= true;
-
+            
             if (m_event.button.button == SDL_BUTTON_LEFT) {
                 m_mouse_pos[0] = m_event.button.x;
                 m_mouse_pos[1] = m_event.button.y;

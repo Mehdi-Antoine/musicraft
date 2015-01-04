@@ -18,15 +18,15 @@ World::~World(){
 //-------------------------------------------------GETTERS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	Chunk& World::getChunk(int index){
-		if(index >= 0 && index < m_chunks.size()){
-			return m_chunks[index];
-		}
+Chunk& World::getChunk(int index){
+	if(index >= 0 && index < m_chunks.size()){
+		return m_chunks[index];
 	}
+}
 
-	std::vector<Chunk>& World::getChunkVector(){
+std::vector<Chunk>& World::getChunkVector(){
 
-	}
+}
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------SETTERS------------------------------------------------------
@@ -38,6 +38,10 @@ World::~World(){
 //------------------------------------------------FUNCTIONS-----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	void World::addChunk(Chunk &chunk){
-		m_chunks.push_back(chunk);
-	}
+void World::addChunk(Chunk &chunk){
+	m_chunks.push_back(chunk);
+}
+
+char World::getCubeType(const glm::vec3 &position){
+	return m_chunks[0].getCubeType(position);
+}

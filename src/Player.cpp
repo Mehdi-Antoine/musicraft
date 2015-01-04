@@ -6,9 +6,9 @@
 #include <vector>
 #include <iostream>
 
-
-// Constructors/Destructors
-//  
+//--------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------CONSTRUCTOR--------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 
 Player::Player(){
 	m_dir_x = 0;
@@ -40,38 +40,24 @@ Player::~Player(){
 	
 }
 
-//  
-// Methods
-//  
-
-	
+//--------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------GETTERS----------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 
 Body& Player::getBody(){
 	return m_body;
-}
-void Player::setBody(Body body){
-	m_body = body;
 }
 
 int Player::getName() const{
 	return m_name;
 }
-void Player::setName(int name){
-	m_name = name;
-}
 
 int Player::getDirZ() const{
 	return m_dir_z;
 }
-void Player::setDirZ(int z){
-	m_dir_z = z;
-}
 
 int Player::getDirX() const{
 	return m_dir_x;
-}
-void Player::setDirX(int x){
-	m_dir_x = x;
 }
 
 bool Player::getIsRunning() const{
@@ -82,7 +68,29 @@ bool Player::getIsFlying() const{
 	return m_is_flying;
 }
 
+//--------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------SETTERS----------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 
+void Player::setBody(Body body){
+	m_body = body;
+}
+
+void Player::setName(int name){
+	m_name = name;
+}
+
+void Player::setDirZ(int z){
+	m_dir_z = z;
+}
+
+void Player::setDirX(int x){
+	m_dir_x = x;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------METHODS----------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 
 void Player::updatePlayer(World &world){
 	
@@ -115,6 +123,22 @@ void Player::moveLeft(int t){
 	setDirX(t);
 }
 
+void Player::pickCube(World &world){
+
+	glm::vec3 front_vector = m_body.getCamera().getFrontVector();
+	glm::vec3 camera_position = m_body.getCamera().getPosition();
+
+	glm::vec3 target = camera_position + float(1) * front_vector;
+
+	if(world.getCubeType(target) != EMPTY){
+		std::cout << "PICK CUBE !" << std::endl;
+	}
+	else{
+		std::cout << "NO CUBE" << std::endl;
+	}
+
+
+}
 
 bool Player::catchCube(int cube){
 	return this->m_inventory.addCube(cube);
@@ -127,12 +151,5 @@ bool Player::dropCube(){
 bool Player::deleteCube(int cube){
 	return this->m_inventory.removeCube(cube);
 }
+ 
 
-
-// Accessor methods
-//  
-
-
-
-// Other methods
-//  

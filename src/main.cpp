@@ -192,18 +192,17 @@ int main(int argc, char** argv){
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));          
     }
     for (int x = 0; x < 32; ++x)
-    { 
-        int y = 1;
-
+    {   
         int z = 31;
+        for(int y = 1; y < 4; ++y){
+            cubeType = x % 2 + 1;
 
-        cubeType = x % 2 + 1;
-
-        chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
-        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
+            chunk.setCubeType(x, y, z, cubeType);
+            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
+            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));  
+        }              
     }
-
+    
     for (int z = 0; z < 32; ++z)
     {   
         int x = 0;

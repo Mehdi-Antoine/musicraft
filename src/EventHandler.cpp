@@ -21,12 +21,10 @@ void EventHandler::updatePlayer(World &world){
     bool fly = false;
     bool run = false;
 
-    //m_player_manager.movement(directionFrontBack, directionRightLeft);
-    //m_player_manager.flyAndRun(run,fly);
-
     //Saut et sprint
     if(m_input.getKey(SDLK_SPACE) == true) {
         fly = true;
+        
     }
     if(m_input.getKey(SDLK_RSHIFT) == true) {
         run = true;
@@ -46,6 +44,12 @@ void EventHandler::updatePlayer(World &world){
     }
     if(m_input.getKey(SDLK_d) == true) {
         directionRightLeft--;
+        
+    }
+
+    //Click Gauche --> Pick Cube
+    if(m_input.getMouse(1) == true){
+        m_player_manager.getPlayer().pickCube(world);
     }
 
 
@@ -56,44 +60,6 @@ void EventHandler::updatePlayer(World &world){
         click = 1;
     }
     else click = 0;
-
-    //std::cout << "0: " << m_input.getMousePos(0) << " ||| 1:" << m_input.getMousePos(1) << std::endl;
-    //std::cout << "0: " << m_input.getMouseRel(0) << " ||| 1:" << m_input.getMouseRel(1) << std::endl;
-    //if( (m_input.getMouseRel(0) > 1 || m_input.getMouseRel(0) < -1 ) && click == 1 ) {
-    /*
-    if( 
-            (m_input.getMouseRel(0) != 0 && m_input.getMouseRel(0) != 1 && m_input.getMouseRel(0) != -1)
-        ||
-            (m_input.getMousePos(0) < COIN || m_input.getMousePos(0) > (WINDOW_WIDTH - COIN)) 
-    ){
-        if(m_input.getMouseRel(0) < 0 && m_input.getMousePos(0) < (WINDOW_WIDTH/2 - 200)){
-            //std::cout << "gauche getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
-            m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);
-        }  
-        if(m_input.getMouseRel(0) > 0 && m_input.getMousePos(0) >= (WINDOW_WIDTH/2 + 200)){
-            //std::cout << "droite getMouseRel(0) X= " << m_input.getMouseRel(0) <<std::endl;
-            m_player_manager.getPlayer().getBody().getCamera().rotateLeft(- m_input.getMouseRel(0) /2.);
-        }  
-    }
-
-
-    //if( (m_input.getMouseRel(1) > 1 || m_input.getMouseRel(1) < -1 )) {
-    if( 
-            (m_input.getMouseRel(1) != 0 && m_input.getMouseRel(1) != 1 && m_input.getMouseRel(1) != -1)
-        ||
-            (m_input.getMousePos(1) < COIN || m_input.getMousePos(1) > WINDOW_HEIGHT - COIN)
-    
-    ){
-        if(m_input.getMouseRel(1) > 0 && m_input.getMousePos(1) >= (WINDOW_HEIGHT/2 + 200)){
-            //std::cout << "bas getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;   
-            m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
-        }
-        if(m_input.getMouseRel(1) < 0 && m_input.getMousePos(1) < (WINDOW_HEIGHT/2 - 200)){
-            //std::cout << "haut getMouseRel(1) Y= "<< m_input.getMouseRel(1) << std::endl;   
-            m_player_manager.getPlayer().getBody().getCamera().rotateUp(- m_input.getMouseRel(1) /2.);
-        }
-    }*/
-
 
 
     if(m_input.getMouseRel(0) != 0 && m_input.getMouseRel(0) != -1 && m_input.getMouseRel(0) != 1){
@@ -109,11 +75,8 @@ void EventHandler::updatePlayer(World &world){
         m_player_manager.getPlayer().getBody().getCamera().rotateUp(-m_input.getMouseRel(1)/2.);
     }*/
 
-
-
     m_player_manager.movement(directionFrontBack, directionRightLeft);
-    m_player_manager.flyAndRun(run,fly);
-
+    m_player_manager.flyAndRun(run,fly); 
     m_player_manager.getPlayer().updatePlayer(world);   
 }
 

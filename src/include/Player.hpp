@@ -3,8 +3,6 @@
 #include "World.hpp"
 #include "Inventory.hpp"
 
-
-
 class Player{
 private:
 	Inventory m_inventory;
@@ -18,24 +16,40 @@ private:
   int m_name;
 
 public:
-//--------------------------------------------------------------------------------------------------------------
-//-----------------------------------------------GETTERS-SETTERS------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------CONSTRUCTOR--------------------------------------------------
+
+  Player();
+  Player(Player & player);
+  Player(int name);
+  ~Player();
+
+//---------------------------------------------------GETTERS----------------------------------------------------
 
   Body& getBody();
-  void setBody(Body body);
+  
   int getName() const;
-  void setName(int name);
+  
   int getDirZ() const;
-  void setDirZ(int z);
+  
   int getDirX() const;
-  void setDirX(int x);
+  
   bool getIsRunning() const;
+
   bool getIsFlying() const;
 
-//--------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------SETTERS----------------------------------------------------
+
+  void setBody(Body body);
+
+  void setName(int name);
+
+  void setDirZ(int z);
+
+  void setDirX(int x);
+
 //---------------------------------------------------METHODS----------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------
+
   void updatePlayer(World &world);
 
   void jetpack(bool is_flying);
@@ -44,18 +58,11 @@ public:
   void moveFront(int t);
   void moveLeft(int t);
 
+  void pickCube(World &world); //Méthode qui permet d'attraper un cube, le cherche dans le chunk etc.
+
   bool catchCube(int cube);
   bool dropCube();
   bool deleteCube(int cube);
-
-//--------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------CONSTRUCTOR--------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------
-
-  Player();
-  Player(Player & player);
-  Player(int name);
-  ~Player();
 
 };
 

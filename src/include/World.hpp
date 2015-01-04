@@ -37,5 +37,7 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 
 	void addChunk(Chunk &chunk);
+
+	char getCubeType(const glm::vec3 &position);
 	
 };
