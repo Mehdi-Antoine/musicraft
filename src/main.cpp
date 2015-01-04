@@ -67,13 +67,22 @@ int main(int argc, char** argv){
     std::vector<glm::vec3> squares_position;
     Chunk chunk_norris = Chunk(squares_position);
 
+    /*
+    std::cout << "pos : " << (int)chunk_norris.getCubeType(test) << std::endl;*/
+    glm::vec3 no = glm::vec3(0,-100,0);
+
+    chunk_norris.setCubeType(no, 1);
+    std::cout << "no type : " << (int)chunk_norris.getCubeType(no) << std::endl;
+
+    squares_position = chunk_norris.getAllCoordinates();
+    std::cout << "Count : " << squares_position.size()<< std::endl;
+    glm::vec3 test = glm::vec3(0, -128, 0);
+
     std::vector<glm::vec3> squares_color;
     for(unsigned int i = 0; i < squares_position.size(); ++i){
         squares_color.push_back(glm::vec3(1,1,1));
     }
-    std::cout << "Count : " << squares_position.size()<< std::endl;
-    glm::vec3 test = glm::vec3(254.6, -129, 255);
-    std::cout << "pos : " << (int)chunk_norris.getCubeType(test) << std::endl;
+
     glEnable(GL_DEPTH_TEST);
 
     World world;

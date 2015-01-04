@@ -16,9 +16,15 @@ public:
 	
 	Chunk();
 	Chunk(std::vector<glm::vec3> &centres);
+
 	void genFlatFloor(Octree &subTree, int etage);
-	void genTerrain(Octree &subTree, int etage, const int profondeur, float taille, std::vector<glm::vec3> &centres);
-	void fillTerrain(Octree &subTree, int etage, const int profondeur, float taille, int x, int z, int height, std::vector<glm::vec3> &centres);
+	void genTerrain(Octree &subTree, int etage, float taille);
+	void fillTerrain(Octree &subTree, int etage, float taille, int x, int z, int y);
+
 	void culling(std::vector<float> centres, Octree &subTree, int etage, float taille);
+
 	char getCubeType(glm::vec3 &pos);
+	void setCubeType(glm::vec3 &pos, char type);
+
+	std::vector<glm::vec3> getAllCoordinates();
 };

@@ -11,12 +11,14 @@ using namespace glm;
 
 Body::Body(vec3 position, vec3 speed, vec3 acceleration, vec3 orientation){
 
+     m_position = (position+vec3(128,0,128))*vec3(.5,.5,.5);
      float t = 2;
-     float x = position.x;
-     float y = position.y;
-     float z = position.z;
+     float x = m_position.x;
+     float y = m_position.y;
+     float z = m_position.z;
 
-	 m_position = position; 
+	 
+     //m_position = position + vec3(128,0,128);
 	 m_speed = speed; 
 	 m_acceleration = acceleration; 
 	 m_orientation = orientation; 

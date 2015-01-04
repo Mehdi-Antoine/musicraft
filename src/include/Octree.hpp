@@ -19,7 +19,7 @@ public:
 	Octree(int type);
 	Octree(Octree** newChildren);
 
-	char getCubeType();
+	//char getCubeType();
 
 	bool isLeaf();
 	void insert(char type);
@@ -27,5 +27,6 @@ public:
 	glm::vec3 getCoordinates();
 	void getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const int profondeur);
 	void genAllCoordinates(float taille);
-	void getCubeType(char &result, Octree &subTree, int etage, const int taille, glm::vec3 &pos, const int profondeur);
+	void getCubeType(char &result, glm::vec3 &pos, int etage, const int profondeur);
+	void setCubeType(glm::vec3 pos, char type, int etage, const int profondeur);
 };

@@ -17,8 +17,7 @@ Chunk::Chunk(std::vector<glm::vec3> &centres){
 	int taille = pow(2, profondeur);
 	root.coo = glm::vec3(0,0,0);
 	std::cout << root.coo[0] << " " <<root.coo[1] << " " << root.coo[2] << std::endl;
-	//std::vector<glm::vec3> tuc;
-	genTerrain(root, etage, profondeur, taille, centres);
+	genTerrain(root, etage, taille);
 	//genFlatFloor(root, 0);
 	//root.genAllCoordinates(taille);
 	//root.getAllCoordinates(centres, etage, profondeur);
@@ -50,12 +49,12 @@ void Chunk::genFlatFloor(Octree &subTree, int etage){
 	}
 }
 
-void Chunk::genTerrain(Octree &subTree, int etage, const int profondeur, float taille, std::vector<glm::vec3> &centres){
+void Chunk::genTerrain(Octree &subTree, int etage, float taille){
 	
-	double persistence = .9;
+	double persistence = 0.9;
     double frequency = 10;
-    double amplitude = 20;
-    int octaves = 5;
+    double amplitude = 5;
+    int octaves = 2;
     int randomseed = 0;
     PerlinNoise noise = PerlinNoise(persistence, frequency, amplitude, octaves, randomseed);
 
@@ -67,27 +66,27 @@ void Chunk::genTerrain(Octree &subTree, int etage, const int profondeur, float t
 			if(height < -taille/2)
 				height = -taille/2;
 			for(int y = -pow(2,profondeur)/2; y <= height ; ++y)
-				Chunk::fillTerrain(subTree, etage, profondeur, taille, x, z, y, centres);
+				Chunk::fillTerrain(subTree, etage, taille, x, z, y);
 		}
 	}
 }
 
-void Chunk::fillTerrain(Octree &subTree, int etage, const int profondeur, float taille,int x, int z, int height, std::vector<glm::vec3> &centres){
+void Chunk::fillTerrain(Octree &subTree, int etage, float taille, int x, int z, int y){
 
 	int right, far, top;
 
 	(x > subTree.coo[0]) ? right = 1 : right = 0;
-	(height > subTree.coo[1]) ? top = 1 : top = 0;
+	(y > subTree.coo[1]) ? top = 1 : top = 0;
 	(z > subTree.coo[2]) ? far = 1 : far = 0;
 
 	int index = (right|(top<<1))|(far<<2);
 
 	for(int i = 0; i < 8;++i){
-			if(i == index)
+		if(i == index)
+			if(subTree.children[index] == NULL)
 				subTree.children[index] = new Octree();
-			/*else
-				subTree.children[i] = NULL;*/
 	}
+
 	subTree.children[index]->coo[0] = subTree.coo[0] + ((right*2)-1)*taille;
 	subTree.children[index]->coo[1] = subTree.coo[1] + ((top*2)-1)*taille;
 	subTree.children[index]->coo[2] = subTree.coo[2] + ((far*2)-1)*taille;
@@ -95,24 +94,28 @@ void Chunk::fillTerrain(Octree &subTree, int etage, const int profondeur, float 
 	taille *= 0.5;
 
 	if(etage < profondeur){
-		Chunk::fillTerrain(*subTree.children[index], etage+1, profondeur, taille, x, z, height, centres);
+		Chunk::fillTerrain(*subTree.children[index], etage+1, taille, x, z, y);
 	}
 	else{
-		centres.push_back(subTree.children[index]->coo);
-		//if(subTree.children[index]->coo[0] < 0)
-		std::cout << subTree.children[index]->coo[0] << " " <<subTree.children[index]->coo[1] << " " << subTree.children[index]->coo[2] << std::endl;
 		subTree.children[index]->insert(1);
-		//subTree.getAllCoordinates(centres, etage, profondeur);
-		//centres.push_back(subTree.getCoordinates());
 	}
 }
 
 char Chunk::getCubeType(glm::vec3 &pos){
 	int etage = 0;
 	char result = 1;
-	pos = pos+glm::vec3(255,-255,255);
-	root.getCubeType(result, root, etage, pow(2, profondeur),pos, profondeur);
+	root.getCubeType(result, pos, etage, profondeur);
+	return result;
+}
 
+void Chunk::setCubeType(glm::vec3 &pos, char type){
+	int etage = 0;
+	root.setCubeType(pos, type, etage, profondeur);
+}
+
+std::vector<glm::vec3> Chunk::getAllCoordinates(){
+	std::vector<glm::vec3> result;
+	root.getAllCoordinates(result, 0, profondeur);
 	return result;
 }
 
