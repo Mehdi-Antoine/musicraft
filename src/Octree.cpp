@@ -60,7 +60,8 @@ void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const
 			}
 			else{
 				//std::cout << children[i]->coo[0] << " " << children[i]->coo[1] << " " << children[i]->coo[2] << std::endl;
-				centres.push_back(children[i]->coo);
+				if(children[i]->cubeType > 0)
+					centres.push_back(children[i]->coo);
 			}
 		}
 	}
@@ -94,12 +95,11 @@ void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int prof
 	if(children[index] == NULL)
 		result = 0;
 	else if(etage < profondeur){
-		//std::cout << index << std::endl;
 		children[index]->getCubeType(result, pos, etage+1, profondeur);
 	}
 	else{
-		std::cout << "COLLISION" << std::endl;
-		result = 1;
+		//std::cout << (int)children[index]->cubeType << std::endl;
+		result = children[index]->cubeType;
 	}
 }
 
@@ -120,6 +120,41 @@ void Octree::setCubeType(glm::vec3 pos, char type, int etage, const int profonde
 	}
 	else{
 		children[index]->cubeType = type;
+	}
+}
+
+void Octree::lighten(int etage, const int profondeur){
+	for(int i = 0; i < 8; ++i){
+		if(children[i] != NULL){
+			if(etage < profondeur){
+				children[i]->lighten(etage+1, profondeur);
+			}
+			else if(children[i]->cubeType != 0){
+				char result = 1;
+				for(int j = 1; j < 4; ++j){
+					//std::cout <<  (j&1) << " " << ((j>>1)&1) << " " << ((j>>2)&1) << " " << j << std::endl;
+					glm::vec3 pos = glm::vec3(children[i]->coo.x + (j&1), children[i]->coo.y + ((j>>1)&1), children[i]->coo.z + ((j>>2)&1));
+					getCubeType(result, pos, 0, profondeur);
+					if(result == 0){
+						break;
+					}
+				}
+				if(result != 0){
+					std::cout << "salut" << std::endl;
+					for(int j = 1; j < 4; ++j){
+						glm::vec3 pos = glm::vec3(children[i]->coo.x - (j&1), children[i]->coo.y - ((j>>1)&1), children[i]->coo.z - ((j>>2)&1));
+						getCubeType(result, pos, 0, profondeur);
+						if(result == 0){
+							break;
+						}
+					}
+				}
+				if(result != 0){
+					std::cout << "destroy" << std::endl;
+					children[i]->cubeType = -1;	
+				}
+			}
+		}
 	}
 }
 

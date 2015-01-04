@@ -65,18 +65,21 @@ int main(int argc, char** argv){
 //-----------------------------------WORLD CREATION------------------------------------------------
 
     std::vector<glm::vec3> squares_position;
-    Chunk chunk_norris = Chunk(squares_position);
+    Chunk chunk_norris = Chunk(0);
 
-    /*
-    std::cout << "pos : " << (int)chunk_norris.getCubeType(test) << std::endl;*/
-    glm::vec3 no = glm::vec3(0,-100,0);
-
-    chunk_norris.setCubeType(no, 1);
-    std::cout << "no type : " << (int)chunk_norris.getCubeType(no) << std::endl;
+    //glm::vec3 no = glm::vec3(0,-100,0);
+    //chunk_norris.setCubeType(no, 1);
+    //std::cout << "no type : " << (int)chunk_norris.getCubeType(no) << std::endl;
 
     squares_position = chunk_norris.getAllCoordinates();
-    std::cout << "Count : " << squares_position.size()<< std::endl;
-    glm::vec3 test = glm::vec3(0, -128, 0);
+    std::cout << "Count unlightened: " << squares_position.size()<< std::endl;
+
+    chunk_norris.lighten();
+    squares_position = chunk_norris.getAllCoordinates();
+    std::cout << "Count lightened: " << squares_position.size()<< std::endl;
+
+
+
 
     std::vector<glm::vec3> squares_color;
     for(unsigned int i = 0; i < squares_position.size(); ++i){

@@ -10,17 +10,18 @@ Chunk::Chunk(){
 	root.coo = glm::vec3(0,0,0);
 }
 
-Chunk::Chunk(std::vector<glm::vec3> &centres){
-	profondeur = 8;
+Chunk::Chunk(int seed){
+	profondeur = 4;
 	int etage = 0;
 	root = Octree();
 	int taille = pow(2, profondeur);
 	root.coo = glm::vec3(0,0,0);
-	std::cout << root.coo[0] << " " <<root.coo[1] << " " << root.coo[2] << std::endl;
-	genTerrain(root, etage, taille);
+	//std::cout << root.coo[0] << " " <<root.coo[1] << " " << root.coo[2] << std::endl;
+	//genTerrain(root, etage, taille, seed);
+	genFullCube(root, 0);
+	
 	//genFlatFloor(root, 0);
-	//root.genAllCoordinates(taille);
-	//root.getAllCoordinates(centres, etage, profondeur);
+	root.genAllCoordinates(taille);
 }
 
 void Chunk::genFlatFloor(Octree &subTree, int etage){
@@ -49,13 +50,31 @@ void Chunk::genFlatFloor(Octree &subTree, int etage){
 	}
 }
 
-void Chunk::genTerrain(Octree &subTree, int etage, float taille){
+void Chunk::genFullCube(Octree &subTree, int etage){
+
+	for(int i = 0; i < 8; ++i){
+		subTree.children[i] = new Octree();
+	}
+
+	if(etage < profondeur){
+		++etage;
+		for(int j = 0; j < 8; ++j)
+			Chunk::genFullCube(*subTree.children[j], etage);
+	}
+	else{
+		for(int j = 0; j < 8; ++j){
+			subTree.children[j]->insert(1);
+		}
+	}
+}
+
+void Chunk::genTerrain(Octree &subTree, int etage, float taille, int seed){
 	
 	double persistence = 0.9;
     double frequency = 10;
-    double amplitude = 5;
+    double amplitude = 20;
     int octaves = 2;
-    int randomseed = 0;
+    int randomseed = seed;
     PerlinNoise noise = PerlinNoise(persistence, frequency, amplitude, octaves, randomseed);
 
 	for(int x = 0; x < taille; ++x){
@@ -117,6 +136,10 @@ std::vector<glm::vec3> Chunk::getAllCoordinates(){
 	std::vector<glm::vec3> result;
 	root.getAllCoordinates(result, 0, profondeur);
 	return result;
+}
+
+void Chunk::lighten(){
+	root.lighten(0, profondeur);
 }
 
 /*void Chunk::culling(std::vector<float> centres, Octree &subTree, int &etage, float taille){
