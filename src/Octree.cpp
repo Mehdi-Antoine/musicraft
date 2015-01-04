@@ -98,7 +98,7 @@ void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int prof
 		children[index]->getCubeType(result, pos, etage+1, profondeur);
 	}
 	else{
-		//std::cout << (int)children[index]->cubeType << std::endl;
+		std::cout << "1"<< std::endl;
 		result = children[index]->cubeType;
 	}
 }
@@ -132,9 +132,11 @@ void Octree::lighten(int etage, const int profondeur){
 			else if(children[i]->cubeType != 0){
 				char result = 1;
 				for(int j = 1; j < 4; ++j){
-					//std::cout <<  (j&1) << " " << ((j>>1)&1) << " " << ((j>>2)&1) << " " << j << std::endl;
-					glm::vec3 pos = glm::vec3(children[i]->coo.x + (j&1), children[i]->coo.y + ((j>>1)&1), children[i]->coo.z + ((j>>2)&1));
+					//std::cout <<  children[i]->coo[0] << " " << children[i]->coo[1] << " " << children[i]->coo[2] << " " << j << std::endl;
+					//glm::vec3 pos = glm::vec3(children[i]->coo.x + (j&1), children[i]->coo.y + ((j>>1)&1), children[i]->coo.z + ((j>>2)&1));
+					glm::vec3 pos = glm::vec3(children[i]->coo.x, children[i]->coo.y, children[i]->coo.z);
 					getCubeType(result, pos, 0, profondeur);
+					//std::cout << (int)result << std::endl;
 					if(result == 0){
 						break;
 					}

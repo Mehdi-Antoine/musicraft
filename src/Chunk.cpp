@@ -11,17 +11,17 @@ Chunk::Chunk(){
 }
 
 Chunk::Chunk(int seed){
-	profondeur = 4;
+	profondeur = 8;
 	int etage = 0;
 	root = Octree();
 	int taille = pow(2, profondeur);
 	root.coo = glm::vec3(0,0,0);
 	//std::cout << root.coo[0] << " " <<root.coo[1] << " " << root.coo[2] << std::endl;
-	//genTerrain(root, etage, taille, seed);
-	genFullCube(root, 0);
+	genTerrain(root, etage, taille, seed);
+	//genFullCube(root, 0);
 	
 	//genFlatFloor(root, 0);
-	root.genAllCoordinates(taille);
+	//root.genAllCoordinates(taille);
 }
 
 void Chunk::genFlatFloor(Octree &subTree, int etage){
