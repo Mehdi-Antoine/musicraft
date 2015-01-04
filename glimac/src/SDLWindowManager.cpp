@@ -12,7 +12,7 @@ SDLWindowManager::SDLWindowManager(uint32_t width, uint32_t height, const char* 
     //if(!SDL_SetVideoMode(width, height, 32, SDL_OPENGL)) {
     //if(!SDL_SetVideoMode(1024,768, 32, SDL_FULLSCREEN | SDL_OPENGL)) {
     //if(!SDL_SetVideoMode(1024,768, 32, SDL_FULLSCREEN | SDL_OPENGL)) {
-    if(!SDL_SetVideoMode(1024,768, 32, SDL_FULLSCREEN | SDL_OPENGL)) {
+    if(!SDL_SetVideoMode(1024,768, 32, SDL_NOFRAME | SDL_FULLSCREEN | SDL_OPENGL)) {
         std::cerr << SDL_GetError() << std::endl;
         return;
     }
