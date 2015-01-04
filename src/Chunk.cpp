@@ -37,7 +37,7 @@ char Chunk::getCubeType(float x, float y, float z) const{
 }
 
 char Chunk::getCubeType(const glm::vec3 &position) const{
-	std::cout << getIndex(position.x) << " " << getIndex(position.y) << " " << getIndex(position.z) << std::endl;
+	//std::cout << getIndex(position.x) << " " << getIndex(position.y) << " " << getIndex(position.z) << std::endl;
 	return m_chunk[getIndex(position.x)]
 				  [getIndex(position.y)]
 				  [getIndex(position.z)];
