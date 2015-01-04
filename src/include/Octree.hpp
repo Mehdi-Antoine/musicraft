@@ -24,7 +24,8 @@ public:
 	bool isLeaf();
 	void insert(char type);
 	void insert(Octree &tree);
+	glm::vec3 getCoordinates();
 	void getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const int profondeur);
 	void genAllCoordinates(float taille);
-	char getCubeType(Octree &subTree, int etage, const int taille, glm::vec3 &pos, const int profondeur);
+	void getCubeType(char &result, Octree &subTree, int etage, const int taille, glm::vec3 &pos, const int profondeur);
 };
