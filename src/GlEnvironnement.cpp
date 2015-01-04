@@ -68,11 +68,6 @@ void GlEnvironnement::addGlobalUniformMatrix(const GlGlobalUniformMatrix &global
 
 void GlEnvironnement::draw() const{
 
-	for (int i = 0; i < m_elements.size(); ++i){
-		ShaderProgram shader = m_elements[i].getShaderProgram();
-		m_shaders[shader].useShader();
-		m_elements[i].draw();
-	}
 
 }
 

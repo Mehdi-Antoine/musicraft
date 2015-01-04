@@ -30,16 +30,28 @@ public:
 
 	char getCubeType(float x, float y, float z);
 
+	int getCubeVectorPosition(const glm::vec3 &position);
+
+	int getCubeVectorPosition(float x, float y, float z);
+
+	void setCube(const glm::vec3 &position, const glm::vec3 &color, char cube_type);
+
+	void removeCube(const glm::vec3 &position);
+
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------SETTERS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
 	void setCubeType(const glm::vec3 &position, char cube_type);
 
+	void setCubeVectorPosition(const glm::vec3 &position);
+
 //--------------------------------------------------------------------------------------------------------------
 //------------------------------------------------FUNCTIONS-----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
 	void addChunk(Chunk &chunk);
+
+	void drawChunk(int indice);
 
 };

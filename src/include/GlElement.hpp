@@ -18,10 +18,7 @@ enum VboType{
 class GlElement{
 private:
 
-	int m_vertex_number;
-
-	ShaderProgram m_shader_program;
-
+	//OPEN GL
 	GLenum m_draw_mode;
 
 	GLuint m_vao;
@@ -29,15 +26,28 @@ private:
 	GLuint m_color_vbo;
 	GLuint m_position_vbo;
 
+	//DATA
+	int m_vertex_number;
+
+	std::vector<int>       m_empty_box;
+
+	std::vector<glm::vec3> m_position_index;
+	std::vector<glm::vec3> m_color_index;
+
+	//OBJECTS FUNCTIONS
+	void initVbo();
+	void initVao();
+
 public:
 
 //--------------------------------------------------------------------------------------------------------------
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
+	GlElement(GLenum draw_mode = GL_POINTS);
+
 	GlElement(std::vector<glm::vec3> &position_index, 
 			  std::vector<glm::vec3> &color_index,  
-			  ShaderProgram          shader_program,
 			  GLenum                 draw_mode);
 
 	~GlElement();
@@ -52,7 +62,7 @@ public:
 //--------------------------------------------------GETTERS-----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	ShaderProgram getShaderProgram() const;
+	const glm::vec3& getPosition(int vector_index);
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
@@ -62,7 +72,13 @@ public:
 
 	void unbindBuffer() const;
 
+	int addEntry(const glm::vec3 &position, const glm::vec3 &color);
+
+	void removeEntry(int index);
+
 	void data(const std::vector<glm::vec3> &position_index, const std::vector<glm::vec3> &color_index);
+
+	void subData(const glm::vec3 &position, const glm::vec3 &color, int index);
 
 	void draw() const;
 
