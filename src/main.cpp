@@ -291,10 +291,8 @@ int main(int argc, char** argv){
         texture_sting.use(GL_TEXTURE0);
         texture_rouge.use(GL_TEXTURE1);
 
-        std::cout << "draw ! " << std::endl;
         cube_shader.useShader();
         ground.draw();
-        std::cout << "ok ! " << std::endl;
 
         texture_sting.stopUse(GL_TEXTURE0);
         texture_rouge.stopUse(GL_TEXTURE1);

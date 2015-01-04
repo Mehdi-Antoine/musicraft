@@ -48,7 +48,15 @@ char Chunk::getCubeType(const glm::vec3 &position) const{
 
 void Chunk::setCubeType(int x, int y, int z, char cube_type){
 
-	m_chunk[x][y][z] = cube_type;
+	m_chunk[getIndex(x)][getIndex(y)][getIndex(z)] = cube_type;
+
+}
+
+void Chunk::setCubeType(const glm::vec3 &position, char cube_type){
+
+	m_chunk[getIndex(position.x)]
+		   [getIndex(position.y)]
+		   [getIndex(position.z)] = cube_type;
 
 }
 

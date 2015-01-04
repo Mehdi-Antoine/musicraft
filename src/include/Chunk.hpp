@@ -34,6 +34,7 @@ public:
 //--------------------------------------------------SETTERS-----------------------------------------------------
 
 	void setCubeType(int x, int y, int z, char cube_type);
+	void setCubeType(const glm::vec3 &position, char cube_type);
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
