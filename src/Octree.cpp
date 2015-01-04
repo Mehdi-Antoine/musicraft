@@ -37,6 +37,8 @@ bool Octree::isLeaf(){
 void Octree::insert(char type){
 	//if(isLeaf()){
 		cubeType = type;
+		for(int i=0; i<8; ++i) 
+			children[i] = NULL;
 	//}
 }
 
@@ -57,6 +59,7 @@ void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const
 				children[i]->getAllCoordinates(centres, etage+1, profondeur);
 			}
 			else{
+				std::cout << children[i]->coo[0] << " " << children[i]->coo[1] << " " << children[i]->coo[2] << std::endl;
 				centres.push_back(children[i]->coo);
 			}
 		}
@@ -67,9 +70,9 @@ void Octree::genAllCoordinates(float taille){
 	taille *= 0.5;
 	for(int i = 0; i < 8; ++i){
 		if(children[i] != NULL){
-			children[i]->coo[0] = coo[0] + (((i&1)*2)-1)*taille*2;
-			children[i]->coo[1] = coo[1] - ((((i&(1<<1))>>1)*2)-1)*taille*2;
-			children[i]->coo[2] = coo[2] + ((((i&(1<<2))>>2)*2)-1)*taille*2;
+			children[i]->coo[0] = coo[0] + (((i&1)*2)-1)*taille;
+			children[i]->coo[1] = coo[1] + ((((i&(1<<1))>>1)*2)-1)*taille;
+			children[i]->coo[2] = coo[2] + ((((i&(1<<2))>>2)*2)-1)*taille;
 			children[i]->genAllCoordinates(taille);
 		}
 	}
@@ -77,32 +80,40 @@ void Octree::genAllCoordinates(float taille){
 
 void Octree::getCubeType(char &result, Octree &subTree, int etage, const int taille, glm::vec3 &pos, const int profondeur){
 
-	// Trouver les bonnes positions
+	int right, far, top;
 
-	int left, near, top;
-
-	(pos.x > subTree.coo[0]) ? left = 1 : left = 0;
+	(pos.x > subTree.coo[0]) ? right = 1 : right = 0;
 	(pos.y > subTree.coo[1]) ? top = 1 : top = 0;
-	(pos.z > subTree.coo[2]) ? near = 1 : near = 0;
+	(pos.z > subTree.coo[2]) ? far = 1 : far = 0;
 
-	int index = (left|(top<<1))|(near<<2);
+	int index = (right|(top<<1))|(far<<2);
 
-	std::cout << index << std::endl;
+	//std::cout << index << std::endl;
 	//std::cout<< "etage : " << etage << " profondeur : " << profondeur << std::endl;
 	//std::cout << "p: "<< pos[0] << " " <<pos[1] << " " << pos[2] << std::endl;
-	
+	if(subTree.children[index] == NULL)
+		result = 0;
+	else if(etage < profondeur){
+		//std::cout << index << std::endl;
+		Octree::getCubeType(result, *subTree.children[index], etage+1, taille*0.5, pos, profondeur);
+	}
+	else{
+		std::cout << "COLLISION" << std::endl;
+		result = 1;
+	}
 
-	if(subTree.children[index] != NULL){
+	/*if(subTree.children[index] != NULL){
 		//std::cout << subTree.children[index]->coo[0] << " " <<subTree.children[index]->coo[1] << " " << subTree.children[index]->coo[2] << std::endl;
 		if(etage < profondeur)
 			Octree::getCubeType(result, *subTree.children[index], etage+1, taille*0.5, pos, profondeur);
 		else{
 			//std::cout << subTree.coo[0] << " " <<subTree.coo[1] << " " << subTree.coo[2] << std::endl;
-			result = subTree.children[index]->cubeType;
+			//result = subTree.children[index]->cubeType;
+			result = 1;
 		}
 	}
 	else{
 		//std::cout << subTree.coo[0] << " " <<subTree.coo[1] << " " << subTree.coo[2] << std::endl;
 		result = 0;
-	}
+	}*/
 }
