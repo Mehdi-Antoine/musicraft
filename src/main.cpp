@@ -163,15 +163,21 @@ int main(int argc, char** argv){
 
 //-----------------------------------CREATION CHUNK-------------------------------------------------
 
+    std::cout << "  allocation chunk..." << std::endl;
+    std::cout << "taille d'un chunk : " << sizeof(Chunk) << std::endl;
     Chunk chunk;
+    std::cout << "  ok!" << std::endl;
 
     char cubeType;
 
-    for (int x = 0; x < 32; ++x)
+    int x, y, z;
+
+    std::cout << "  sol..." << std::endl;
+    for (x = 0; x < SIZE/4; ++x)
     {
-        for (int z = 0; z < 32; ++z)
+        for (z = 0; z < SIZE/4; ++z)
         {   
-            int y = 0;
+            y = 0;
 
             cubeType = x % 2 + 1;
             chunk.setCubeType(x, y, z, cubeType);
@@ -179,11 +185,13 @@ int main(int argc, char** argv){
             cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));      
         }
     }
+    std::cout << "  ok!" << std::endl;
 
-    for (int x = 0; x < 32; ++x)
+    std::cout << "  bordure1..." << std::endl;
+    for (x = 0; x < SIZE/4; ++x)
     { 
-        int y = 1;
-        int z = 0;
+        y = 1;
+        z = 0;
 
         cubeType = x % 2 + 1;
 
@@ -191,9 +199,12 @@ int main(int argc, char** argv){
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));          
     }
-    for (int x = 0; x < 32; ++x)
+    std::cout << "  ok!" << std::endl;
+
+    std::cout << "  bordure2..." << std::endl;
+    for (x = 0; x < SIZE/4; ++x)
     {   
-        int z = 31;
+        z = SIZE/4 - 1;
         for(int y = 1; y < 4; ++y){
             cubeType = x % 2 + 1;
 
@@ -202,11 +213,13 @@ int main(int argc, char** argv){
             cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));  
         }              
     }
+    std::cout << "  ok!" << std::endl;
     
-    for (int z = 0; z < 32; ++z)
+    std::cout << "  bordure3..." << std::endl;
+    for (z = 0; z < SIZE/4; ++z)
     {   
-        int x = 0;
-        int y = 1;
+        x = 0;
+        y = 1;
 
         cubeType = x % 2 + 1;
 
@@ -214,11 +227,13 @@ int main(int argc, char** argv){
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
     }
+    std::cout << "  ok!" << std::endl;
 
-    for (int z = 0; z < 32 ; ++z)
+    std::cout << "  bordure4..." << std::endl;
+    for (z = 0; z < SIZE/4 ; ++z)
     {   
-        int x = 31;
-        int y = 1;
+        x = SIZE/4 - 1;
+        y = 1;
 
         cubeType = x % 2 + 1;
 
@@ -226,6 +241,40 @@ int main(int argc, char** argv){
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
     }
+    std::cout << "  ok!" << std::endl;
+
+    std::cout << "  Limites du chunk..." << std::endl;
+    //Bounds of Chunk
+
+    cubeType = 1;
+
+    x = SIZE - 1;
+    z = 0;
+    y = 0;
+
+    chunk.setCubeType(x, y, z, cubeType);
+    cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+    cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0)); 
+
+    z = SIZE - 1;
+
+    chunk.setCubeType(x, y, z, cubeType);
+    cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+    cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0)); 
+
+    x = SIZE - 1;
+
+    chunk.setCubeType(x, y, z, cubeType);
+    cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+    cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));
+
+    z = 0;
+
+    chunk.setCubeType(x, y, z, cubeType);
+    cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+    cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));
+
+    std::cout << "  ok!" << std::endl;
 
 
 //-----------------------------------WORLD CREATION-------------------------------------------------
@@ -284,6 +333,24 @@ int main(int argc, char** argv){
 //----------------------------------UPDATE UNIFORMS----------------------------------------------------
 
         global_matrix.updateViewMatrix(view_matrix);
+
+//------------------------------------UPDATE VBOS----------------------------------------------------
+
+        cube_position.clear();
+        cube_color.clear();
+
+        for(x = 0; x < Chunk::m_size; ++x){
+            for(y = 0; y < Chunk::m_size; ++y){
+                for(z = 0; z < Chunk::m_size; ++z){
+                    if(world.getCubeType(x, y, z) != EMPTY){
+                        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+                        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0)); 
+                    }
+                }
+            }
+        }
+
+        ground.update(cube_position, cube_color);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
     

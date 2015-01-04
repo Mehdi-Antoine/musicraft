@@ -12,10 +12,17 @@ enum CubeType{
   STING = 2
 };
 
+struct ChunkElement{
+
+	char type;
+	int  vector_position;
+
+};
+
 class Chunk{
 private:
 
-	char m_chunk[SIZE][SIZE][SIZE];
+	ChunkElement m_chunk[SIZE][SIZE/4][SIZE];
 	
 public:
 

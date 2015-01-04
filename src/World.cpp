@@ -28,11 +28,21 @@ std::vector<Chunk>& World::getChunkVector(){
 
 }
 
+char World::getCubeType(const glm::vec3 &position){
+	return m_chunks[0].getCubeType(position);
+}
+
+char World::getCubeType(float x, float y, float z){
+	return m_chunks[0].getCubeType(x, y, z);
+}
+
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------SETTERS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-
+void World::setCubeType(const glm::vec3 &position, char cube_type){
+	m_chunks[0].setCubeType(position, cube_type);
+}
 
 //--------------------------------------------------------------------------------------------------------------
 //------------------------------------------------FUNCTIONS-----------------------------------------------------
@@ -42,6 +52,4 @@ void World::addChunk(Chunk &chunk){
 	m_chunks.push_back(chunk);
 }
 
-char World::getCubeType(const glm::vec3 &position){
-	return m_chunks[0].getCubeType(position);
-}
+
