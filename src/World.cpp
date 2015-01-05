@@ -10,8 +10,8 @@ World::World(){
 	
 }
 
-World::World(int width, int height)
-: m_window_width(width), m_window_height(height){
+World::World(Window window)
+: m_window(window){
 }
 
 World::~World(){
@@ -32,12 +32,16 @@ std::vector<Chunk>& World::getChunkVector(){
 
 }
 
+Window World::getWindow() const{
+	return m_window;
+}
+
 int World::getWindowWidth() const{
-	return m_window_width;
+	return m_window.getWindowWidth();
 }
 
 int World::getWindowHeight() const{
-	return m_window_height;
+	return m_window.getWindowHeight();
 }
 
 //--------------------------------------------------------------------------------------------------------------

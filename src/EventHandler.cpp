@@ -1,6 +1,7 @@
 #include <iostream>
 #include "include/World.hpp"
 #include "include/EventHandler.hpp"
+#include "include/Window.hpp"
 
 #define COIN 30
 
@@ -41,8 +42,17 @@ void EventHandler::updatePlayer(World &world){
         directionRightLeft++;
     }
     if(m_input.getKey(SDLK_d) == true) {
-        directionRightLeft--;
-        
+        directionRightLeft--;  
+    }
+
+    //fullscreen ?
+    if(m_input.getKey(SDLK_F1) == true) {
+        std::cout << "Mode plein écran" << std::endl;
+        world.getWindow().updateVideoMode(1);
+    }
+    if(m_input.getKey(SDLK_F2) == true) {
+        std::cout << "Mode fenêtré" << std::endl;
+        world.getWindow().updateVideoMode(2);
     }
 
     //Click Gauche --> Pick Cube

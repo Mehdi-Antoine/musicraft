@@ -240,7 +240,8 @@ int main(int argc, char** argv){
 
 //-----------------------------------WORLD CREATION-------------------------------------------------
 
-    World world(WINDOW_WIDTH,WINDOW_HEIGHT);
+    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
+    World world(window);
 
     world.addChunk(chunk);
 

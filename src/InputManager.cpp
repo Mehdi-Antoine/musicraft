@@ -49,6 +49,18 @@ void InputManager::updateInput() {
                 m_key[SDLK_RSHIFT] = true;
                 break;
 
+            case SDLK_F1:
+                m_key[SDLK_F1] = true;
+                break;
+
+            case SDLK_F2:
+                m_key[SDLK_F2] = true;
+                break;
+
+            case SDLK_F3:
+                m_key[SDLK_F3] = true;
+                break;
+
             case SDLK_ESCAPE:
                 m_quit = true;
                 break;
@@ -89,6 +101,18 @@ void InputManager::updateInput() {
 
             case SDLK_RSHIFT:
                 m_key[SDLK_RSHIFT] = false;
+                break;
+
+            case SDLK_F1:
+                m_key[SDLK_F1] = false;
+                break;
+
+            case SDLK_F2:
+                m_key[SDLK_F2] = false;
+                break;
+
+            case SDLK_F3:
+                m_key[SDLK_F3] = false;
                 break;
 
             default:
