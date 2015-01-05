@@ -59,9 +59,9 @@ void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const
 				children[i]->getAllCoordinates(centres, etage+1, profondeur);
 			}
 			else{
-				//std::cout << children[i]->coo[0] << " " << children[i]->coo[1] << " " << children[i]->coo[2] << std::endl;
+				std::cout << children[i]->coo[0] << " " << children[i]->coo[1] << " " << children[i]->coo[2] << std::endl;
 				if(children[i]->cubeType > 0)
-					centres.push_back(children[i]->coo);
+					centres.push_back(float(2)*children[i]->coo);
 			}
 		}
 	}
@@ -79,7 +79,7 @@ void Octree::genAllCoordinates(float taille){
 	}
 }
 
-void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int profondeur){
+void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int profondeur) const{
 
 	int right, far, top;
 
@@ -98,7 +98,7 @@ void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int prof
 		children[index]->getCubeType(result, pos, etage+1, profondeur);
 	}
 	else{
-		std::cout << "1"<< std::endl;
+		//std::cout << "1"<< std::endl;
 		result = children[index]->cubeType;
 	}
 }

@@ -15,7 +15,7 @@ public:
 	Octree root;
 	
 	Chunk();
-	Chunk(int seed);
+	Chunk(int seed, glm::vec3 racine);
 
 	void genFlatFloor(Octree &subTree, int etage);
 	void genFullCube(Octree &subTree, int etage);
@@ -24,7 +24,7 @@ public:
 
 	void culling(std::vector<float> centres, Octree &subTree, int etage, float taille);
 
-	char getCubeType(glm::vec3 &pos);
+	char getCubeType(glm::vec3 &pos) const;
 	void setCubeType(glm::vec3 &pos, char type);
 
 	std::vector<glm::vec3> getAllCoordinates();

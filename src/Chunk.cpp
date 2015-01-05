@@ -10,12 +10,12 @@ Chunk::Chunk(){
 	root.coo = glm::vec3(0,0,0);
 }
 
-Chunk::Chunk(int seed){
-	profondeur = 8;
+Chunk::Chunk(int seed, glm::vec3 pos){
+	profondeur = 5;
 	int etage = 0;
 	root = Octree();
 	int taille = pow(2, profondeur);
-	root.coo = glm::vec3(0,0,0);
+	root.coo = pos;
 	//std::cout << root.coo[0] << " " <<root.coo[1] << " " << root.coo[2] << std::endl;
 	genTerrain(root, etage, taille, seed);
 	//genFullCube(root, 0);
@@ -120,7 +120,7 @@ void Chunk::fillTerrain(Octree &subTree, int etage, float taille, int x, int z, 
 	}
 }
 
-char Chunk::getCubeType(glm::vec3 &pos){
+char Chunk::getCubeType(glm::vec3 &pos) const{
 	int etage = 0;
 	char result = 1;
 	root.getCubeType(result, pos, etage, profondeur);
@@ -145,6 +145,7 @@ void Chunk::lighten(){
 /*void Chunk::culling(std::vector<float> centres, Octree &subTree, int &etage, float taille){
 	int test = 0;
 	taille *= .5;
+
 	for(int i = 0; i < 8; ++i){
 		if(subTree.children[i] != NULL){
 

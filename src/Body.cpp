@@ -11,17 +11,15 @@ using namespace glm;
 
 Body::Body(vec3 position, vec3 speed, vec3 acceleration, vec3 orientation){
 
-     m_position = (position+vec3(128,0,128))*vec3(.5,.5,.5);
      float t = 2;
-     float x = m_position.x;
-     float y = m_position.y;
-     float z = m_position.z;
+     float x = position.x;
+     float y = position.y;
+     float z = position.z;
 
-	 
-     //m_position = position + vec3(128,0,128);
-	 m_speed = speed; 
-	 m_acceleration = acceleration; 
-	 m_orientation = orientation; 
+      m_position = position; 
+      m_speed = speed; 
+      m_acceleration = acceleration; 
+      m_orientation = orientation; 
       m_camera = Camera(x,y,z);
      
      std::vector<vec3> hitbox_corners;
@@ -51,7 +49,7 @@ Body::Body(Body & body){
 
 
 Body::~Body(){
-	
+     
 }
 
 //  
@@ -68,11 +66,11 @@ void Body::updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float co
      forces = player_direction + gravity;
 
 
-     glm::vec3 feets_position = m_camera.getPosition();
+     glm::vec3 feets_position = m_camera.getPosition() + glm::vec3(0,-2,0);
 
-     Chunk chunk_sol = world.getChunk(0);
+     Chunk chunk = world.getChunk(0);
 
-     collisionSeeker(forces, m_speed, chunk_sol, feets_position);
+     collisionSeeker(forces, m_speed, chunk, feets_position);
 
      updateVerlett(m_camera.getPtPosition(), m_speed, forces, 1.0/30.0);
 
