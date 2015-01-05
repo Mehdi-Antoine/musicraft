@@ -110,11 +110,11 @@ void GlElement::data(const std::vector<glm::vec3> &position_index, const std::ve
 	m_vertex_number = position_index.size();
 
 	bindBuffer(COLOR);
-	glBufferData(GL_ARRAY_BUFFER, m_vertex_number * sizeof(glm::vec3), position_index.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_vertex_number * sizeof(glm::vec3), color_index.data(), GL_STATIC_DRAW);
 	unbindBuffer();
 
 	bindBuffer(POSITION);
-	glBufferData(GL_ARRAY_BUFFER, m_vertex_number * sizeof(glm::vec3), color_index.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_vertex_number * sizeof(glm::vec3), position_index.data(), GL_STATIC_DRAW);
 	unbindBuffer();
 
 }
@@ -126,5 +126,11 @@ void GlElement::draw() const{
 	glDrawArrays(m_draw_mode, 0, m_vertex_number);
 
 	glBindVertexArray(0);
+
+}
+
+void GlElement::update(const std::vector<glm::vec3> &position_index, const std::vector<glm::vec3> &color_index){
+
+	data(position_index, color_index);
 
 }

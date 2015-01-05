@@ -150,9 +150,9 @@ void Player::pickCube(World &world){
 
 	if(found_cube){
 		std::cout << "PICK CUBE AT COORD : " << target << std::endl;
-		//world.setCubeType(target, EMPTY);
+		world.setCubeType(target, EMPTY);
 		//world.setCubeVectorPosition(target);
-		world.removeCube(target);
+		//world.removeCube(target);
 	}
 	else{
 		std::cout << "NO CUBE" << std::endl;

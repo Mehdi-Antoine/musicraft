@@ -66,6 +66,6 @@ public:
 
 	void draw() const;
 
-	void update()  const;
+	void update(const std::vector<glm::vec3> &position_index, const std::vector<glm::vec3> &color_index);
 
 };

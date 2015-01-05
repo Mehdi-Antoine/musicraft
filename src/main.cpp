@@ -85,13 +85,6 @@ int main(int argc, char** argv){
 
 //-------------------------------CHARGEMENT DES TEXTURES---------------------------------------------
 
-    //std::vector<GlTexture> textures;
-
-    //textures.push_back(GlTexture(dir_path + "assets/textures/triforce.png"));
-    //textures.push_back(GlTexture(dir_path + "assets/textures/sting.jpg"));
-
-    //gl_environnement.addTextureVector(textures);
-
     std::cout << "CREATION TEXTURE..." << std::endl;
 
     GlTexture texture_sting(dir_path + "assets/textures/sting.jpg");
@@ -227,6 +220,7 @@ int main(int argc, char** argv){
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
     }
 
+    chunk.setCubeType(2,2,2, EMPTY);
 
 //-----------------------------------WORLD CREATION-------------------------------------------------
 
@@ -284,6 +278,25 @@ int main(int argc, char** argv){
 //----------------------------------UPDATE UNIFORMS----------------------------------------------------
 
         global_matrix.updateViewMatrix(view_matrix);
+
+//------------------------------------UPDATE VBO-------------------------------------------------------
+
+        cube_position.clear();
+
+        for (int x = 0; x < SIZE; ++x)
+        {
+            for (int y = 0; y < SIZE; ++y)
+            {
+                for (int z = 0; z < SIZE; ++z)
+                {
+                    if(world.getCubeType(x,y,z) != EMPTY){
+                        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
+                    }
+                }
+            }
+        }
+
+        ground.update(cube_position, cube_color);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
     
