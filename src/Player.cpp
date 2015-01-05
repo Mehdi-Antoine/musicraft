@@ -128,10 +128,31 @@ void Player::pickCube(World &world){
 	glm::vec3 front_vector = m_body.getCamera().getFrontVector();
 	glm::vec3 camera_position = m_body.getCamera().getPosition();
 
-	glm::vec3 target = camera_position + float(1) * front_vector;
+	glm::vec3 target;
 
-	if(world.getCubeType(target) != EMPTY){
-		std::cout << "PICK CUBE !" << std::endl;
+	float scale = 0.5;
+	int i = 0;
+	bool found_cube = false;
+
+	do{
+
+		scale += i;
+
+		target  = camera_position +  scale * front_vector;
+
+		if(world.getCubeType(target) != EMPTY){
+			found_cube = true;
+		}
+		
+		++i;
+
+	}while(found_cube == false && i < 4);
+
+	if(found_cube){
+		std::cout << "PICK CUBE AT COORD : " << target << std::endl;
+		//world.setCubeType(target, EMPTY);
+		//world.setCubeVectorPosition(target);
+		world.removeCube(target);
 	}
 	else{
 		std::cout << "NO CUBE" << std::endl;

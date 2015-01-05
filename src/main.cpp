@@ -167,9 +167,9 @@ int main(int argc, char** argv){
 
     char cubeType;
 
-    for (int x = 0; x < 32; ++x)
+    for (int x = 0; x < SIZE; ++x)
     {
-        for (int z = 0; z < 32; ++z)
+        for (int z = 0; z < SIZE; ++z)
         {   
             int y = 0;
 
@@ -180,7 +180,7 @@ int main(int argc, char** argv){
         }
     }
 
-    for (int x = 0; x < 32; ++x)
+    for (int x = 0; x < SIZE; ++x)
     { 
         int y = 1;
         int z = 0;
@@ -191,9 +191,9 @@ int main(int argc, char** argv){
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));          
     }
-    for (int x = 0; x < 32; ++x)
+    for (int x = 0; x < SIZE; ++x)
     {   
-        int z = 31;
+        int z = SIZE - 1;
         for(int y = 1; y < 4; ++y){
             cubeType = x % 2 + 1;
 
@@ -203,7 +203,7 @@ int main(int argc, char** argv){
         }              
     }
     
-    for (int z = 0; z < 32; ++z)
+    for (int z = 0; z < SIZE; ++z)
     {   
         int x = 0;
         int y = 1;
@@ -215,9 +215,9 @@ int main(int argc, char** argv){
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
     }
 
-    for (int z = 0; z < 32 ; ++z)
+    for (int z = 0; z < SIZE ; ++z)
     {   
-        int x = 31;
+        int x = SIZE - 1;
         int y = 1;
 
         cubeType = x % 2 + 1;

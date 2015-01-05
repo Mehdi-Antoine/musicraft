@@ -4,7 +4,7 @@
 
 #include <glimac/glm.hpp>
 
-#define SIZE 128 
+#define SIZE 16 
 
 enum CubeType{ 
   EMPTY = 0,
