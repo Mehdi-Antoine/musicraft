@@ -24,7 +24,7 @@
 
 using namespace glimac;
 
-#define WINDOW_WIDTH_ 1024
+#define WINDOW_WIDTH_ 1024 
 #define WINDOW_HEIGHT_ 768
 
 

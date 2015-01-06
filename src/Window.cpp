@@ -83,14 +83,14 @@ void Window::updateVideoMode(int mode){
 		m_etat = 2; //fenetré 
 	}
 	if(mode == 3){
-		if(!SDL_SetVideoMode(800, 600, 32, SDL_RESIZABLE | SDL_OPENGL)) {
+		if(!SDL_SetVideoMode(1024, 768, 32, SDL_RESIZABLE | SDL_OPENGL)) {
         	std::cerr << SDL_GetError() << std::endl;
         	return;
 	    }
     	const SDL_VideoInfo* info = SDL_GetVideoInfo();
 		m_window_width = info->current_w;
 		m_window_height = info->current_h;
-		m_etat = 3; //800x600 
+		m_etat = 3; //1024x768 
     }
     
 }

@@ -54,6 +54,10 @@ void EventHandler::updatePlayer(World &world){
         std::cout << "Mode fenêtré" << std::endl;
         world.getWindow().updateVideoMode(2);
     }
+    if(m_input.getKey(SDLK_F3) == true) {
+        std::cout << "Mode 1024x768" << std::endl;
+        world.getWindow().updateVideoMode(3);
+    }
 
     //Click Gauche --> Pick Cube
     if(m_input.getMouse(1) == true){
