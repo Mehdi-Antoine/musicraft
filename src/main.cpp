@@ -14,8 +14,6 @@
 #include "include/GlTexture.hpp"
 
 #include "include/Chunk.hpp"
-#include "include/Octree.hpp"
-#include "include/PerlinNoise.hpp"
 
 #include "include/World.hpp"
 #include "include/Player.hpp"
@@ -72,57 +70,7 @@ int main(int argc, char** argv){
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl << std::endl;
 
-//-----------------------------------CHUNKS CREATION------------------------------------------------
-
-    std::vector<glm::vec3> squares_position;
-    std::vector<glm::vec3> squares_position1;
-    std::vector<glm::vec3> squares_position2;
-    std::vector<glm::vec3> squares_position3;
-
-
-    Chunk chunk_norris = Chunk(0, glm::vec3(0,0,0));
-    /*Chunk chunk_norris1 = Chunk(0, glm::vec3(64,0,0));*/
-    /*Chunk chunk_norris2 = Chunk(0, glm::vec3(16,0,0));
-    Chunk chunk_norris3 = Chunk(0, glm::vec3(0,0,8));*/
-    
-    chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur));
-
-    squares_position = chunk_norris.getAllCoordinates();
-    /*squares_position1 = chunk_norris1.getAllCoordinates();
-    squares_position2 = chunk_norris2.getAllCoordinates();
-    squares_position3 = chunk_norris3.getAllCoordinates();*/
-
-   /* for(int i = 0; i < squares_position1.size(); ++i){
-        squares_position.push_back(squares_position1[i]);
-    }
-    for(int i = 0; i < squares_position2.size(); ++i){
-        squares_position.push_back(squares_position2[i]);
-    }
-    for(int i = 0; i < squares_position3.size(); ++i){
-        squares_position.push_back(squares_position3[i]);
-    }*/
-
-    std::cout << "Count unlightened: " << squares_position.size()<< std::endl;
-
-    chunk_norris.lighten();
-
-    squares_position = chunk_norris.getAllCoordinates();
-    std::cout << "Count lightened: " << squares_position.size()<< std::endl;
-
-    std::vector<glm::vec3> squares_color;
-    for(unsigned int i = 0; i < squares_position.size(); ++i){
-        squares_color.push_back(glm::vec3(1,1,1));
-    }
-
     glEnable(GL_DEPTH_TEST);
-
-//-----------------------------------WORLD CREATION-------------------------------------------------
-
-    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
-    World world(window);
-
-    world.addChunk(chunk_norris);
-
 
 //----------------------------------GL ENVIRONNEMENT------------------------------------------------
 
@@ -139,9 +87,9 @@ int main(int argc, char** argv){
 
     std::cout << "CREATION SHADER..." << std::endl;
 
-    GlShader square_shader(dir_path, "cube");
+    GlShader square_shader(dir_path, "square");
 
-    square_shader.useShader();
+    GlShader cube_shader(dir_path, "cube");
 
     std::cout << "OK." << std::endl << std::endl;
 
@@ -171,8 +119,9 @@ int main(int argc, char** argv){
     global_matrix.init("global_matrix", 1);
     std::cout << "      ok!" << std::endl;
 
-    std::cout << "      global_matrix.attachProgram(square_shader)" << std::endl;
+    std::cout << "      global_matrix.attachProgram" << std::endl;
     global_matrix.attachProgram(square_shader.getProgramId());
+    global_matrix.attachProgram(cube_shader.getProgramId());
     std::cout << "      ok!" << std::endl;
 
     std::cout << "      global_matrix.updateProjectionMatrix()" << std::endl;
@@ -190,8 +139,9 @@ int main(int argc, char** argv){
     global_light.init("global_light", 2);
     std::cout << "      ok!" << std::endl;
 
-    std::cout << "      global_light.attachProgram(square_shader)" << std::endl;
+    std::cout << "      global_light.attachProgram" << std::endl;
     global_light.attachProgram(square_shader.getProgramId());
+    global_light.attachProgram(cube_shader.getProgramId());
     std::cout << "      ok!" << std::endl;
 
     std::cout << "      global_light.update()" << std::endl;
@@ -209,31 +159,88 @@ int main(int argc, char** argv){
 
 //-------------CONSTRUCTION CUBE ET INJECTION DANS UN TABLEAU DE VERTICES---------------------------
 
-/*    std::cout << "CREATION INDICES CUBES..." << std::endl;
-    std::vector<glm::vec3> squares_color;
-    std::vector<glm::vec3> squares_position;
+    std::cout << "CREATION INDICES CUBES..." << std::endl;
 
     std::vector<glm::vec3> cube_color;
     std::vector<glm::vec3> cube_position;
 
-    for (int k = 0; k < TAILLE * TAILLE; ++k){
-        squares_position.push_back(glm::vec3(2*(k/TAILLE), 0, 2*(k%TAILLE)));        
-        squares_color.push_back(glm::vec3(k/TAILLE, 0, k%TAILLE));
+//-----------------------------------CREATION CHUNK-------------------------------------------------
+
+    Chunk chunk;
+
+    char cubeType;
+
+    for (int x = 0; x < SIZE; ++x)
+    {
+        for (int z = 0; z < SIZE; ++z)
+        {   
+            int y = 0;
+
+            cubeType = x % 2 + 1;
+            chunk.setCubeType(x, y, z, cubeType);
+            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));      
+        }
     }
 
-    std::cout << "OK." << std::endl << std::endl;*/
+    for (int x = 0; x < SIZE; ++x)
+    { 
+        int y = 1;
+        int z = 0;
 
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));          
+    }
+    for (int x = 0; x < SIZE; ++x)
+    {   
+        int z = SIZE - 1;
+        for(int y = 1; y < 4; ++y){
+            cubeType = x % 2 + 1;
+
+            chunk.setCubeType(x, y, z, cubeType);
+            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
+            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));  
+        }              
+    }
     
+    for (int z = 0; z < SIZE; ++z)
+    {   
+        int x = 0;
+        int y = 1;
 
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
+    }
+
+    for (int z = 0; z < SIZE ; ++z)
+    {   
+        int x = SIZE - 1;
+        int y = 1;
+
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
+    }
+
+//-----------------------------------WORLD CREATION-------------------------------------------------
+
+    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
+    World world(window);
+
+    world.addChunk(chunk);
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
-
-    //GlElement ground(cube_position, cube_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
-
-    GlElement ground(squares_position, squares_color, SQUARE, GL_POINTS);
-
+    GlElement ground(cube_position, cube_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
     std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
@@ -258,8 +265,7 @@ int main(int argc, char** argv){
     bool quit = false;
 
     while(!quit){
-        //squares_position.clear();
-        //squares_position = chunk_norris.getAllCoordinates();
+
         startTime = windowManager.getTime();
 
 //-----------------------------------EVENT HANDLER-----------------------------------------------------
@@ -268,7 +274,7 @@ int main(int argc, char** argv){
 
         //quit ?
         if(eventhandler.getInputManager().getQuit() == true) quit=true;
-            
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -282,12 +288,11 @@ int main(int argc, char** argv){
 
         global_matrix.updateViewMatrix(view_matrix);
 
+//------------------------------------UPDATE VBO-------------------------------------------------------
 
-//----------------------------------UPDATE VBO----------------------------------------------------
-    squares_position = world.getChunk(0).getAllCoordinates();
-    ground.update(squares_position, squares_color);
+        cube_position.clear();
 
-       /* for (int x = 0; x < SIZE; ++x)
+        for (int x = 0; x < SIZE; ++x)
         {
             for (int y = 0; y < SIZE; ++y)
             {
@@ -298,23 +303,20 @@ int main(int argc, char** argv){
                     }
                 }
             }
-        } 
+        }
+
         ground.update(cube_position, cube_color);
-        */
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
-
     
-        //texture_sting.use(GL_TEXTURE1);
-        texture_rouge.use(GL_TEXTURE0);
+        texture_sting.use(GL_TEXTURE0);
+        texture_rouge.use(GL_TEXTURE1);
 
-        square_shader.useShader();
+        cube_shader.useShader();
         ground.draw();
 
-        //texture_sting.stopUse(GL_TEXTURE1);
-        texture_rouge.stopUse(GL_TEXTURE0);
-
-
+        texture_sting.stopUse(GL_TEXTURE0);
+        texture_rouge.stopUse(GL_TEXTURE1);
 
 //---------------------------------------FPS SHOW------------------------------------------------------
         ++nbFrames;
@@ -331,8 +333,8 @@ int main(int argc, char** argv){
                 std::cout << "Warning ! : ";
             }
 
-            std::cout << res << " sec" << std::endl;
-            std::cout << 1 / res << " fps" << std::endl<< std::endl;
+            //std::cout << res << " sec" << std::endl;
+            //std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
             nbFrames = 0;
 

@@ -16,10 +16,10 @@ Body::Body(vec3 position, vec3 speed, vec3 acceleration, vec3 orientation){
      float y = position.y;
      float z = position.z;
 
-      m_position = position; 
-      m_speed = speed; 
-      m_acceleration = acceleration; 
-      m_orientation = orientation; 
+	 m_position = position; 
+	 m_speed = speed; 
+	 m_acceleration = acceleration; 
+	 m_orientation = orientation; 
       m_camera = Camera(x,y,z);
      
      std::vector<vec3> hitbox_corners;
@@ -49,7 +49,7 @@ Body::Body(Body & body){
 
 
 Body::~Body(){
-     
+	
 }
 
 //  

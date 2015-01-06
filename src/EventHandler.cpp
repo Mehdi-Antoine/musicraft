@@ -79,6 +79,7 @@ void EventHandler::updatePlayer(World &world){
     }
     else click = 0;
 
+
     int WINDOW_WIDTH = world.getWindowWidth();
     int WINDOW_HEIGHT = world.getWindowHeight();
     float angle = 1.5;
@@ -114,15 +115,9 @@ void EventHandler::updatePlayer(World &world){
         //std::cout << "coin bas "<<  m_input.getMousePos(1) << " rel: " << rel_y << std::endl;
 
     }
-    /*else if( (m_input.getMousePos(0) < COIN || m_input.getMousePos(0) > (WINDOW_WIDTH - COIN) ) && m_input.getMouseRel(0) != 0){
-        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(-m_input.getMouseRel(0)/2.);
-    }*/
-    if(m_input.getMouseRel(1) != 0 && m_input.getMouseRel(1) != -1 && m_input.getMouseRel(1) != 1 ){
-        m_player_manager.getPlayer().getBody().getCamera().rotateUp(-m_input.getMouseRel(1)/2.);
-    }
-    /*else if( (m_input.getMousePos(1) < COIN || m_input.getMousePos(1) > (WINDOW_HEIGHT - COIN) ) && m_input.getMouseRel(1) != 0){
-        m_player_manager.getPlayer().getBody().getCamera().rotateUp(-m_input.getMouseRel(1)/2.);
-    }*/
+
+
+
 
 
     m_player_manager.movement(directionFrontBack, directionRightLeft);
