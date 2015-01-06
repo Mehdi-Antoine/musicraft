@@ -90,21 +90,17 @@ void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int prof
 
 	int index = (right|(top<<1))|(far<<2);
 
-	//std::cout << index << std::endl;
-	//std::cout<< "etage : " << etage << " profondeur : " << profondeur << std::endl;
-	//std::cout << "p: "<< pos[0] << " " <<pos[1] << " " << pos[2] << std::endl;
 	if(children[index] == NULL)
 		result = 0;
 	else if(etage < profondeur){
 		children[index]->getCubeType(result, pos, etage+1, profondeur);
 	}
 	else{
-		//std::cout << "1"<< std::endl;
 		result = children[index]->cubeType;
 	}
 }
 
-void Octree::setCubeType(glm::vec3 pos, char type, int etage, const int profondeur){
+void Octree::setCubeType(glm::vec3 pos, char type, int etage, const int profondeur, int taille){
 	int right, far, top;
 
 	(pos.x > coo[0]) ? right = 1 : right = 0;
@@ -116,12 +112,16 @@ void Octree::setCubeType(glm::vec3 pos, char type, int etage, const int profonde
 	if(children[index] == NULL)
 		children[index] = new Octree();
 
+	children[index]->coo[0] = coo[0] + ((right*2)-1)*taille;
+	children[index]->coo[1] = coo[1] + ((top*2)-1)*taille;
+	children[index]->coo[2] = coo[2] + ((far*2)-1)*taille;
+
+	taille *= 0.5;
+
 	if(etage < profondeur){
-		children[index]->setCubeType(pos, type, etage+1, profondeur);
+		children[index]->setCubeType(pos, type, etage+1, profondeur, taille);
 	}
 	else{
-		//std::cout << children[index]->coo.x << " " << children[index]->coo.y << " " << children[index]->coo.z << std::endl;
-
 		children[index]->insert(type);
 	}
 }
@@ -137,7 +137,7 @@ void Octree::lighten(int etage, const int profondeur){
 				for(int j = 1; j < 4; ++j){
 					//std::cout <<  children[i]->coo[0]*2 << " " << children[i]->coo[1]*2 << " " << children[i]->coo[2]*2 << " " << j << std::endl;
 					//glm::vec3 pos = glm::vec3(children[i]->coo.x + (j&1), children[i]->coo.y + ((j>>1)&1), children[i]->coo.z + ((j>>2)&1));
-					glm::vec3 pos = glm::vec3(children[i]->coo.x*2, children[i]->coo.y*2, children[i]->coo.z*2);//*glm::vec3(.5,.5,.5);
+					glm::vec3 pos = glm::vec3(children[i]->coo.x, children[i]->coo.y, children[i]->coo.z);//*glm::vec3(.5,.5,.5);
 					getCubeType(result, pos, 0, profondeur);
 					//std::cout << (int)result << std::endl;
 					if(result == 0){

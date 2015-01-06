@@ -65,45 +65,20 @@ int main(int argc, char** argv){
 //-----------------------------------WORLD CREATION------------------------------------------------
 
     std::vector<glm::vec3> squares_position;
-    std::vector<glm::vec3> squares_position1;
-    std::vector<glm::vec3> squares_position2;
-    std::vector<glm::vec3> squares_position3;
+
     Chunk chunk_norris = Chunk(0, glm::vec3(0,0,0));
-    /*Chunk chunk_norris1 = Chunk(0, glm::vec3(64,0,0));*/
-    /*Chunk chunk_norris2 = Chunk(0, glm::vec3(16,0,0));
-    Chunk chunk_norris3 = Chunk(0, glm::vec3(0,0,8));*/
-    glm::vec3 no = glm::vec3(20,20,20);
-
-    chunk_norris.setCubeType(no, 1);
     
+    glm::vec3 no = glm::vec3(20,20,20);
+    chunk_norris.setCubeType(no, 1);
     chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur));
-
-    no = no;//*glm::vec3(2,2,2);
+    squares_position = chunk_norris.getAllCoordinates();
     std::cout << "no type : " << (int)chunk_norris.getCubeType(no) << std::endl;
     
-    //chunk_norris.setCubeType(no, 0);
-    squares_position = chunk_norris.getAllCoordinates();
-    /*squares_position1 = chunk_norris1.getAllCoordinates();
-    squares_position2 = chunk_norris2.getAllCoordinates();
-    squares_position3 = chunk_norris3.getAllCoordinates();*/
-
-   /* for(int i = 0; i < squares_position1.size(); ++i){
-        squares_position.push_back(squares_position1[i]);
-    }
-    for(int i = 0; i < squares_position2.size(); ++i){
-        squares_position.push_back(squares_position2[i]);
-    }
-    for(int i = 0; i < squares_position3.size(); ++i){
-        squares_position.push_back(squares_position3[i]);
-    }*/
     std::cout << "Count unlightened: " << squares_position.size()<< std::endl;
 
     chunk_norris.lighten();
     squares_position = chunk_norris.getAllCoordinates();
     std::cout << "Count lightened: " << squares_position.size()<< std::endl;
-
-
-
 
     std::vector<glm::vec3> squares_color;
     for(unsigned int i = 0; i < squares_position.size(); ++i){
