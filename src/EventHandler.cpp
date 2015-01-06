@@ -95,11 +95,11 @@ void EventHandler::updatePlayer(World &world){
         m_player_manager.getPlayer().getBody().getCamera().rotateLeft(-rel_x);
     }
     if(m_input.getMousePos(0) < 3*COIN && m_input.getMousePos(0) >= 0 && rel_x < 0){
-        std::cout << "coin gauche " <<  m_input.getMousePos(0) <<" rel: " << rel_x<< std::endl;
+        //std::cout << "coin gauche " <<  m_input.getMousePos(0) <<" rel: " << rel_x<< std::endl;
         m_player_manager.getPlayer().getBody().getCamera().rotateLeft(angle);
     }
     if(m_input.getMousePos(0) > (WINDOW_WIDTH - 3*COIN) && m_input.getMousePos(0) <= WINDOW_WIDTH && rel_x >= 0){
-        std::cout << "coin droit "<<  m_input.getMousePos(0) << " rel: " << rel_x << std::endl;
+        //std::cout << "coin droit "<<  m_input.getMousePos(0) << " rel: " << rel_x << std::endl;
         m_player_manager.getPlayer().getBody().getCamera().rotateLeft(-angle);
     } 
 
@@ -108,11 +108,11 @@ void EventHandler::updatePlayer(World &world){
     }
     if(m_input.getMousePos(1) < 3*COIN && m_input.getMousePos(1) >= 0 && rel_y < 0){
         m_player_manager.getPlayer().getBody().getCamera().rotateUp(angle);
-        std::cout << "coin haut "<<  m_input.getMousePos(1) << " rel: " << rel_y<< std::endl;
+        //std::cout << "coin haut "<<  m_input.getMousePos(1) << " rel: " << rel_y<< std::endl;
     }
     if(m_input.getMousePos(1) > (WINDOW_HEIGHT - 3*COIN) && m_input.getMousePos(1) <= WINDOW_HEIGHT && rel_y >= 0  ){
         m_player_manager.getPlayer().getBody().getCamera().rotateUp(-angle);
-        std::cout << "coin bas "<<  m_input.getMousePos(1) << " rel: " << rel_y << std::endl;
+        //std::cout << "coin bas "<<  m_input.getMousePos(1) << " rel: " << rel_y << std::endl;
 
     }
 
