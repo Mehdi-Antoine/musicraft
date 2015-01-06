@@ -127,18 +127,18 @@ void Octree::lighten(int etage, const int profondeur, Octree &root){
 			}
 			else if(children[i]->cubeType != 0){
 				char result = 1;
-				for(int j = 1; j < 4; ++j){
-					//std::cout << "Position cube : " << children[i]->coo[0] << " " << children[i]->coo[1] << " " << children[i]->coo[2] << std::endl;
+				for(int j = 1; j < 5; ++j){
+					if(j == 3) j++;
+					std::cout<< (j&1) << " " << ((j>>1)&1) << " " << ((j>>2)&1) << std::endl;
 					glm::vec3 pos = glm::vec3(children[i]->coo.x + (j&1), children[i]->coo.y + ((j>>1)&1), children[i]->coo.z + ((j>>2)&1));
-					//glm::vec3 pos = glm::vec3(children[i]->coo[0], children[i]->coo[1], children[i]->coo[2]);//*glm::vec3(.5,.5,.5);
 					root.getCubeType(result, pos, 0, profondeur);
-					
 					if(result == 0){
 						break;
 					}
 				}
 				if(result != 0){
-					for(int j = 1; j < 4; ++j){
+					for(int j = 1; j < 5; ++j){
+						if(j == 3) j++;
 						glm::vec3 pos = glm::vec3(children[i]->coo.x - (j&1), children[i]->coo.y - ((j>>1)&1), children[i]->coo.z - ((j>>2)&1));
 						root.getCubeType(result, pos, 0, profondeur);
 						if(result == 0){
