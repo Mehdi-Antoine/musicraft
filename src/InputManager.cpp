@@ -24,7 +24,7 @@ void InputManager::updateInput() {
 
             //Quelle touche
             switch(m_event.key.keysym.sym) {
-
+ 
             case SDLK_z:
                 m_key[SDLK_z] = true;
                 break;
@@ -45,8 +45,8 @@ void InputManager::updateInput() {
                 m_key[SDLK_SPACE] = true;
                 break;
 
-            case SDLK_RSHIFT:
-                m_key[SDLK_RSHIFT] = true;
+            case SDLK_LSHIFT:
+                m_key[SDLK_LSHIFT] = true;
                 break;
 
             case SDLK_F1:
@@ -99,8 +99,8 @@ void InputManager::updateInput() {
                 m_key[SDLK_SPACE] = false;
                 break;
 
-            case SDLK_RSHIFT:
-                m_key[SDLK_RSHIFT] = false;
+            case SDLK_LSHIFT:
+                m_key[SDLK_LSHIFT] = false;
                 break;
 
             case SDLK_F1:

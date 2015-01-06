@@ -5,6 +5,8 @@
 #include <iostream>
 #include <algorithm>
 
+#define EMPTY 0
+
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
@@ -57,6 +59,7 @@ void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chu
 	next_position.z = position.z;
 
 	if(chunk.getCubeType(next_position) != EMPTY){
+
 		/*std::cout << "COLLISION X" << std::endl;
 		std::cout << "x position = " << position << std::endl;
 		std::cout << "x next pos = " << next_position << std::endl;*/
@@ -90,6 +93,11 @@ void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chu
 	}
 
 }
+
+
+
+
+
 
 
 
