@@ -4,7 +4,7 @@
 #include <glimac/glm.hpp>
 
 Chunk::Chunk(){
-	profondeur = 8;
+	profondeur = 4;
 	int etage = 0;
 	root = Octree();
 	root.coo = glm::vec3(0,0,0);
@@ -71,17 +71,17 @@ void Chunk::genFullCube(Octree &subTree, int etage){
 void Chunk::genTerrain(Octree &subTree, int etage, float taille, int seed){
 	
 	double persistence = 0.9;
-    double frequency = 10;
-    double amplitude = 20;
-    int octaves = 2;
+    double frequency = .2;
+    double amplitude = 100;
+    int octaves = 1;
     int randomseed = seed;
     PerlinNoise noise = PerlinNoise(persistence, frequency, amplitude, octaves, randomseed);
 
-	for(int x = 0; x < taille; ++x){
-		for(int z = 0; z < taille; ++z){
+	for(int x = -taille*2; x < taille*2; ++x){
+		for(int z = -taille*2; z < taille*2; ++z){
 			int height = (int)noise.GetHeight(x, z) - taille/2;
 			if (height > taille/2)
-				height = taille-1;
+				height = taille/2;
 			if(height < -taille/2)
 				height = -taille/2;
 			for(int y = -pow(2,profondeur)/2; y <= height ; ++y)

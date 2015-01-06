@@ -8,11 +8,11 @@
 class Chunk{
 
 private:
-	int profondeur;
 	
 
 public:
 	Octree root;
+	int profondeur;
 	
 	Chunk();
 	Chunk(int seed, glm::vec3 racine);

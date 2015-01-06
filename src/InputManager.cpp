@@ -43,8 +43,8 @@ void InputManager::updateInput() {
                 m_key[SDLK_SPACE] = true;
                 break;
 
-            case SDLK_RSHIFT:
-                m_key[SDLK_RSHIFT] = true;
+            case SDLK_LSHIFT:
+                m_key[SDLK_LSHIFT] = true;
                 break;
 
             default:
@@ -81,8 +81,8 @@ void InputManager::updateInput() {
                 m_key[SDLK_SPACE] = false;
                 break;
 
-            case SDLK_RSHIFT:
-                m_key[SDLK_RSHIFT] = false;
+            case SDLK_LSHIFT:
+                m_key[SDLK_LSHIFT] = false;
                 break;
 
             default:
