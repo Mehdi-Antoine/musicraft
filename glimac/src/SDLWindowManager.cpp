@@ -1,5 +1,6 @@
 #include "glimac/SDLWindowManager.hpp"
 #include <iostream>
+#include <SDL/SDL.h>
 
 namespace glimac {
 
@@ -8,10 +9,18 @@ SDLWindowManager::SDLWindowManager(uint32_t width, uint32_t height, const char* 
         std::cerr << SDL_GetError() << std::endl;
         return;
     }
-    if(!SDL_SetVideoMode(width, height, 32, SDL_OPENGL)) {
+    //if(!SDL_SetVideoMode(width, height, 32, SDL_OPENGL)) {
+    //if(!SDL_SetVideoMode(1024,768, 32, SDL_FULLSCREEN | SDL_OPENGL)) {
+    //if(!SDL_SetVideoMode(0, 0, 32, SDL_FULLSCREEN | SDL_OPENGL)) {
+    //if(!SDL_SetVideoMode(width_, height_, 32, SDL_OPENGL)) {
+    if(!SDL_SetVideoMode(0, 0, 32, SDL_RESIZABLE | SDL_FULLSCREEN | SDL_OPENGL)) {
+    //if(!SDL_SetVideoMode(0, 0, 32, SDL_RESIZABLE | SDL_OPENGL)) {
         std::cerr << SDL_GetError() << std::endl;
         return;
     }
+
+    SDL_ShowCursor(SDL_DISABLE);
+
     SDL_WM_SetCaption(title, nullptr);
 }
 

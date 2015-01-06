@@ -12,6 +12,7 @@ void InputManager::updateInput() {
         m_mouse_pos[0] = m_event.button.x;
         m_mouse_pos[1] = m_event.button.y;
 
+        //std::cout << "mouse pos: " << m_mouse_pos[0] << std::endl;
 
 
         //Quel type d'event
@@ -46,6 +47,18 @@ void InputManager::updateInput() {
 
             case SDLK_RSHIFT:
                 m_key[SDLK_RSHIFT] = true;
+                break;
+
+            case SDLK_F1:
+                m_key[SDLK_F1] = true;
+                break;
+
+            case SDLK_F2:
+                m_key[SDLK_F2] = true;
+                break;
+
+            case SDLK_F3:
+                m_key[SDLK_F3] = true;
                 break;
 
             case SDLK_ESCAPE:
@@ -88,6 +101,18 @@ void InputManager::updateInput() {
 
             case SDLK_RSHIFT:
                 m_key[SDLK_RSHIFT] = false;
+                break;
+
+            case SDLK_F1:
+                m_key[SDLK_F1] = false;
+                break;
+
+            case SDLK_F2:
+                m_key[SDLK_F2] = false;
+                break;
+
+            case SDLK_F3:
+                m_key[SDLK_F3] = false;
                 break;
 
             default:

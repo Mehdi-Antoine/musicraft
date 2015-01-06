@@ -1,10 +1,9 @@
 #include <iostream>
 #include "include/World.hpp"
 #include "include/EventHandler.hpp"
+#include "include/Window.hpp"
 
-#define WINDOW_WIDTH  800
-#define WINDOW_HEIGHT 700
-#define COIN 50
+#define COIN 30
 
 PlayerManager& EventHandler::getPlayerManager(){
     return m_player_manager;
@@ -43,8 +42,21 @@ void EventHandler::updatePlayer(World &world){
         directionRightLeft++;
     }
     if(m_input.getKey(SDLK_d) == true) {
-        directionRightLeft--;
-        
+        directionRightLeft--;  
+    }
+
+    //fullscreen ?
+    if(m_input.getKey(SDLK_F1) == true) {
+        std::cout << "Mode plein écran" << std::endl;
+        world.getWindow().updateVideoMode(1);
+    }
+    if(m_input.getKey(SDLK_F2) == true) {
+        std::cout << "Mode fenêtré" << std::endl;
+        world.getWindow().updateVideoMode(2);
+    }
+    if(m_input.getKey(SDLK_F3) == true) {
+        std::cout << "Mode 1024x768" << std::endl;
+        world.getWindow().updateVideoMode(3);
     }
 
     //Click Gauche --> Pick Cube
@@ -68,18 +80,45 @@ void EventHandler::updatePlayer(World &world){
     else click = 0;
 
 
-    if(m_input.getMouseRel(0) != 0 && m_input.getMouseRel(0) != -1 && m_input.getMouseRel(0) != 1){
-        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(-m_input.getMouseRel(0)/2.);
+    int WINDOW_WIDTH = world.getWindowWidth();
+    int WINDOW_HEIGHT = world.getWindowHeight();
+    float angle = 1.5;
+
+    float rel_x = m_input.getMouseRel(0);
+    float rel_y = m_input.getMouseRel(1);
+    if(rel_x > angle) rel_x = angle;
+    else if(rel_x < -angle) rel_x = -angle;
+    if(rel_y > angle) rel_y = angle;
+    else if(rel_y < -angle) rel_y = -angle;
+
+    if(rel_x != 0 && rel_x != -1 && rel_x != 1){
+        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(-rel_x);
     }
-    /*else if( (m_input.getMousePos(0) < COIN || m_input.getMousePos(0) > (WINDOW_WIDTH - COIN) ) && m_input.getMouseRel(0) != 0){
-        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(-m_input.getMouseRel(0)/2.);
-    }*/
-    if(m_input.getMouseRel(1) != 0 && m_input.getMouseRel(1) != -1 && m_input.getMouseRel(1) != 1 ){
-        m_player_manager.getPlayer().getBody().getCamera().rotateUp(-m_input.getMouseRel(1)/2.);
+    if(m_input.getMousePos(0) < 3*COIN && m_input.getMousePos(0) >= 0 && rel_x < 0){
+        std::cout << "coin gauche " <<  m_input.getMousePos(0) <<" rel: " << rel_x<< std::endl;
+        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(angle);
     }
-    /*else if( (m_input.getMousePos(1) < COIN || m_input.getMousePos(1) > (WINDOW_HEIGHT - COIN) ) && m_input.getMouseRel(1) != 0){
-        m_player_manager.getPlayer().getBody().getCamera().rotateUp(-m_input.getMouseRel(1)/2.);
-    }*/
+    if(m_input.getMousePos(0) > (WINDOW_WIDTH - 3*COIN) && m_input.getMousePos(0) <= WINDOW_WIDTH && rel_x >= 0){
+        std::cout << "coin droit "<<  m_input.getMousePos(0) << " rel: " << rel_x << std::endl;
+        m_player_manager.getPlayer().getBody().getCamera().rotateLeft(-angle);
+    } 
+
+    if(rel_y != 0 && rel_y != -1 && rel_y != 1 ){
+        m_player_manager.getPlayer().getBody().getCamera().rotateUp(-rel_y);
+    }
+    if(m_input.getMousePos(1) < 3*COIN && m_input.getMousePos(1) >= 0 && rel_y < 0){
+        m_player_manager.getPlayer().getBody().getCamera().rotateUp(angle);
+        std::cout << "coin haut "<<  m_input.getMousePos(1) << " rel: " << rel_y<< std::endl;
+    }
+    if(m_input.getMousePos(1) > (WINDOW_HEIGHT - 3*COIN) && m_input.getMousePos(1) <= WINDOW_HEIGHT && rel_y >= 0  ){
+        m_player_manager.getPlayer().getBody().getCamera().rotateUp(-angle);
+        std::cout << "coin bas "<<  m_input.getMousePos(1) << " rel: " << rel_y << std::endl;
+
+    }
+
+
+
+
 
     m_player_manager.movement(directionFrontBack, directionRightLeft);
     m_player_manager.flyAndRun(run,fly); 
