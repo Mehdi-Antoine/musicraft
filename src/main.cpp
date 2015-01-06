@@ -292,7 +292,9 @@ int main(int argc, char** argv){
                     }
                 }
             }
-        }
+        } 
+
+        
 
         ground.update(cube_position, cube_color);
 
