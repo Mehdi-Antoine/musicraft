@@ -70,13 +70,14 @@ int main(int argc, char** argv){
     
     glm::vec3 no = glm::vec3(20,20,20);
     chunk_norris.setCubeType(no, 1);
-    chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur));
+    chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur+1));
     squares_position = chunk_norris.getAllCoordinates();
     std::cout << "no type : " << (int)chunk_norris.getCubeType(no) << std::endl;
     
     std::cout << "Count unlightened: " << squares_position.size()<< std::endl;
 
     chunk_norris.lighten();
+
     squares_position = chunk_norris.getAllCoordinates();
     std::cout << "Count lightened: " << squares_position.size()<< std::endl;
 

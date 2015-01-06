@@ -139,7 +139,7 @@ std::vector<glm::vec3> Chunk::getAllCoordinates(){
 }
 
 void Chunk::lighten(){
-	root.lighten(0, profondeur);
+	root.lighten(0, profondeur, root);
 }
 
 /*void Chunk::culling(std::vector<float> centres, Octree &subTree, int &etage, float taille){
