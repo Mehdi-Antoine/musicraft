@@ -48,10 +48,10 @@ void World::addChunk(Chunk &chunk){
 	m_chunks.push_back(chunk);
 }
 
-char World::getCubeType(const glm::vec3 &position){
+char World::getCubeType(const glm::vec3 &position) const{
 	return m_chunks[0].getCubeType(position);
 }
 
-char World::getCubeType(float x, float y, float z){
+char World::getCubeType(float x, float y, float z) const{
 	return m_chunks[0].getCubeType(x,y,z);
 }

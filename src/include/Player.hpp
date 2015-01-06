@@ -58,7 +58,15 @@ public:
   void moveFront(int t);
   void moveLeft(int t);
 
+  int foundCube(const World &world, glm::vec3 &target);
+
+  void foundPreviousVoid(const World &world, glm::vec3 &target);
+
+  glm::vec3 getTarget(float scale);
+
   void pickCube(World &world); //Méthode qui permet d'attraper un cube, le cherche dans le chunk etc.
+
+  void addCube(World &world);
 
   bool catchCube(int cube);
   bool dropCube();

@@ -123,12 +123,20 @@ void Player::moveLeft(int t){
 	setDirX(t);
 }
 
-void Player::pickCube(World &world){
+glm::vec3 Player::getTarget(float scale){
+	
+	glm::vec3 target;
 
 	glm::vec3 front_vector = m_body.getCamera().getFrontVector();
 	glm::vec3 camera_position = m_body.getCamera().getPosition();
 
-	glm::vec3 target;
+	std::cout << glm::length(front_vector) << std::endl;
+
+	target = camera_position +  scale * front_vector;
+	return target;
+}
+
+int Player::foundCube(const World &world, glm::vec3 &target){
 
 	float scale = 0.5;
 	int i = 0;
@@ -138,7 +146,9 @@ void Player::pickCube(World &world){
 
 		scale += i;
 
-		target  = camera_position +  scale * front_vector;
+		target  = getTarget(scale);
+
+		//std::cout << "target length" << glm::length(getTarget(1)) << std::endl;
 
 		if(world.getCubeType(target) != EMPTY){
 			found_cube = true;
@@ -149,15 +159,73 @@ void Player::pickCube(World &world){
 	}while(found_cube == false && i < 4);
 
 	if(found_cube){
-		std::cout << "PICK CUBE AT COORD : " << target << std::endl;
-		world.setCubeType(target, EMPTY);
-		//world.setCubeVectorPosition(target);
-		//world.removeCube(target);
+		std::cout << "CUBE AT COORD : " << target << std::endl;
+		std::cout << "i : " << i << std::endl;
+		return i;
 	}
-	else{
-		std::cout << "NO CUBE" << std::endl;
+	
+	return -1;
+
+}
+
+void Player::foundPreviousVoid(const World &world, glm::vec3 &target){
+	float scale = 0.99;
+	int i = 0;
+	bool found_void = false;
+
+	do{
+
+		scale -= 0.01;
+
+		target  *= scale;
+
+		if(world.getCubeType(target) == EMPTY){
+			found_void = true;
+		}
+		
+		++i;
+
+		std::cout << i << std::endl;
+
+	}while(found_void == false && scale > 0);
+
+	if(found_void){
+		std::cout << "VOID AT COORD : " << target << std::endl;
+	}
+	
+}
+
+
+void Player::pickCube(World &world){
+
+	glm::vec3 target;
+
+	if(foundCube(world, target) != -1){
+		std::cout << " PICKED"<< std::endl;
+		world.setCubeType(target, EMPTY);
 	}
 
+}
+
+ 
+void Player::addCube(World &world){
+
+	glm::vec3 target;
+
+	int i = foundCube(world, target);
+
+	if(i != -1){
+		std::cout << " ADDED"<< std::endl;
+
+		foundPreviousVoid(world, target);
+
+		if(glm::length(target) > 3){
+			world.setCubeType(target, BASIC);
+		}
+		
+		
+	}
+	
 
 }
 

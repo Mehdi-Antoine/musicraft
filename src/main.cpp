@@ -220,8 +220,6 @@ int main(int argc, char** argv){
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
     }
 
-    chunk.setCubeType(2,2,2, EMPTY);
-
 //-----------------------------------WORLD CREATION-------------------------------------------------
 
     World world;

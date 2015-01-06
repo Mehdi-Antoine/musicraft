@@ -52,6 +52,12 @@ void EventHandler::updatePlayer(World &world){
         m_player_manager.getPlayer().pickCube(world);
     }
 
+    //Click Droit --> Create Cube
+
+    if(m_input.getMouse(3) == true){
+        m_player_manager.getPlayer().addCube(world);
+    }
+
 
     //mousemotion orientation camera
     int click = 0;

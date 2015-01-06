@@ -40,8 +40,8 @@ public:
 
 	void addChunk(Chunk &chunk);
 
-	char getCubeType(const glm::vec3 &position);
+	char getCubeType(const glm::vec3 &position) const;
 
-	char getCubeType(float x, float y, float z);
+	char getCubeType(float x, float y, float z) const;
 	
 };
