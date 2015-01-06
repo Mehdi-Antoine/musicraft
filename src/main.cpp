@@ -285,6 +285,11 @@ int main(int argc, char** argv){
         global_matrix.updateViewMatrix(view_matrix);
 
 
+//----------------------------------UPDATE VBO----------------------------------------------------
+    squares_position = chunk_norris.getAllCoordinates();
+    ground.update(squares_position, squares_color);
+
+
 //---------------------------------------DRAW !!!!-----------------------------------------------------
 
     
@@ -314,8 +319,8 @@ int main(int argc, char** argv){
                 std::cout << "Warning ! : ";
             }
 
-            //std::cout << res << " sec" << std::endl;
-            //std::cout << 1 / res << " fps" << std::endl<< std::endl;
+            std::cout << res << " sec" << std::endl;
+            std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
             nbFrames = 0;
 

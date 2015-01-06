@@ -15,7 +15,7 @@ Chunk::Chunk(){
 
 
 Chunk::Chunk(int seed, glm::vec3 pos){
-	profondeur = 5;
+	profondeur = 3;
 	int etage = 0;
 	root = Octree();
 	int taille = pow(2, profondeur);
