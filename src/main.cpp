@@ -105,11 +105,9 @@ int main(int argc, char** argv){
     std::cout << "Count unlightened: " << squares_position.size()<< std::endl;
 
     chunk_norris.lighten();
+
     squares_position = chunk_norris.getAllCoordinates();
     std::cout << "Count lightened: " << squares_position.size()<< std::endl;
-
-
-
 
     std::vector<glm::vec3> squares_color;
     for(unsigned int i = 0; i < squares_position.size(); ++i){

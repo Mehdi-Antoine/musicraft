@@ -134,7 +134,7 @@ char Chunk::getCubeType(glm::vec3 &pos) const{
 
 void Chunk::setCubeType(const glm::vec3 &pos, char type){
 	int etage = 0;
-	root.setCubeType(pos, type, etage, profondeur);
+	root.setCubeType(pos, type, etage, profondeur, pow(2,profondeur));
 }
 
 std::vector<glm::vec3> Chunk::getAllCoordinates(){
@@ -144,7 +144,7 @@ std::vector<glm::vec3> Chunk::getAllCoordinates(){
 }
 
 void Chunk::lighten(){
-	root.lighten(0, profondeur);
+	root.lighten(0, profondeur, root);
 }
 
 /*void Chunk::culling(std::vector<float> centres, Octree &subTree, int &etage, float taille){
