@@ -132,7 +132,7 @@ char Chunk::getCubeType(glm::vec3 &pos) const{
 	return result;
 }
 
-void Chunk::setCubeType(glm::vec3 &pos, char type){
+void Chunk::setCubeType(const glm::vec3 &pos, char type){
 	int etage = 0;
 	root.setCubeType(pos, type, etage, profondeur);
 }

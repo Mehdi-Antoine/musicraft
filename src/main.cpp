@@ -72,26 +72,21 @@ int main(int argc, char** argv){
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl << std::endl;
 
-//-----------------------------------WORLD CREATION------------------------------------------------
+//-----------------------------------CHUNKS CREATION------------------------------------------------
 
     std::vector<glm::vec3> squares_position;
     std::vector<glm::vec3> squares_position1;
     std::vector<glm::vec3> squares_position2;
     std::vector<glm::vec3> squares_position3;
+
+
     Chunk chunk_norris = Chunk(0, glm::vec3(0,0,0));
     /*Chunk chunk_norris1 = Chunk(0, glm::vec3(64,0,0));*/
     /*Chunk chunk_norris2 = Chunk(0, glm::vec3(16,0,0));
     Chunk chunk_norris3 = Chunk(0, glm::vec3(0,0,8));*/
-    glm::vec3 no = glm::vec3(20,20,20);
-
-    chunk_norris.setCubeType(no, 1);
     
     chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur));
 
-    no = no;//*glm::vec3(2,2,2);
-    std::cout << "no type : " << (int)chunk_norris.getCubeType(no) << std::endl;
-    
-    //chunk_norris.setCubeType(no, 0);
     squares_position = chunk_norris.getAllCoordinates();
     /*squares_position1 = chunk_norris1.getAllCoordinates();
     squares_position2 = chunk_norris2.getAllCoordinates();
@@ -106,6 +101,7 @@ int main(int argc, char** argv){
     for(int i = 0; i < squares_position3.size(); ++i){
         squares_position.push_back(squares_position3[i]);
     }*/
+
     std::cout << "Count unlightened: " << squares_position.size()<< std::endl;
 
     chunk_norris.lighten();
@@ -122,7 +118,10 @@ int main(int argc, char** argv){
 
     glEnable(GL_DEPTH_TEST);
 
-    World world;
+//-----------------------------------WORLD CREATION-------------------------------------------------
+
+    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
+    World world(window);
 
     world.addChunk(chunk_norris);
 
@@ -226,76 +225,8 @@ int main(int argc, char** argv){
 
     std::cout << "OK." << std::endl << std::endl;*/
 
-    Chunk chunk;
-
-    char cubeType;
-
-    for (int x = 0; x < SIZE; ++x)
-    {
-        for (int z = 0; z < SIZE; ++z)
-        {   
-            int y = 0;
-
-            cubeType = x % 2 + 1;
-            chunk.setCubeType(x, y, z, cubeType);
-            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));      
-        }
-    }
-
-    for (int x = 0; x < SIZE; ++x)
-    { 
-        int y = 1;
-        int z = 0;
-
-        cubeType = x % 2 + 1;
-
-        chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
-        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));          
-    }
-    for (int x = 0; x < SIZE; ++x)
-    {   
-        int z = SIZE - 1;
-        for(int y = 1; y < 4; ++y){
-            cubeType = x % 2 + 1;
-
-            chunk.setCubeType(x, y, z, cubeType);
-            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
-            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));  
-        }              
-    }
     
-    for (int z = 0; z < SIZE; ++z)
-    {   
-        int x = 0;
-        int y = 1;
 
-        cubeType = x % 2 + 1;
-
-        chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
-        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
-    }
-
-    for (int z = 0; z < SIZE ; ++z)
-    {   
-        int x = SIZE - 1;
-        int y = 1;
-
-        cubeType = x % 2 + 1;
-
-        chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
-    }
-
-//-----------------------------------WORLD CREATION-------------------------------------------------
-
-    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
-    World world(window);
-
-    world.addChunk(chunk);
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
@@ -353,24 +284,6 @@ int main(int argc, char** argv){
 
         global_matrix.updateViewMatrix(view_matrix);
 
-//------------------------------------UPDATE VBO-------------------------------------------------------
-
-        cube_position.clear();
-
-        for (int x = 0; x < SIZE; ++x)
-        {
-            for (int y = 0; y < SIZE; ++y)
-            {
-                for (int z = 0; z < SIZE; ++z)
-                {
-                    if(world.getCubeType(x,y,z) != EMPTY){
-                        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
-                    }
-                }
-            }
-        }
-
-        ground.update(cube_position, cube_color);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
 
@@ -378,7 +291,7 @@ int main(int argc, char** argv){
         //texture_sting.use(GL_TEXTURE1);
         texture_rouge.use(GL_TEXTURE0);
 
-        cube_shader.useShader();
+        square_shader.useShader();
         ground.draw();
 
         //texture_sting.stopUse(GL_TEXTURE1);

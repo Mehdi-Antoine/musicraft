@@ -74,7 +74,6 @@ void Camera::rotateLeft(float degrees){
 }
 
 void Camera::rotateUp(float degrees){
-<<<<<<< HEAD
 	if(m_fTeta + glm::radians(degrees) > 1.7 || m_fTeta + glm::radians(degrees) < -1.7) return;
 
 	m_fTeta += glm::radians(degrees);
