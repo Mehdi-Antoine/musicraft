@@ -58,9 +58,9 @@ public:
   void moveFront(int t);
   void moveLeft(int t);
 
-  int foundCube(const World &world, glm::vec3 &target);
+  int foundCube(World &world, glm::vec3 &target);
 
-  void foundPreviousVoid(const World &world, glm::vec3 &target);
+  void foundPreviousVoid(World &world, glm::vec3 &target);
 
   glm::vec3 getTarget(float scale);
 

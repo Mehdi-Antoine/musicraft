@@ -284,10 +284,10 @@ int main(int argc, char** argv){
 
 
 //----------------------------------UPDATE VBO----------------------------------------------------
-    squares_position = chunk_norris.getAllCoordinates();
+    squares_position = world.getChunk(0).getAllCoordinates();
     ground.update(squares_position, squares_color);
 
-        for (int x = 0; x < SIZE; ++x)
+       /* for (int x = 0; x < SIZE; ++x)
         {
             for (int y = 0; y < SIZE; ++y)
             {
@@ -299,10 +299,8 @@ int main(int argc, char** argv){
                 }
             }
         } 
-
-        
-
         ground.update(cube_position, cube_color);
+        */
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
 
