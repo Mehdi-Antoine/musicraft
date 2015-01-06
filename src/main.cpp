@@ -287,6 +287,22 @@ int main(int argc, char** argv){
     squares_position = chunk_norris.getAllCoordinates();
     ground.update(squares_position, squares_color);
 
+        for (int x = 0; x < SIZE; ++x)
+        {
+            for (int y = 0; y < SIZE; ++y)
+            {
+                for (int z = 0; z < SIZE; ++z)
+                {
+                    if(world.getCubeType(x,y,z) != EMPTY){
+                        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
+                    }
+                }
+            }
+        } 
+
+        
+
+        ground.update(cube_position, cube_color);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
 
