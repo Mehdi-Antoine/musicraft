@@ -67,7 +67,6 @@ int main(int argc, char** argv){
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl << std::endl;
 
-    glEnable(GL_DEPTH_TEST);
 
 //----------------------------------GL ENVIRONNEMENT------------------------------------------------
 
@@ -138,98 +137,41 @@ int main(int argc, char** argv){
 
     std::cout << "OK." << std::endl << std::endl;
 
-//-------------CONSTRUCTION CUBE ET INJECTION DANS UN TABLEAU DE VERTICES---------------------------
 
-    std::cout << "CREATION INDICES CUBES..." << std::endl;
+//-----------------------------------CHUNKS CREATION------------------------------------------------
 
     std::vector<glm::vec3> cube_color;
     std::vector<glm::vec3> cube_position;
 
-//-----------------------------------CREATION CHUNK-------------------------------------------------
 
-    Chunk chunk;
+    Chunk chunk_norris = Chunk(0, glm::vec3(0,0,0));
+    glm::vec3 pos = glm::vec3(0,-5,0);
+    chunk_norris.setCubeType(pos, 1);
+    chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur), 0, chunk_norris.profondeur);
 
-    char cubeType;
-    glm::vec3 current_cube_color;
+    cube_position = chunk_norris.getAllCoordinates();
 
-    //SOL
-    for (int x = 0; x < SIZE; ++x)
-    {
-        for (int z = 0; z < SIZE; ++z)
-        {   
-            int y = 0;
+    std::cout << "Count unlightened: " << cube_position.size()<< std::endl;
 
-            cubeType = BASIC1;
+    chunk_norris.lighten();
 
-            current_cube_color = Chunk::getColorFromType(cubeType);
+    cube_position = chunk_norris.getAllCoordinates();
+    std::cout << "Count lightened: " << cube_position.size()<< std::endl;
 
-            chunk.setCubeType(x, y, z, cubeType);
-            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-            cube_color.push_back(current_cube_color);      
-        }
+    for(unsigned int i = 0; i < cube_position.size(); ++i){
+        cube_color.push_back(glm::vec3(1,1,1));
     }
 
-    //COTES
-    for (int x = 0; x < SIZE; ++x)
-    { 
-        int y = 1;
-        int z = 0;
+    glEnable(GL_DEPTH_TEST);
 
-        cubeType = BASIC2;
 
-        current_cube_color = Chunk::getColorFromType(cubeType);
-
-        chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-        cube_color.push_back(current_cube_color);           
-    }
-    for (int x = 0; x < SIZE; ++x)
-    {   
-        int z = SIZE - 1;
-        for(int y = 1; y < 4; ++y){
-
-            cubeType = BASIC3;
-
-            current_cube_color = Chunk::getColorFromType(cubeType);
-
-            chunk.setCubeType(x, y, z, cubeType);
-            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-            cube_color.push_back(current_cube_color);  
-        }              
-    }   
-    for (int z = 0; z < SIZE; ++z)
-    {   
-        int x = 0;
-        int y = 1;
-
-        cubeType = BASIC2;
-
-        current_cube_color = Chunk::getColorFromType(cubeType);
-
-        chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-        cube_color.push_back(current_cube_color);        
-    }
-    for (int z = 0; z < SIZE ; ++z)
-    {   
-        int x = SIZE - 1;
-        int y = 1;
-
-        cubeType = BASIC3;
-
-        current_cube_color = Chunk::getColorFromType(cubeType);
-
-        chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-        cube_color.push_back(current_cube_color);       
-    }
 
 //-----------------------------------WORLD CREATION-------------------------------------------------
 
     Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
     World world(window);
 
-    world.addChunk(chunk);
+    world.addChunk(chunk_norris);
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
@@ -287,31 +229,14 @@ int main(int argc, char** argv){
 
         global_vec4.updateCameraFrontVector(front_vector);
 
-//------------------------------------UPDATE VBO-------------------------------------------------------
-
+//----------------------------------UPDATE VBO----------------------------------------------------
         cube_position.clear();
         cube_color.clear();
-
-        for (int x = 0; x < SIZE; ++x)
-        {
-            for (int y = 0; y < SIZE; ++y)
-            {
-                for (int z = 0; z < SIZE; ++z)
-                {   
-                    cubeType = world.getCubeType(x,y,z);
-                    if(cubeType != EMPTY){
-
-                        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
-
-                        current_cube_color = Chunk::getColorFromType(cubeType);
-
-                        cube_color.push_back(current_cube_color); 
-                    }
-                }
-            }
-        }
-
+        
+        cube_position = world.getChunk(0).getAllCoordinates();
         ground.update(cube_position, cube_color);
+
+
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
         

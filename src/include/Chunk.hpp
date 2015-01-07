@@ -1,10 +1,14 @@
 #pragma once
 
 #include <GL/glew.h>
-
 #include <glimac/glm.hpp>
+#include <iostream>
+#include <vector>
+#include "Octree.hpp"
+#include "PerlinNoise.hpp"
 
 #define SIZE 16 
+
 
 enum CubeType{ 
   EMPTY = 0,
@@ -16,7 +20,10 @@ enum CubeType{
 class Chunk{
 private:
 
-	char m_chunk[SIZE][SIZE][SIZE];
+public:
+	Octree root;
+	int profondeur = 4;
+	float taille = pow(2, profondeur-1);
 	
 public:
 
