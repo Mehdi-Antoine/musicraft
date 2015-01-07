@@ -232,7 +232,7 @@ int main(int argc, char** argv){
 //----------------------------------UPDATE VBO----------------------------------------------------
         cube_position.clear();
         cube_color.clear();
-        
+        //world.getChunk(0).lighten();
         cube_position = world.getChunk(0).getAllCoordinates();
         ground.update(cube_position, cube_color);
 
