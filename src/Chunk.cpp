@@ -10,16 +10,33 @@ const int Chunk::m_size = SIZE;
 
 Chunk::Chunk(char cube_type){
 
-	for (int x = 0; x < Chunk::m_size; ++x)
+	for (int x = 0; x < SIZE; ++x)
 	{
-		for (int y = 0; y < Chunk::m_size; ++y)
+		for (int y = 0; y < SIZE; ++y)
 		{
-			for (int z = 0; z < Chunk::m_size; ++z)
+			for (int z = 0; z < SIZE; ++z)
 			{		
 				m_chunk[x][y][z] = cube_type;				
 			}
 		}
 	}
+
+}
+
+Chunk::Chunk(const Chunk &chunk){
+
+	m_world_position = chunk.getWorldPosition();
+
+	for (int x = 0; x < SIZE; ++x)
+	{
+		for (int y = 0; y < SIZE; ++y)
+		{
+			for (int z = 0; z < SIZE; ++z)
+			{		
+				m_chunk[x][y][z] = chunk.getCubeType(x, y, z);				
+			}
+		}
+	} 
 
 }
 
@@ -44,6 +61,10 @@ char Chunk::getCubeType(const glm::vec3 &position) const{
 
 }
 
+glm::vec3 Chunk::getWorldPosition() const{
+	return m_world_position;
+}
+
 //--------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------SETTERS-----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------	
@@ -60,6 +81,10 @@ void Chunk::setCubeType(const glm::vec3 &position, char cube_type){
 		   [getIndex(position.y)]
 		   [getIndex(position.z)] = cube_type;
 
+}
+
+void Chunk::setWorldPosition(const glm::vec3 world_position){
+	m_world_position = world_position;
 }
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------

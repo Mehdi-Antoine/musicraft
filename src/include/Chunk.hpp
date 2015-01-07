@@ -4,7 +4,7 @@
 
 #include <glimac/glm.hpp>
 
-#define SIZE 16 
+#define SIZE 8 
 
 enum CubeType{ 
   EMPTY = 0,
@@ -17,6 +17,8 @@ class Chunk{
 private:
 
 	char m_chunk[SIZE][SIZE][SIZE];
+
+	glm::vec3 m_world_position;
 	
 public:
 
@@ -25,6 +27,7 @@ public:
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 
 	Chunk(char cube_type = 0);
+	Chunk(const Chunk &chunk);
 	~Chunk();
 
 //--------------------------------------------------GETTERS-----------------------------------------------------
@@ -32,10 +35,14 @@ public:
 	char getCubeType(float x, float y, float z) const;
 	char getCubeType(const glm::vec3 &position) const;
 
+	glm::vec3 getWorldPosition() const;
+
 //--------------------------------------------------SETTERS-----------------------------------------------------
 
 	void setCubeType(int x, int y, int z, char cube_type);
 	void setCubeType(const glm::vec3 &position, char cube_type);
+
+	void setWorldPosition(glm::vec3 world_position);
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 

@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 #include <GL/glew.h>
 
@@ -51,6 +52,51 @@ GlElement::GlElement(std::vector<glm::vec3> &position_index, std::vector<glm::ve
 
 }
 
+GlElement::GlElement(GLenum draw_mode){
+
+	setDrawMode(draw_mode);
+
+	m_vertex_number = 0;
+
+    glGenBuffers(1, &m_color_vbo);
+    glGenBuffers(1, &m_position_vbo);
+    
+    glGenVertexArrays(1, &m_vao);
+
+    glBindVertexArray(m_vao);
+
+    const GLuint VERTEX_ATTR_POSITION = 0;
+    const GLuint VERTEX_ATTR_COLOR = 1;
+
+    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+    glEnableVertexAttribArray(VERTEX_ATTR_COLOR);
+
+    bindBuffer(POSITION);
+    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const GLvoid*)(0*sizeof(GL_FLOAT)));
+    unbindBuffer();
+
+    bindBuffer(COLOR); 
+    glVertexAttribPointer(VERTEX_ATTR_COLOR, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const GLvoid*)(0*sizeof(GL_FLOAT)));
+    unbindBuffer();
+
+    glBindVertexArray(0);
+
+}
+
+GlElement::GlElement(const GlElement &gl_element){
+
+    m_vertex_number = gl_element.getVertexNumber();
+
+    m_draw_mode = gl_element.getDrawMode();
+
+    m_vao = gl_element.getVao();
+
+    m_color_vbo = gl_element.getColorVbo();
+
+    m_position_vbo = gl_element.getPositionVbo();
+
+}
+
 GlElement::~GlElement(){
 
 	glDeleteBuffers(1, &m_color_vbo);
@@ -73,6 +119,26 @@ void GlElement::setDrawMode(GLenum drawmode){
 
 ShaderProgram GlElement::getShaderProgram() const{
 	return m_shader_program;
+}
+
+int GlElement::getVertexNumber() const{
+    return m_vertex_number;
+}
+
+GLenum GlElement::getDrawMode() const{
+    return m_draw_mode;
+}
+
+GLuint GlElement::getVao() const{
+    return m_vao;
+}
+
+GLuint GlElement::getColorVbo() const{
+    return m_color_vbo;
+}
+
+GLuint GlElement::getPositionVbo() const{
+    return m_position_vbo;
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -106,6 +172,7 @@ void GlElement::unbindBuffer() const{
 }
 
 void GlElement::data(const std::vector<glm::vec3> &position_index, const std::vector<glm::vec3> &color_index){
+
 
 	m_vertex_number = position_index.size();
 
