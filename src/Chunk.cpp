@@ -1,4 +1,5 @@
 #include "include/Chunk.hpp"
+#include "include/PerlinNoise.hpp"
 #include <iostream>
 
 
@@ -99,5 +100,37 @@ glm::vec3 Chunk::getColorFromType(char cube_type){
 		default:
 		  return glm::vec3(1,1,1);
 		  break;
+	}
+}
+
+void Chunk::genMap(int seed, float taille){
+
+	double persistence = 0.9;
+	double frequency = .2;
+	//double amplitude = 100;
+	double amplitude = 60;
+	int octaves = 1;
+	int randomseed = seed;
+
+	int profondeur = 3;
+
+	PerlinNoise noise = PerlinNoise(persistence, frequency, amplitude, octaves, randomseed);
+	
+	for(int x = 0; x < taille; ++x){
+		for(int z = 0; z < taille; ++z){
+	
+				int height = (int)noise.GetHeight(x, z) - taille/2;
+
+				if (height > taille/2)	
+					height = taille/2;
+
+				if(height < -taille/2)
+					height = -taille/2;
+				
+				for(int y = 0; y < abs(height); ++y){
+	        		this->setCubeType(x, y, z, 1);
+	        
+	        }
+		}
 	}
 }

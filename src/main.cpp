@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <string>
+#include <random>
 
 using namespace glimac;
 
@@ -144,13 +145,13 @@ int main(int argc, char** argv){
 
     std::vector<glm::vec3> cube_color;
     std::vector<glm::vec3> cube_position;
+    glm::vec3 current_cube_color;
+    char cube_type;
 
 //-----------------------------------CREATION CHUNK-------------------------------------------------
 
+  
     Chunk chunk;
-
-    char cubeType;
-    glm::vec3 current_cube_color;
 
     //SOL
     for (int x = 0; x < SIZE; ++x)
@@ -159,11 +160,11 @@ int main(int argc, char** argv){
         {   
             int y = 0;
 
-            cubeType = BASIC1;
+            cube_type = BASIC1;
 
-            current_cube_color = Chunk::getColorFromType(cubeType);
+            current_cube_color = Chunk::getColorFromType(cube_type);
 
-            chunk.setCubeType(x, y, z, cubeType);
+            chunk.setCubeType(x, y, z, cube_type);
             cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
             cube_color.push_back(current_cube_color);      
         }
@@ -175,11 +176,11 @@ int main(int argc, char** argv){
         int y = 1;
         int z = 0;
 
-        cubeType = BASIC2;
+        cube_type = BASIC2;
 
-        current_cube_color = Chunk::getColorFromType(cubeType);
+        current_cube_color = Chunk::getColorFromType(cube_type);
 
-        chunk.setCubeType(x, y, z, cubeType);
+        chunk.setCubeType(x, y, z, cube_type);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
         cube_color.push_back(current_cube_color);           
     }
@@ -188,11 +189,11 @@ int main(int argc, char** argv){
         int z = SIZE - 1;
         for(int y = 1; y < 4; ++y){
 
-            cubeType = BASIC3;
+            cube_type = BASIC3;
 
-            current_cube_color = Chunk::getColorFromType(cubeType);
+            current_cube_color = Chunk::getColorFromType(cube_type);
 
-            chunk.setCubeType(x, y, z, cubeType);
+            chunk.setCubeType(x, y, z, cube_type);
             cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
             cube_color.push_back(current_cube_color);  
         }              
@@ -202,11 +203,11 @@ int main(int argc, char** argv){
         int x = 0;
         int y = 1;
 
-        cubeType = BASIC2;
+        cube_type = BASIC2;
 
-        current_cube_color = Chunk::getColorFromType(cubeType);
+        current_cube_color = Chunk::getColorFromType(cube_type);
 
-        chunk.setCubeType(x, y, z, cubeType);
+        chunk.setCubeType(x, y, z, cube_type);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
         cube_color.push_back(current_cube_color);        
     }
@@ -215,21 +216,44 @@ int main(int argc, char** argv){
         int x = SIZE - 1;
         int y = 1;
 
-        cubeType = BASIC3;
+        cube_type = BASIC3;
 
-        current_cube_color = Chunk::getColorFromType(cubeType);
+        current_cube_color = Chunk::getColorFromType(cube_type);
 
-        chunk.setCubeType(x, y, z, cubeType);
+        chunk.setCubeType(x, y, z, cube_type);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
         cube_color.push_back(current_cube_color);       
     }
+
+
+//-----------------------------------CREATION CHUNK-2-----------------------------------------------
+
+    Chunk chunky;
+
+    //int seed = 1 + (rand() % (int)(100));
+    int nMax = 100, nMin = 10;
+    int seed = nMin + (int)((double)rand() / (10000+1) * (nMax-nMin+1));
+    //int seed = 16417401;
+    std::cout << "seed: " << seed << std::endl;
+    int taille = SIZE;
+    chunky.genMap(seed, taille);
+    for(int x=0; x < SIZE; ++x){
+        for(int y=0; y < SIZE; ++y){
+            for(int z=0; z < SIZE; ++z){
+                //std::cout << "["<<x<<"]"<<"["<<y<<"]""["<<z<<"] : " << (int)chunky.getCubeType(x,y,z) << std::endl;
+            }    
+        }    
+    }
+
+
 
 //-----------------------------------WORLD CREATION-------------------------------------------------
 
     Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
     World world(window);
 
-    world.addChunk(chunk);
+    //world.addChunk(chunk);
+    world.addChunk(chunky);
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
@@ -298,12 +322,12 @@ int main(int argc, char** argv){
             {
                 for (int z = 0; z < SIZE; ++z)
                 {   
-                    cubeType = world.getCubeType(x,y,z);
-                    if(cubeType != EMPTY){
+                    cube_type = world.getCubeType(x,y,z);
+                    if(cube_type != EMPTY){
 
                         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
 
-                        current_cube_color = Chunk::getColorFromType(cubeType);
+                        current_cube_color = Chunk::getColorFromType(cube_type);
 
                         cube_color.push_back(current_cube_color); 
                     }
@@ -320,7 +344,6 @@ int main(int argc, char** argv){
 
         glActiveTexture(GL_TEXTURE1);
         texture_grille.bind();
-
 
         cube_shader.useShader();
         ground.draw();

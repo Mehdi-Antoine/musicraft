@@ -59,6 +59,12 @@ void EventHandler::updatePlayer(World &world){
         world.getWindow().updateVideoMode(3);
     }
 
+    //affiche position camera/joueur
+    if(m_input.getKey(SDLK_F6) == true) {
+        glm::vec3 pos = m_player_manager.getPlayer().getBody().getCamera().getPosition();
+        std::cout << "position camera: " << pos << std::endl;
+    }
+
     //Click Gauche --> Pick Cube
     if(m_input.getMouse(1) == true){
         m_player_manager.getPlayer().pickCube(world);

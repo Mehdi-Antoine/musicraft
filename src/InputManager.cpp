@@ -61,6 +61,10 @@ void InputManager::updateInput() {
                 m_key[SDLK_F3] = true;
                 break;
 
+            case SDLK_F6:
+                m_key[SDLK_F6] = true;
+                break;
+
             case SDLK_ESCAPE:
                 m_quit = true;
                 break;
@@ -113,6 +117,10 @@ void InputManager::updateInput() {
 
             case SDLK_F3:
                 m_key[SDLK_F3] = false;
+                break;
+
+            case SDLK_F6:
+                m_key[SDLK_F6] = false;
                 break;
 
             default:

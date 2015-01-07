@@ -4,7 +4,7 @@
 
 #include <glimac/glm.hpp>
 
-#define SIZE 16 
+#define SIZE 16
 
 enum CubeType{ 
   EMPTY = 0,
@@ -42,5 +42,7 @@ public:
 	int getIndex(float value) const;
 
 	static glm::vec3 getColorFromType(char type);
+
+	void genMap(int seed, float taille = 16);
 
 };
