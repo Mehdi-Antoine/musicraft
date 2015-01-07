@@ -32,19 +32,10 @@ GlTexture::GlTexture(const GlTexture& gl_texture){
 
 GlTexture::GlTexture(FilePath path){
 
-	std::cout << "	path : " << path << std::endl;
-	std::cout << "	allocation m_texture_data..." << std::endl;
     m_texture_data = loadImage(path)->getPixels();
-    std::cout << "	ok!" << std::endl;
 
-    std::cout << "	allocation m_texture_width et height..." << std::endl;
     m_texture_width = loadImage(path)->getWidth();
     m_texture_height = loadImage(path)->getHeight();
-
-    std::cout << "	width = " << m_texture_width << std::endl;
-    std::cout << "	height = " << m_texture_height << std::endl;
-    
-    std::cout << "	ok!" << std::endl;
 
     if(m_texture_data == NULL){
         std::cerr << "Pas de fichier image chargé pour la texture : " << path;
@@ -134,16 +125,26 @@ void GlTexture::load(FilePath path){
 	}
 }
 
+
+
 void GlTexture::use(GLenum texture){
 
 	glActiveTexture(texture);
-    glBindTexture(GL_TEXTURE_2D, m_texture_id);
+    bind();
 
 }
 
 void GlTexture::stopUse(GLenum texture){
 
 	glActiveTexture(texture);
-    glBindTexture(GL_TEXTURE_2D, 0);
+	unbind();
 
+}
+
+void GlTexture::bind(){
+	glBindTexture(GL_TEXTURE_2D, m_texture_id);
+}
+
+void GlTexture::unbind(){
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

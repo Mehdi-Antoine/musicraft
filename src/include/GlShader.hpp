@@ -48,4 +48,6 @@ public:
 
   void linkUniform(UniformType uniform_type, const char* uniform_name);
 
+  void attachTexture(const char* uniform_name, int binding) const;
+
 };
