@@ -10,9 +10,6 @@
 #include "Octree.hpp"
 #include "PerlinNoise.hpp"
 
-
-#define SIZE 16 
-
 enum CubeType{ 
   EMPTY = 0,
   BASIC = 1,
@@ -25,7 +22,8 @@ class Chunk{
 
 public:
 	Octree root;
-	int profondeur;
+	int profondeur = 4;
+	float taille = pow(2, profondeur-1);
 	
 	Chunk();
 	Chunk(int seed, glm::vec3 racine);
