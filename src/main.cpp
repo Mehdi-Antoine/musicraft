@@ -7,6 +7,8 @@
 #include <glimac/Image.hpp>
 #include <glimac/FreeflyCamera.hpp>
 
+#include "include/Window.hpp"
+
 #include "include/GlEnvironnement.hpp"
 #include "include/GlElement.hpp"
 #include "include/GlShader.hpp"
@@ -19,6 +21,8 @@
 #include "include/Player.hpp"
 #include "include/EventHandler.hpp"
 
+
+
 #include <iostream>
 #include <string>
 
@@ -27,30 +31,23 @@ using namespace glimac;
 #define WINDOW_WIDTH_ 1024 
 #define WINDOW_HEIGHT_ 768
 
-
 //--------------------------------------------------------------------------------------------------
 //---------------------------------------LE MAIN----------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
 int main(int argc, char** argv){
 
-
-    int TAILLE = 20; //Taille de porc
-
     FilePath applicationPath(argv[0]);
 
     FilePath dir_path = applicationPath.dirPath();
 
     // Initialize SDL and open a window
-    //SDLWindowManager windowManager(WINDOW_WIDTH, WINDOW_HEIGHT, "musicraft");
     SDLWindowManager windowManager(WINDOW_WIDTH_, WINDOW_HEIGHT_, "MUSICRAFT");
     const SDL_VideoInfo* info = SDL_GetVideoInfo();
     const int WINDOW_WIDTH  = info->current_w;
     const int WINDOW_HEIGHT = info->current_h; 
 
     std::cout << "w: " << WINDOW_WIDTH << " h: " << WINDOW_HEIGHT <<std::endl;
-
-
 
     unsigned int FRAMERATE_MILLISECONDS = 1000 / 35;
     unsigned int startTime;
@@ -78,13 +75,6 @@ int main(int argc, char** argv){
 
 //-------------------------------CHARGEMENT DES SHADERS---------------------------------------------
 
-    //std::vector<GlShader> shaders;
-
-    //shaders.push_back(GlShader(dir_path, "cube"));
-    //shaders.push_back(GlShader(dir_path, "square"));
-
-    //gl_environnement.addShaderVector(shaders);
-
     std::cout << "CREATION SHADER..." << std::endl;
 
     GlShader square_shader(dir_path, "square");
@@ -106,21 +96,6 @@ int main(int argc, char** argv){
     GlTexture texture_grille(dir_path + "assets/textures/grille.jpg");
 
     std::cout << "OK." << std::endl << std::endl;
-
-    // // Récupère la location de la première texture dans le shader
-    // GLint uTexture0 = glGetUniformLocation(cube_shader.getProgramId(), "texture0");
-    // // Récupère la location de deuxieme texture dans le shader
-    // GLint uTexture1 = glGetUniformLocation(cube_shader.getProgramId(), "texture1");
-
-    // std::cout << "uTexture0 : " << uTexture0 << std::endl;
-    // std::cout << "uTexture1 : " << uTexture1 << std::endl;
-
-    // // Indique à OpenGL qu'il doit aller chercher sur l'unité de texture 0 
-    // // pour lire dans la texture uEarthTexture:
-    // glUniform1i(uTexture0, 0);
-    // // Indique à OpenGL qu'il doit aller chercher sur l'unité de texture 1
-    // // pour lire dans la texture uEarthTexture:
-    // glUniform1i(uTexture1, 1);
 
     cube_shader.attachTexture("texture0", 0);
     cube_shader.attachTexture("texture1", 1);
@@ -176,60 +151,60 @@ int main(int argc, char** argv){
 
     char cubeType;
 
+    //SOL
     for (int x = 0; x < SIZE; ++x)
     {
         for (int z = 0; z < SIZE; ++z)
         {   
             int y = 0;
 
-            cubeType = x % 2 + 1;
+            cubeType = 1;
             chunk.setCubeType(x, y, z, cubeType);
             cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));      
+            cube_color.push_back(glm::vec3(cubeType));      
         }
     }
 
+    //COTES
     for (int x = 0; x < SIZE; ++x)
     { 
         int y = 1;
         int z = 0;
 
-        cubeType = x % 2 + 1;
+        cubeType = 1;
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
-        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));          
+        cube_color.push_back(glm::vec3(cubeType));          
     }
     for (int x = 0; x < SIZE; ++x)
     {   
         int z = SIZE - 1;
         for(int y = 1; y < 4; ++y){
-            cubeType = x % 2 + 1;
+            cubeType = 1;
 
             chunk.setCubeType(x, y, z, cubeType);
             cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
             cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));  
         }              
-    }
-    
+    }   
     for (int z = 0; z < SIZE; ++z)
     {   
         int x = 0;
         int y = 1;
 
-        cubeType = x % 2 + 1;
+        cubeType = 1;
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
     }
-
     for (int z = 0; z < SIZE ; ++z)
     {   
         int x = SIZE - 1;
         int y = 1;
 
-        cubeType = x % 2 + 1;
+        cubeType = 1;
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
@@ -283,7 +258,6 @@ int main(int argc, char** argv){
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 //---------------------------------CONSTRUCT V MATRIX--------------------------------------------------
 
         glm::mat4 view_matrix = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getViewMatrix();
@@ -299,8 +273,6 @@ int main(int argc, char** argv){
         global_vec4.updateCameraPosition(camera_position);
 
         global_vec4.updateCameraFrontVector(front_vector);
-
-        //global_vec4.updateLightPosition(float(2) * glm::vec4(camera_position, 1));
 
 //------------------------------------UPDATE VBO-------------------------------------------------------
 
@@ -354,8 +326,8 @@ int main(int argc, char** argv){
                 std::cout << "Warning ! : ";
             }
 
-            //std::cout << res << " sec" << std::endl;
-            //std::cout << 1 / res << " fps" << std::endl<< std::endl;
+            std::cout << res << " sec" << std::endl;
+            std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
             nbFrames = 0;
 

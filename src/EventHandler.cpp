@@ -82,6 +82,7 @@ void EventHandler::updatePlayer(World &world){
 
     int WINDOW_WIDTH = world.getWindowWidth();
     int WINDOW_HEIGHT = world.getWindowHeight();
+    
     float angle = 1.5;
 
     float rel_x = m_input.getMouseRel(0);
