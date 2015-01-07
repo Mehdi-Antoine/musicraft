@@ -144,7 +144,7 @@ int main(int argc, char** argv){
     std::vector<glm::vec3> cube_position;
 
 
-    Chunk chunk_norris = Chunk(0, glm::vec3(0,0,0));
+    Chunk chunk_norris = Chunk(1245, glm::vec3(0,0,0));
     glm::vec3 pos = glm::vec3(0,-5,0);
     chunk_norris.setCubeType(pos, 1);
     chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur), 0, chunk_norris.profondeur);
