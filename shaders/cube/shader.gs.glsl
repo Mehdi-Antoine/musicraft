@@ -19,7 +19,7 @@ out vec3 g_Normal;
 out vec2 g_TexCoords;
 out vec3 g_Position;
 
-const float f = 0.5;
+const float f = 1.f;
 
 const int elements[] = int[]
 (

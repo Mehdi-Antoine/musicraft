@@ -24,14 +24,16 @@
 
 using namespace glimac;
 
-#define WINDOW_WIDTH  800
-#define WINDOW_HEIGHT 700
+#define WINDOW_WIDTH_ 1024 
+#define WINDOW_HEIGHT_ 768
+
 
 //--------------------------------------------------------------------------------------------------
 //---------------------------------------LE MAIN----------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
 int main(int argc, char** argv){
+
 
     int TAILLE = 20; //Taille de porc
 
@@ -40,7 +42,15 @@ int main(int argc, char** argv){
     FilePath dir_path = applicationPath.dirPath();
 
     // Initialize SDL and open a window
-    SDLWindowManager windowManager(WINDOW_WIDTH, WINDOW_HEIGHT, "GLImac");
+    //SDLWindowManager windowManager(WINDOW_WIDTH, WINDOW_HEIGHT, "musicraft");
+    SDLWindowManager windowManager(WINDOW_WIDTH_, WINDOW_HEIGHT_, "MUSICRAFT");
+    const SDL_VideoInfo* info = SDL_GetVideoInfo();
+    const int WINDOW_WIDTH  = info->current_w;
+    const int WINDOW_HEIGHT = info->current_h; 
+
+    std::cout << "w: " << WINDOW_WIDTH << " h: " << WINDOW_HEIGHT <<std::endl;
+
+
 
     unsigned int FRAMERATE_MILLISECONDS = 1000 / 35;
     unsigned int startTime;
@@ -84,13 +94,6 @@ int main(int argc, char** argv){
     std::cout << "OK." << std::endl << std::endl;
 
 //-------------------------------CHARGEMENT DES TEXTURES---------------------------------------------
-
-    //std::vector<GlTexture> textures;
-
-    //textures.push_back(GlTexture(dir_path + "assets/textures/triforce.png"));
-    //textures.push_back(GlTexture(dir_path + "assets/textures/sting.jpg"));
-
-    //gl_environnement.addTextureVector(textures);
 
     std::cout << "CREATION TEXTURE..." << std::endl;
 
@@ -158,49 +161,86 @@ int main(int argc, char** argv){
 
     std::cout << "CREATION INDICES CUBES..." << std::endl;
 
-    std::vector<glm::vec3> sol_color;
-    std::vector<glm::vec3> sol_position;
-
-    std::vector<glm::vec3> norris_color;
-    std::vector<glm::vec3> norris_position;
+    std::vector<glm::vec3> cube_color;
+    std::vector<glm::vec3> cube_position;
 
 //-----------------------------------CREATION CHUNK-------------------------------------------------
 
-    
-    Chunk chunk_sol;
+    Chunk chunk;
 
-    for (int x = 0; x < Chunk::m_size; ++x)
+    char cubeType;
+
+    for (int x = 0; x < SIZE; ++x)
     {
-        for (int z = 0; z < Chunk::m_size; ++z)
-        {
-            chunk_sol.setCubeType(x, 0, z, SOLID); //chunk_sol[x][0][z] = SOLID;
-            sol_position.push_back(glm::vec3(x, 0, z)); 
-            sol_color.push_back(glm::vec3(1,0,0));        
+        for (int z = 0; z < SIZE; ++z)
+        {   
+            int y = 0;
+
+            cubeType = x % 2 + 1;
+            chunk.setCubeType(x, y, z, cubeType);
+            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));      
         }
     }
 
-    Chunk chunk_norris;
+    for (int x = 0; x < SIZE; ++x)
+    { 
+        int y = 1;
+        int z = 0;
 
-    for(int i = 0; i < 20; ++i){
-        for(int z = 10; z < 20; ++z){
-            chunk_sol.setCubeType(i+20, i+1, z, SOLID);
-            norris_position.push_back(glm::vec3(i+20,i+1,z));
-            norris_color.push_back(glm::vec3(1,0,0));
-        }    
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));          
+    }
+    for (int x = 0; x < SIZE; ++x)
+    {   
+        int z = SIZE - 1;
+        for(int y = 1; y < 4; ++y){
+            cubeType = x % 2 + 1;
+
+            chunk.setCubeType(x, y, z, cubeType);
+            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
+            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));  
+        }              
+    }
+    
+    for (int z = 0; z < SIZE; ++z)
+    {   
+        int x = 0;
+        int y = 1;
+
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
+    }
+
+    for (int z = 0; z < SIZE ; ++z)
+    {   
+        int x = SIZE - 1;
+        int y = 1;
+
+        cubeType = x % 2 + 1;
+
+        chunk.setCubeType(x, y, z, cubeType);
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
     }
 
 //-----------------------------------WORLD CREATION-------------------------------------------------
 
-    World world;
+    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
+    World world(window);
 
-    world.addChunk(chunk_sol);
-    world.addChunk(chunk_norris);
+    world.addChunk(chunk);
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
-    GlElement ground(sol_position, sol_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
-    GlElement norris(norris_position, norris_color, CUBE, GL_POINTS); //On charge ce vector dans un vbo
+    GlElement ground(cube_position, cube_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
     std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
@@ -209,7 +249,7 @@ int main(int argc, char** argv){
 
     Player player(7);
 
-    //Camera camera = player.getBody().getCamera();
+    Camera camera = player.getBody().getCamera();
 
     PlayerManager playermanager(player);
 
@@ -248,17 +288,35 @@ int main(int argc, char** argv){
 
         global_matrix.updateViewMatrix(view_matrix);
 
+//------------------------------------UPDATE VBO-------------------------------------------------------
+
+        cube_position.clear();
+
+        for (int x = 0; x < SIZE; ++x)
+        {
+            for (int y = 0; y < SIZE; ++y)
+            {
+                for (int z = 0; z < SIZE; ++z)
+                {
+                    if(world.getCubeType(x,y,z) != EMPTY){
+                        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
+                    }
+                }
+            }
+        }
+
+        ground.update(cube_position, cube_color);
+
 //---------------------------------------DRAW !!!!-----------------------------------------------------
     
         texture_sting.use(GL_TEXTURE0);
-
-        square_shader.useShader();
-        ground.draw();
+        texture_rouge.use(GL_TEXTURE1);
 
         cube_shader.useShader();
-        norris.draw();
+        ground.draw();
 
         texture_sting.stopUse(GL_TEXTURE0);
+        texture_rouge.stopUse(GL_TEXTURE1);
 
 //---------------------------------------FPS SHOW------------------------------------------------------
         ++nbFrames;
@@ -275,8 +333,8 @@ int main(int argc, char** argv){
                 std::cout << "Warning ! : ";
             }
 
-            std::cout << res << " sec" << std::endl;
-            std::cout << 1 / res << " fps" << std::endl<< std::endl;
+            //std::cout << res << " sec" << std::endl;
+            //std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
             nbFrames = 0;
 

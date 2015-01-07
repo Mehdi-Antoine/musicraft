@@ -66,11 +66,11 @@ void Body::updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float co
      forces = player_direction + gravity;
 
 
-     glm::vec3 feets_position = m_camera.getPosition();
+     glm::vec3 feets_position = m_camera.getPosition() + glm::vec3(0,-2,0);
 
-     Chunk chunk_sol = world.getChunk(0);
+     Chunk chunk = world.getChunk(0);
 
-     collisionSeeker(forces, m_speed, chunk_sol, feets_position);
+     collisionSeeker(forces, m_speed, chunk, feets_position);
 
      updateVerlett(m_camera.getPtPosition(), m_speed, forces, 1.0/30.0);
 

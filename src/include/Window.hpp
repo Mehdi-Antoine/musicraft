@@ -3,14 +3,14 @@
 #include <vector>
 
 #include "Chunk.hpp"
-#include "Window.hpp"
 
 
-class World{
+class Window{
 private:
 
-	std::vector<Chunk> m_chunks;
-	Window m_window;
+	int m_window_width;
+	int m_window_height;
+	int m_etat;
 
 public:
 
@@ -18,36 +18,32 @@ public:
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	World();
-	World(Window window);
-	~World();
+	Window();
+	Window(int width, int height);
+	~Window();
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------GETTERS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	Chunk& getChunk(int index);
-	std::vector<Chunk>& getChunkVector();
-	Window getWindow() const;
 	int getWindowWidth() const;
 	int getWindowHeight() const;
+	int getEtat() const;
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------SETTERS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	void setCubeType(const glm::vec3 &position, char cube_type);
+	void setWindowWidth(int window_width);
+	void setWindowHeight(int window_height);
+	void setEtat(int etat);
 
-	void setCubeType(float x, float y, float z, char cube_type);
 
 //--------------------------------------------------------------------------------------------------------------
 //------------------------------------------------FUNCTIONS-----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-	void addChunk(Chunk &chunk);
+	void updateVideoMode(int mode = 1);
 
-	char getCubeType(const glm::vec3 &position) const;
-
-	char getCubeType(float x, float y, float z) const;
 	
 };
