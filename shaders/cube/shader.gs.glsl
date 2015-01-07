@@ -8,7 +8,7 @@ in Vertex
   vec3 color; 
 } vertex[];
 
-layout(std140) uniform global_vec3{
+layout(std140) uniform global_vec4{
     vec3 light_position;
     vec3 light_intensity;
     vec3 light_ks;
