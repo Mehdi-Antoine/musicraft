@@ -20,6 +20,7 @@ public:
 	Octree(Octree** newChildren);
 
 	void getCubeType(char &result, const glm::vec3 &pos, int etage, const int profondeur) const;
+	void getCubeType(int t, char &result, const glm::vec3 &pos, int etage, const int profondeur) const;
 	void setCubeType(const glm::vec3 pos, char type, int etage, const int profondeur, int taille);
 
 	void insert(char type);

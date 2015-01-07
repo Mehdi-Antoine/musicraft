@@ -130,7 +130,7 @@ glm::vec3 Player::getTarget(float scale){
 	glm::vec3 front_vector = m_body.getCamera().getFrontVector();
 	glm::vec3 camera_position = m_body.getCamera().getPosition();
 
-	std::cout << glm::length(front_vector) << std::endl;
+	//std::cout << glm::length(front_vector) << std::endl;
 
 	target = camera_position +  scale * front_vector;
 	return target;
@@ -179,7 +179,7 @@ void Player::foundPreviousVoid(const World &world, glm::vec3 &target){
 
 		target  *= scale;
 
-		if(world.getCubeType(target) == EMPTY){
+		if(world.getCubeType(target) == 0){ //EMPTY
 			found_void = true;
 		}
 		

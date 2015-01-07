@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+
 Octree::Octree(){
 	for(int i=0; i<8; ++i) 
 		children[i] = NULL;
@@ -72,6 +73,7 @@ void Octree::genAllCoordinates(float taille){
 void Octree::getCubeType(char &result, const glm::vec3 &pos, int etage, const int profondeur) const{
 
 	int right, far, top;
+	//std::cout << "oc -> pos: " << pos << " type: " << (int)result << " " << std::endl;
 
 	(pos.x > coo[0]) ? right = 1 : right = 0;
 	(pos.y > coo[1]) ? top = 1 : top = 0;
@@ -80,19 +82,48 @@ void Octree::getCubeType(char &result, const glm::vec3 &pos, int etage, const in
 	int index = (right|(top<<1))|(far<<2);
 
 	if(children[index] == NULL){
-		/*std::cout <<  pos.x << " " << pos.y << " " << pos.z << std::endl;
-		std::cout <<  coo[0] << " " << coo[1] << " " << coo[2] << std::endl;
-		std::cout << index << std::endl;*/
-		result = 0;
+		//std::cout <<  pos.x << " " << pos.y << " " << pos.z << std::endl;
+		//std::cout <<  coo[0] << " " << coo[1] << " " << coo[2] << std::endl;
+		//result = 0;
 	}
 	else if(etage < profondeur){
 		children[index]->getCubeType(result, pos, etage+1, profondeur);
 	}
 	else{
 		result = children[index]->cubeType;
+		std::cout << "index : " << index << " type: " << (int)result << std::endl;
+
 	}
 
 }
+
+void Octree::getCubeType(int t, char &result, const glm::vec3 &pos, int etage, const int profondeur) const{
+
+	int right, far, top;
+	//std::cout << "oc -> pos: " << pos << " type: " << (int)result << " " << std::endl;
+
+	(pos.x > coo[0]) ? right = 1 : right = 0;
+	(pos.y > coo[1]) ? top = 1 : top = 0;
+	(pos.z > coo[2]) ? far = 1 : far = 0;
+
+	int index = (right|(top<<1))|(far<<2);
+
+	if(children[index] == NULL){
+		//std::cout <<  pos.x << " " << pos.y << " " << pos.z << std::endl;
+		//std::cout <<  coo[0] << " " << coo[1] << " " << coo[2] << std::endl;
+		//result = 0;
+	}
+	else if(etage < profondeur){
+		children[index]->getCubeType(t, result, pos, etage+1, profondeur);
+	}
+	else{
+		result = children[index]->cubeType;
+		//std::cout << "index : " << index << " type: " << (int)result << std::endl;
+
+	}
+
+}
+
 
 void Octree::setCubeType(const glm::vec3 pos, char type, int etage, const int profondeur, int taille){
 	int right, far, top;

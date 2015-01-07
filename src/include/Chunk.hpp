@@ -5,9 +5,9 @@
 #include "PerlinNoise.hpp"
 
 enum CubeType{
-	EMPTY = '0',
-	BASIC = '1',
-	STING = '2'
+	EMPTY = 0,
+	BASIC = 1,
+	STING = 2
 };
 
 
@@ -22,6 +22,7 @@ class Chunk{
 		Chunk(int seed, glm::vec3 racine);
 
 		char getCubeType(const glm::vec3 &pos) const;
+		char getCubeType(int t, const glm::vec3 &pos) const;
 
 		void setCubeType(const glm::vec3 &pos, char type);
 

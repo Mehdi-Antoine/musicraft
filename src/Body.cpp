@@ -65,7 +65,7 @@ void Body::updateBody(float m_dir_x, float m_dir_z, float coeffRunning, float co
 
      forces = player_direction + gravity;
 
-     glm::vec3 feets_position = m_camera.getPosition() + glm::vec3(0,-2,0);
+     glm::vec3 feets_position = m_camera.getPosition() + glm::vec3(0,-4,0);
 
      collisionSeeker(forces, m_speed, world.getChunk(0), feets_position);
 

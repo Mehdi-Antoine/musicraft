@@ -10,6 +10,7 @@ class World{
 private:
 
 	std::vector<Chunk> m_chunks;
+	int m_current_chunk = 0;
 	Window m_window;
 
 public:
@@ -27,11 +28,12 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 
 	Chunk& getChunk(int index);
+	Chunk& getCurrentChunk();
 	std::vector<Chunk>& getChunkVector();
 	Window getWindow() const;
 	int getWindowWidth() const;
 	int getWindowHeight() const;
-
+	int getIndexCurrentChunk() const;
 	char getCubeType(const glm::vec3 &position) const;
 	char getCubeType(float x, float y, float z) const;
 

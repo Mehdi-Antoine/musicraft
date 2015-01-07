@@ -12,7 +12,7 @@ Chunk::Chunk(){
 }
 
 Chunk::Chunk(int seed, glm::vec3 pos){
-	profondeur = 5;
+	profondeur = 3;
 	int etage = 0;
 	root = Octree();
 	int taille = pow(2, profondeur);
@@ -27,8 +27,19 @@ Chunk::Chunk(int seed, glm::vec3 pos){
 
 char Chunk::getCubeType(const glm::vec3 &pos) const{
 	int etage = 0;
-	char result = 1;
+	char result = 0; 
 	root.getCubeType(result, pos, etage, profondeur);
+	//std::cout << "ch -> pos: " << pos << " result: " << result << " " << std::endl;
+
+	return result;
+}
+
+char Chunk::getCubeType(int t, const glm::vec3 &pos) const{
+	int etage = 0;
+	char result = 0; 
+	root.getCubeType(t, result, pos, etage, profondeur);
+	//std::cout << "ch -> pos: " << pos << " result: " << result << " " << std::endl;
+
 	return result;
 }
 

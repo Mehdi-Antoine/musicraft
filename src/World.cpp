@@ -28,6 +28,10 @@ Chunk& World::getChunk(int index){
 	}
 }
 
+Chunk& World::getCurrentChunk(){
+	return m_chunks[m_current_chunk];
+}
+
 std::vector<Chunk>& World::getChunkVector(){
 
 }
@@ -44,8 +48,14 @@ int World::getWindowHeight() const{
 	return m_window.getWindowHeight();
 }
 
+int World::getIndexCurrentChunk() const{
+	return m_current_chunk;
+}
+
 char World::getCubeType(const glm::vec3 &position) const{
-	return m_chunks[0].getCubeType(position);
+	char result = m_chunks[0].getCubeType(position);
+	//std::cout << "type: " << result << std::endl;
+	return result;
 }
 
 char World::getCubeType(float x, float y, float z) const{

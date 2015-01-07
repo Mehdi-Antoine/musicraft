@@ -41,9 +41,9 @@ void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chu
 	next_position.x = position.x;
 	next_position.z = position.z;
 
-	if(chunk.getCubeType(next_position) != EMPTY){
-		std::cout << "COLLISION Y" << std::endl;
-		std::cout << "position = " << position << std::endl;
+	if(chunk.getCubeType(1, next_position) != 0){ // != EMPTY 	
+		//std::cout << "COLLISION Y" << std::endl;
+		//std::cout << "position = " << position << std::endl;
 		forces = forces + glm::vec3(0, - forces.y , 0);
 	}
 
@@ -56,7 +56,7 @@ void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chu
 	next_position.y = position.y;
 	next_position.z = position.z;
 
-	if(chunk.getCubeType(next_position) != EMPTY){
+	if(chunk.getCubeType(next_position) != 0){
 		std::cout << "COLLISION X" << std::endl;
 		std::cout << "x position = " << position << std::endl;
 		std::cout << "x next pos = " << next_position << std::endl;
