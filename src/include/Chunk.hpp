@@ -41,4 +41,6 @@ public:
 
 	int getIndex(float value) const;
 
+	static glm::vec3 getColorFromType(char type);
+
 };

@@ -70,3 +70,34 @@ int Chunk::getIndex(float value) const{
 	float decimal = value - int(value);
 	return round(value);
 }
+
+glm::vec3 Chunk::getColorFromType(char cube_type){
+	switch (cube_type) {
+
+		case EMPTY:
+		  return glm::vec3(0,0,0);
+		  break;
+
+		case BASIC1:
+		  return glm::vec3(0.75,
+						   0.17,
+						   0.62);
+		  break;
+
+		case BASIC2:
+		  return glm::vec3(0.17,
+						   0.75,
+						   0.47);
+		  break;
+
+		case BASIC3:
+		  return glm::vec3(0.22,
+						   0.4,
+						   0.75);
+		  break;
+
+		default:
+		  return glm::vec3(1,1,1);
+		  break;
+	}
+}

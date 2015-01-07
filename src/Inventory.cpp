@@ -6,7 +6,7 @@
 //  
 
 Inventory::Inventory()
-	: m_max_size(100), m_current_cube(-1)
+	: m_max_size(100)
 {
 	for(int i=0; i < 5;i++){
 		this->addCube(1);
@@ -45,7 +45,7 @@ void Inventory::setCurrentCube(char cube){
 
 void Inventory::setNextCurrentCube(){
 	
-	if(m_current_cube == -1){
+	/*if(m_current_cube == -1){
 		std::cout <<"begin"<<std::endl;
 		m_current_cube = m_list.begin()->first;
 	}
@@ -56,10 +56,10 @@ void Inventory::setNextCurrentCube(){
 			m_current_cube = -1;
 	}
 	std::cout << "Current : "<<(int)m_list.find(m_current_cube)->first<<std::endl;
-	
+	*/
 }
 void Inventory::setPrevCurrentCube(){
-	if(m_list.lower_bound(m_current_cube) != m_list.end()){
+	/*if(m_list.lower_bound(m_current_cube) != m_list.end()){
 
 		m_current_cube = m_list.lower_bound(m_current_cube)->first;
 	}
@@ -67,7 +67,7 @@ void Inventory::setPrevCurrentCube(){
 		m_current_cube = ((m_list.end())--)->first;
 	}
 	std::cout << "Current : "<<(int)m_list.find(m_current_cube)->first<<std::endl;
-}
+*/}
 
 bool Inventory::addCube(char cube){
 	if (this->getNumberCubes() < m_max_size){
@@ -85,7 +85,6 @@ bool Inventory::addCube(char cube){
 	std::cout << "Ineventaire plein!" << std::endl;
 	return false;
 }
-
 bool Inventory::removeCube(char cube){
 	if(m_list.find(cube) == m_list.end()){
 		if(m_list[cube] > 0){

@@ -135,8 +135,6 @@ glm::vec3 Player::getTarget(float scale){
 	glm::vec3 front_vector = m_body.getCamera().getFrontVector();
 	glm::vec3 camera_position = m_body.getCamera().getPosition();
 
-	std::cout << glm::length(front_vector) << std::endl;
-
 	target = camera_position +  scale * front_vector;
 	return target;
 }
@@ -166,7 +164,7 @@ int Player::foundCube(const World &world, glm::vec3 &target,char & type){
 
 	if(found_cube){
 		std::cout << "CUBE AT COORD : " << target << std::endl;
-		std::cout << "i : " << i << std::endl;
+		//std::cout << "i : " << i << std::endl;
 		return i;
 	}
 	
