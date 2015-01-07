@@ -164,8 +164,31 @@ int main(int argc, char** argv){
     std::vector<glm::vec3> cube_color;
     std::vector<glm::vec3> cube_position;
 
-//-----------------------------------CREATION CHUNK-------------------------------------------------
+//-----------------------------------WORLD CREATION-------------------------------------------------
 
+    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
+    World world(window);
+
+
+    Chunk chunk_norris = Chunk(0, glm::vec3(0,0,0));
+    glm::vec3 no = glm::vec3(20,20,20);
+    chunk_norris.setCubeType(no, 1);
+    chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur+1));
+    cube_position = chunk_norris.getAllCoordinates();
+    std::cout << "no type : " << (int)chunk_norris.getCubeType(no) << std::endl;
+    std::cout << "Count unlightened: " << cube_position.size()<< std::endl;
+    chunk_norris.lighten();
+    cube_position = chunk_norris.getAllCoordinates();
+    std::cout << "Count lightened: " << cube_position.size()<< std::endl;
+    for(unsigned int i = 0; i < cube_position.size(); ++i){
+    cube_color.push_back(glm::vec3(1,1,1));
+    }
+    glEnable(GL_DEPTH_TEST);
+
+    world.addChunk(chunk_norris);
+
+//-----------------------------------CREATION CHUNK-------------------------------------------------
+/*
     Chunk chunk;
 
     char cubeType;
@@ -228,14 +251,9 @@ int main(int argc, char** argv){
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
         cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
-    }
+    }*/
 
-//-----------------------------------WORLD CREATION-------------------------------------------------
 
-    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
-    World world(window);
-
-    world.addChunk(chunk);
 
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
@@ -290,9 +308,9 @@ int main(int argc, char** argv){
 
 //------------------------------------UPDATE VBO-------------------------------------------------------
 
-        cube_position.clear();
+        //cube_position.clear();
 
-        for (int x = 0; x < SIZE; ++x)
+        /*for (int x = 0; x < SIZE; ++x)
         {
             for (int y = 0; y < SIZE; ++y)
             {
@@ -303,9 +321,9 @@ int main(int argc, char** argv){
                     }
                 }
             }
-        }
+        }*/
 
-        ground.update(cube_position, cube_color);
+        //ground.update(cube_position, cube_color);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
     

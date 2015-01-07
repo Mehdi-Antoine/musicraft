@@ -69,7 +69,7 @@ void Octree::genAllCoordinates(float taille){
 	}
 }
 
-void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int profondeur) const{
+void Octree::getCubeType(char &result, const glm::vec3 &pos, int etage, const int profondeur) const{
 
 	int right, far, top;
 
@@ -89,12 +89,12 @@ void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int prof
 		children[index]->getCubeType(result, pos, etage+1, profondeur);
 	}
 	else{
-		
 		result = children[index]->cubeType;
 	}
+
 }
 
-void Octree::setCubeType(glm::vec3 pos, char type, int etage, const int profondeur, int taille){
+void Octree::setCubeType(const glm::vec3 pos, char type, int etage, const int profondeur, int taille){
 	int right, far, top;
 
 	(pos.x > coo[0]) ? right = 1 : right = 0;

@@ -32,13 +32,16 @@ public:
 	int getWindowWidth() const;
 	int getWindowHeight() const;
 
+	char getCubeType(const glm::vec3 &position) const;
+	char getCubeType(float x, float y, float z) const;
+
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------SETTERS------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
 	void setCubeType(const glm::vec3 &position, char cube_type);
 
-	void setCubeType(float x, float y, float z, char cube_type);
+	//void setCubeType(float x, float y, float z, char cube_type);
 
 //--------------------------------------------------------------------------------------------------------------
 //------------------------------------------------FUNCTIONS-----------------------------------------------------
@@ -46,8 +49,6 @@ public:
 
 	void addChunk(Chunk &chunk);
 
-	char getCubeType(const glm::vec3 &position) const;
-
-	char getCubeType(float x, float y, float z) const;
+	
 	
 };
