@@ -1,5 +1,4 @@
 #pragma once
-
 #include <GL/glew.h>
 #include <glimac/glm.hpp>
 #include <iostream>
@@ -7,8 +6,7 @@
 #include "Octree.hpp"
 #include "PerlinNoise.hpp"
 
-#define SIZE 16 
-
+#define SIZE 16
 
 enum CubeType{ 
   EMPTY = 0,
@@ -17,37 +15,23 @@ enum CubeType{
   BASIC3 = 3
 };
 
+
 class Chunk{
-private:
+	public:
+		Octree root;
+		int profondeur = 5;
+		float taille = pow(2, profondeur-1);
 
-public:
-	Octree root;
-	int profondeur = 4;
-	float taille = pow(2, profondeur-1);
-	
-public:
+		Chunk();
+		Chunk(int seed, glm::vec3 racine);
 
-	static const int m_size;
-
-//------------------------------------------------CONSTRUCTOR---------------------------------------------------
-
-	Chunk(char cube_type = 0);
-	~Chunk();
-
-//--------------------------------------------------GETTERS-----------------------------------------------------
-
-	char getCubeType(float x, float y, float z) const;
-	char getCubeType(const glm::vec3 &position) const;
-
-//--------------------------------------------------SETTERS-----------------------------------------------------
-
-	void setCubeType(int x, int y, int z, char cube_type);
-	void setCubeType(const glm::vec3 &position, char cube_type);
-
-//-------------------------------------------------FUNCTIONS----------------------------------------------------
-
-	int getIndex(float value) const;
-
-	static glm::vec3 getColorFromType(char type);
-
+		char getCubeType(const glm::vec3 &pos) const;
+		void setCubeType(const glm::vec3 &pos, char type);
+		void genFlatFloor(Octree &subTree, int etage);
+		void genFullCube(Octree &subTree, int etage);
+		void genTerrain(Octree &subTree, int etage, float taille, int seed);
+		void fillTerrain(Octree &subTree, int etage, float taille, int x, int z, int y);
+		void culling(std::vector<float> centres, Octree &subTree, int etage, float taille);
+		std::vector<glm::vec3> getAllCoordinates();
+		void lighten();
 };

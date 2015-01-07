@@ -71,12 +71,14 @@ setCubeType(pos, 1);
 }
 }
 }
-char Chunk::getCubeType(glm::vec3 &pos) const{
-int etage = 0;
-char result = 1;
-root.getCubeType(result, pos, etage, profondeur);
-return result;
+
+char Chunk::getCubeType(const glm::vec3 &pos) const{
+	int etage = 0;
+	char result = 1;
+	root.getCubeType(result, pos, etage, profondeur);
+	return result;
 }
+
 void Chunk::setCubeType(const glm::vec3 &pos, char type){
 int etage = 0;
 root.setCubeType(pos, type, etage, profondeur, taille, root);

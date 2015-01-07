@@ -62,7 +62,7 @@ void Octree::genAllCoordinates(float taille, int etage, const int profondeur){
 	}
 }
 
-void Octree::getCubeType(char &result, glm::vec3 &pos, int etage, const int profondeur) const{
+void Octree::getCubeType(char &result, const glm::vec3 &pos, int etage, const int profondeur) const{
 
 	int right, far, top;
 
