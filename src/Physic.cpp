@@ -1,5 +1,7 @@
 #include "include/Physic.hpp"
 #include "include/Chunk.hpp"
+#include "include/World.hpp"
+
 #include <glimac/glm.hpp>
 #include <vector>
 #include <iostream>
@@ -27,7 +29,7 @@ void updateVerlett(glm::vec3 & position, glm::vec3 & speed, const glm::vec3 & fo
     speed = new_speed;
 }
 
-void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chunk, const glm::vec3 &position){
+void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const World& world, const glm::vec3 &position){
 
 	glm::vec3 next_speed;
 	glm::vec3 next_position;
@@ -41,7 +43,7 @@ void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chu
 	next_position.x = position.x;
 	next_position.z = position.z;
 
-	if(chunk.getCubeType(next_position) != EMPTY){
+	if(world.getCubeType(next_position) != EMPTY){
 		//std::cout << "COLLISION Y" << std::endl;
 		//std::cout << "position = " << position << std::endl;
 		forces = forces + glm::vec3(0, - forces.y , 0);
@@ -56,7 +58,7 @@ void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chu
 	next_position.y = position.y;
 	next_position.z = position.z;
 
-	if(chunk.getCubeType(next_position) != EMPTY){
+	if(world.getCubeType(next_position) != EMPTY){
 		/*std::cout << "COLLISION X" << std::endl;
 		std::cout << "x position = " << position << std::endl;
 		std::cout << "x next pos = " << next_position << std::endl;*/
@@ -74,7 +76,7 @@ void collisionSeeker(glm::vec3 &forces, const glm::vec3 &speed, const Chunk& chu
 	//std::cout << "z current position = " << position.z << std::endl;
 	//std::cout << "z current next pos = " << next_position.z << std::endl;
 
-	if(chunk.getCubeType(next_position) != 0){
+	if(world.getCubeType(next_position) != 0){
 		/*std::cout << "COLLISION Z" << std::endl;
 		std::cout << "z position = " << position << std::endl;
 		std::cout << "z next pos = " << next_position << std::endl;*/

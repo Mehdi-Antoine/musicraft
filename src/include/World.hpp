@@ -4,6 +4,8 @@
 
 #include "Chunk.hpp"
 #include "Window.hpp"
+#include "GlElement.hpp"
+
 
 
 class World{
@@ -31,8 +33,12 @@ public:
 	Window getWindow() const;
 	int getWindowWidth() const;
 	int getWindowHeight() const;
+
 	char getCubeType(const glm::vec3 &position) const;
 	char getCubeType(float x, float y, float z) const;
+
+	int getChunkVectorSize();
+
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------SETTERS------------------------------------------------------
@@ -48,6 +54,22 @@ public:
 
 	void addChunk(Chunk &chunk);
 
-	
-	
+	static Chunk createFlatChunk(char cube_type, const glm::vec3 &world_position = glm::vec3(0,0,0));
+
+	static glm::vec3 getChunkCoord(const glm::vec3 &position);
+
+	static glm::vec3 getLocalPosition(const glm::vec3 &position);
+
+	int findChunkIndex(const glm::vec3 &position) const;
+
+
+	//char getCubeType(const glm::vec3 &position) const;
+	//char getCubeType(float x, float y, float z) const;
+
+
+
+	void updateGlElement(GlElement &gl_element, int chunk_index);
+
+	void drawWorld(const std::vector<GlElement*> &gl_chunks) const;
+
 };

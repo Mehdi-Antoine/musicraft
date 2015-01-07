@@ -138,11 +138,9 @@ int main(int argc, char** argv){
     std::cout << "OK." << std::endl << std::endl;
 
 
-//-----------------------------------CHUNKS CREATION------------------------------------------------
 
-    std::vector<glm::vec3> cube_color;
-    std::vector<glm::vec3> cube_position;
-
+    // std::vector<glm::vec3> cube_color;
+    // std::vector<glm::vec3> cube_position;
 
     Chunk chunk_norris = Chunk(1245, glm::vec3(0,0,0));
     glm::vec3 pos = glm::vec3(0,-5,0);
@@ -171,12 +169,56 @@ int main(int argc, char** argv){
     Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
     World world(window);
 
+//------------------------------CREATION CHUNK / GL_CHUNK-------------------------------------------
+    
+    //std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
+/*
+    std::vector<GlElement*> gl_chunks;
+
+    //CHUNK0
+    Chunk chunk0 = World::createFlatChunk(BASIC1, glm::vec3(0,0,0));
+
+    world.addChunk(chunk0);  
+
+    GlElement gl_chunk0(GL_POINTS);
+
+    gl_chunks.push_back(&gl_chunk0);
+
+
+    //CHUNK1
+    Chunk chunk1 = World::createFlatChunk(BASIC1, glm::vec3(SIZE,0,SIZE));
+    world.addChunk(chunk1);  
+
+    GlElement gl_chunk1(GL_POINTS);
+
+    gl_chunks.push_back(&gl_chunk1);
+
+
+    //CHUNK2
+    Chunk chunk2 = World::createFlatChunk(BASIC3, glm::vec3(SIZE,0,0));
+    world.addChunk(chunk2);  
+
+    GlElement gl_chunk2(GL_POINTS);
+
+    gl_chunks.push_back(&gl_chunk2);
+
+    //CHUNK3
+    Chunk chunk3 = World::createFlatChunk(BASIC2, glm::vec3(0,0,SIZE));
+    world.addChunk(chunk3);  
+
+    GlElement gl_chunk3(GL_POINTS);
+
+
+    gl_chunks.push_back(&gl_chunk3);
+
+*/
+
     world.addChunk(chunk_norris);
 
-//-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
-
-    std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
-    GlElement ground(cube_position, cube_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
+    /*for(int i = 0; i< gl_chunks.size(); ++i){
+        world.updateGlElement(*gl_chunks[i], i);
+    }*/
+    
     std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
@@ -229,6 +271,7 @@ int main(int argc, char** argv){
 
         global_vec4.updateCameraFrontVector(front_vector);
 
+
 //----------------------------------UPDATE VBO----------------------------------------------------
         cube_position.clear();
         cube_color.clear();
@@ -238,17 +281,29 @@ int main(int argc, char** argv){
 
 
 
+//------------------------------------UPDATE VBO-------------------------------------------------------
+
+
+        // std::cout << "chunk : " << world.getChunkCoord(camera_position) << std::endl;
+        // std::cout << "player in world: " << camera_position << std::endl;
+        // std::cout << "player in chunk: " << world.getLocalPosition(camera_position) << std::endl;
+
+
+        //world.updateGlChunks(gl_chunks);
+        //for(int i = 0; i<gl_chunks.size(); ++i){
+        //world.updateGlElement(gl_chunks[0], 0);
+        //}
+
 //---------------------------------------DRAW !!!!-----------------------------------------------------
         
         glActiveTexture(GL_TEXTURE0);
         texture_tron.bind();
-
         glActiveTexture(GL_TEXTURE1);
         texture_grille.bind();
 
-
         cube_shader.useShader();
-        ground.draw();
+
+        world.drawWorld(gl_chunks);
 
         glActiveTexture(GL_TEXTURE0);
         texture_tron.unbind();
@@ -267,12 +322,12 @@ int main(int argc, char** argv){
 
             float res = ellapsedTime / nbFrames;
 
-           if(res > 0.04){
+            if(res > 0.04){
                 std::cout << "Warning ! : ";
             }
 
-            std::cout << res << " sec" << std::endl;
-            std::cout << 1 / res << " fps" << std::endl<< std::endl;
+            //std::cout << res << " sec" << std::endl;
+            //std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
             nbFrames = 0;
 
