@@ -83,15 +83,37 @@ int main(int argc, char** argv){
 
     std::cout << "OK." << std::endl << std::endl;
 
+
+    cube_shader.useShader();
+
 //-------------------------------CHARGEMENT DES TEXTURES---------------------------------------------
 
     std::cout << "CREATION TEXTURE..." << std::endl;
 
     GlTexture texture_sting(dir_path + "assets/textures/sting.jpg");
     GlTexture texture_rouge(dir_path + "assets/textures/rouge01.jpg");
+    GlTexture texture_tron(dir_path + "assets/textures/tron01.jpg");
+    GlTexture texture_grille(dir_path + "assets/textures/grille.jpg");
 
     std::cout << "OK." << std::endl << std::endl;
 
+    // // Récupère la location de la première texture dans le shader
+    // GLint uTexture0 = glGetUniformLocation(cube_shader.getProgramId(), "texture0");
+    // // Récupère la location de deuxieme texture dans le shader
+    // GLint uTexture1 = glGetUniformLocation(cube_shader.getProgramId(), "texture1");
+
+    // std::cout << "uTexture0 : " << uTexture0 << std::endl;
+    // std::cout << "uTexture1 : " << uTexture1 << std::endl;
+
+    // // Indique à OpenGL qu'il doit aller chercher sur l'unité de texture 0 
+    // // pour lire dans la texture uEarthTexture:
+    // glUniform1i(uTexture0, 0);
+    // // Indique à OpenGL qu'il doit aller chercher sur l'unité de texture 1
+    // // pour lire dans la texture uEarthTexture:
+    // glUniform1i(uTexture1, 1);
+
+    cube_shader.attachTexture("texture0", 0);
+    cube_shader.attachTexture("texture1", 1);
 
 //--------------------------CREATION DES VARIABLES UNIFORMES----------------------------------------
 
@@ -99,51 +121,35 @@ int main(int argc, char** argv){
 
     std::cout << "  GLOBAL MATRIX" << std::endl;
 
-    glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
-
-    std::cout << "      création global_matrix" << std::endl;
     GlGlobalUniformMatrix global_matrix;
-    std::cout << "      ok!" << std::endl;
 
-    std::cout << "      global_matrix.init()" << std::endl;
     global_matrix.init("global_matrix", 1);
-    std::cout << "      ok!" << std::endl;
 
-    std::cout << "      global_matrix.attachProgram" << std::endl;
     global_matrix.attachProgram(square_shader.getProgramId());
     global_matrix.attachProgram(cube_shader.getProgramId());
-    std::cout << "      ok!" << std::endl;
 
-    std::cout << "      global_matrix.updateProjectionMatrix()" << std::endl;
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
     global_matrix.updateProjectionMatrix(projection_matrix);
-    std::cout << "      ok!" << std::endl;
 
 
-    std::cout << "  GLOBAL LIGHT" << std::endl;
+    std::cout << "  GLOBAL VEC3" << std::endl;
 
-    std::cout << "      création global_light" << std::endl;
-    GlGlobalUniformLight global_light;
-    std::cout << "      ok!" << std::endl;
+    GlGlobalUniformVec4 global_vec4;
 
-    std::cout << "      global_light.init()" << std::endl;
-    global_light.init("global_light", 2);
-    std::cout << "      ok!" << std::endl;
+    global_vec4.init("global_vec4", 3);
 
-    std::cout << "      global_light.attachProgram" << std::endl;
-    global_light.attachProgram(square_shader.getProgramId());
-    global_light.attachProgram(cube_shader.getProgramId());
-    std::cout << "      ok!" << std::endl;
-
-    std::cout << "      global_light.update()" << std::endl;
-
-    glm::vec3 position  = vec3(1, 1, 1);
-    glm::vec3 intensity = vec3(0, 0, 0);
-    glm::vec3 ks        = vec3(1, 0, 1);
-    float shininess     = 1;
+    global_vec4.attachProgram(square_shader.getProgramId());
+    global_vec4.attachProgram(cube_shader.getProgramId());
 
 
-    global_light.update(position, intensity, ks, shininess);
-    std::cout << "      ok!" << std::endl;
+    glm::vec4 light_position  = vec4(SIZE/2, 100, SIZE, 0);
+    glm::vec3 light_intensity = vec3(0.4, 0.4, 0.4);
+    glm::vec3 light_ks        = vec3(1, 1, 1);
+
+    global_vec4.updateLightPosition(light_position);
+    global_vec4.updateLightIntensity(light_intensity);
+    global_vec4.updateLightKs(light_ks);
+
 
     std::cout << "OK." << std::endl << std::endl;
 
@@ -273,9 +279,17 @@ int main(int argc, char** argv){
 
         glm::vec3 camera_position = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
 
+        glm::vec3 front_vector = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getFrontVector();
+
 //----------------------------------UPDATE UNIFORMS----------------------------------------------------
 
         global_matrix.updateViewMatrix(view_matrix);
+
+        global_vec4.updateCameraPosition(camera_position);
+
+        global_vec4.updateCameraFrontVector(front_vector);
+
+        //global_vec4.updateLightPosition(float(2) * glm::vec4(camera_position, 1));
 
 //------------------------------------UPDATE VBO-------------------------------------------------------
 
@@ -297,17 +311,24 @@ int main(int argc, char** argv){
         ground.update(cube_position, cube_color);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
-    
-        texture_sting.use(GL_TEXTURE0);
-        texture_rouge.use(GL_TEXTURE1);
+        
+        glActiveTexture(GL_TEXTURE0);
+        texture_tron.bind();
+
+        glActiveTexture(GL_TEXTURE1);
+        texture_grille.bind();
+
 
         cube_shader.useShader();
         ground.draw();
 
-        texture_sting.stopUse(GL_TEXTURE0);
-        texture_rouge.stopUse(GL_TEXTURE1);
+        glActiveTexture(GL_TEXTURE0);
+        texture_tron.unbind();
+        glActiveTexture(GL_TEXTURE1);
+        texture_sting.unbind();
 
 //---------------------------------------FPS SHOW------------------------------------------------------
+
         ++nbFrames;
 
         currentTime = windowManager.getTime();
