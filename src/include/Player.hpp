@@ -37,7 +37,7 @@ public:
   bool getIsRunning() const;
 
   bool getIsFlying() const;
-  Inventory getInventory();
+  Inventory& getInventory();
 
 //---------------------------------------------------SETTERS----------------------------------------------------
 
@@ -69,9 +69,8 @@ public:
 
   void addCube(World &world);
 
-  bool catchCube(char cube);
-  bool dropCube();
-  bool deleteCube(char cube);
+  void catchCube(char cube);
+  bool dropCube(char & result);
 
 };
 

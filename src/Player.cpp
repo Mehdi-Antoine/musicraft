@@ -68,7 +68,7 @@ bool Player::getIsFlying() const{
 	return m_is_flying;
 }
 
-Inventory Player::getInventory(){
+Inventory & Player::getInventory(){
 	return m_inventory;
 }
 
@@ -227,25 +227,21 @@ void Player::addCube(World &world){
 		foundPreviousVoid(world, target);
 
 		if(glm::length(target) > 3){
-			world.setCubeType(target, BASIC1);
+			if(m_inventory.removeCurrentCube(type))
+				world.setCubeType(target, type);
 		}
-		
 		
 	}
 	
 
 }
 
-bool Player::catchCube(char cube){
-	return this->m_inventory.addCube(cube);
+void Player::catchCube(char cube){
+	m_inventory.addCube(cube);
 }
 
-bool Player::dropCube(){
-	return this->m_inventory.removeCurrentCube();
-}
-
-bool Player::deleteCube(char cube){
-	return this->m_inventory.removeCube(cube);
+bool Player::dropCube(char & result){
+	return this->m_inventory.removeCurrentCube(result);
 }
  
 

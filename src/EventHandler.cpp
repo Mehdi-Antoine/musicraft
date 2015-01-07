@@ -81,12 +81,12 @@ void EventHandler::updatePlayer(World &world){
 
     //Mouse wheel : change current cube in inventory
     if(m_input.getMouseWheel(0) == true){
-        //m_player_manager.getPlayer().getInventory().setNextCurrentCube();
-        //m_input.setMouseWheelFalse(0);
+        m_player_manager.getPlayer().getInventory().nextIndex();
+        m_input.setMouseWheelFalse(0);
     }
     if(m_input.getMouseWheel(1) == true){
-        //m_player_manager.getPlayer().getInventory().setPrevCurrentCube();
-        //m_input.setMouseWheelFalse(1);
+        m_player_manager.getPlayer().getInventory().prevIndex();
+        m_input.setMouseWheelFalse(1);
     }
 
     //mousemotion orientation camera

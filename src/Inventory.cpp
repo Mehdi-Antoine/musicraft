@@ -1,12 +1,13 @@
 #include "include/Inventory.hpp"
 #include <iostream>
+#include <algorithm>
 
 
 // Constructors/Destructors
 //  
 
 Inventory::Inventory()
-	: m_max_size(100)
+	: m_max_size(100),m_current_index(-1)
 {
 	for(int i=0; i < 5;i++){
 		this->addCube(1);
@@ -24,90 +25,83 @@ Inventory::~Inventory(){
 //
 
 bool Inventory::isEmpty() const{
-	return m_list.empty();
+	return m_type_list.empty();
 }
 
 int Inventory::getNumberCubes() const{
 	int result = 0;
-	for (std::map<char,int>::const_iterator it=m_list.begin(); it!=m_list.end(); ++it){
-    	result += it->second;
-	}
+	for(int i = 0; i < m_nb_list.size(); ++i)
+		result += m_nb_list[i];
 	return result;
 }
 
-int Inventory::getCurrentCube(){
-	return m_current_cube;
+int Inventory::getCurrentIndex() const{
+	return m_current_index;
 }
 
-void Inventory::setCurrentCube(char cube){
-	m_current_cube = cube;
-}
-
-void Inventory::setNextCurrentCube(){
-	
-	/*if(m_current_cube == -1){
-		std::cout <<"begin"<<std::endl;
-		m_current_cube = m_list.begin()->first;
+void Inventory::nextIndex(){
+	if(m_current_index == -1 || m_current_index < m_nb_list.size()-1){
+		m_current_index++;
 	}
 	else{
-		if(m_list.upper_bound(m_current_cube) != m_list.end())
-			m_current_cube = m_list.upper_bound(m_current_cube)->first;
-		else
-			m_current_cube = -1;
+		m_current_index = -1;
 	}
-	std::cout << "Current : "<<(int)m_list.find(m_current_cube)->first<<std::endl;
-	*/
 }
-void Inventory::setPrevCurrentCube(){
-	/*if(m_list.lower_bound(m_current_cube) != m_list.end()){
-
-		m_current_cube = m_list.lower_bound(m_current_cube)->first;
+void Inventory::prevIndex(){
+	if(m_current_index >= 0){
+		m_current_index--;
 	}
 	else{
-		m_current_cube = ((m_list.end())--)->first;
+		m_current_index = m_nb_list.size()-1;
 	}
-	std::cout << "Current : "<<(int)m_list.find(m_current_cube)->first<<std::endl;
-*/}
+}
 
-bool Inventory::addCube(char cube){
+void Inventory::addCube(char cube){
 	if (this->getNumberCubes() < m_max_size){
-		if(m_list.find(cube) == m_list.end()){
-			if(m_list.size() >= m_max_size){
+		int pos = std::find(m_type_list.begin(), m_type_list.end(), cube) - m_type_list.begin();
+		if(pos < m_type_list.size()){
+			m_nb_list[pos]++;
+		}
+		else{
+			if(m_type_list.size() >= m_max_size){
 				std::cout << "Plus de place pour un nouveau cube!"<< std::endl;
-				return false;
 			}
-			m_list[cube] = 0; 
+			m_type_list.push_back(cube);
+			m_nb_list.push_back(1);
 		}
-		
-		m_list[cube]++;
-		return true;
 	}
-	std::cout << "Ineventaire plein!" << std::endl;
-	return false;
+	else{
+		std::cout << "Ineventaire plein!" << std::endl;	
+	}
+
 }
-bool Inventory::removeCube(char cube){
-	if(m_list.find(cube) == m_list.end()){
-		if(m_list[cube] > 0){
-			m_list[cube]--;
-			std::cout << "Cube supprimé!" << std::endl;
-			return true;
+
+bool Inventory::removeCube(char &result, int index){
+	if(index > -1 && index < m_type_list.size()){
+		m_nb_list[index]--;
+		result = m_type_list[index];
+		if(m_nb_list[index] == 0){
+			m_nb_list.erase(m_nb_list.begin()+index);
+			m_type_list.erase(m_type_list.begin()+index);
 		}
+		return true;
 	}
 	std::cout << "Pas de cube!" << std::endl;
 	return false;
 }
 
-bool Inventory::removeCurrentCube(){
-	if(m_current_cube > -1){
-		return this->removeCube(this->getCurrentCube());
+bool Inventory::removeCurrentCube(char &result){
+	if(m_current_index >=0){
+		return this->removeCube(result,	getCurrentIndex());
 	}
 	return false;
 }
 
 void Inventory::show() const{
 	std::cout << "*****************INVENTAIRE :*****************" << std::endl;
-	for (std::map<char,int>::const_iterator it=m_list.begin(); it!=m_list.end(); ++it){
-    	std::cout << "Cube " << (int)it->first << " : " << it->second << std::endl;
+	std::cout << "Current cube : " << getCurrentIndex()<< std::endl;
+	for (int i=0; i< m_type_list.size(); ++i){
+    	std::cout << "Emplacement " << i <<" : Cube " << (int)m_type_list[i] << " : " << m_nb_list[i] << std::endl;
 	}
 	std::cout << "**********************************************" << std::endl;
 }
