@@ -75,6 +75,17 @@ void EventHandler::updatePlayer(World &world){
         m_player_manager.getPlayer().addCube(world);
     }
 
+    if(m_input.getMouse(3) == true){
+        m_player_manager.getPlayer().addCube(world);
+    }
+
+    //Mouse wheel : change current cube in inventory
+    if(m_input.getMouseWheel(0) == true){
+        m_player_manager.getPlayer().getInventory().setPrevCurrentCube();
+    }
+    if(m_input.getMouseWheel(1) == true){
+        m_player_manager.getPlayer().getInventory().setNextCurrentCube();
+    }
 
     //mousemotion orientation camera
     int click = 0;

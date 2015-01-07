@@ -143,11 +143,20 @@ void InputManager::updateInput() {
                 m_mouse_pos[0] = m_event.button.x;
                 m_mouse_pos[1] = m_event.button.y;
             }
+            else if(m_event.button.button == SDL_BUTTON_WHEELDOWN){
+                m_mouse_wheel[0] = true;
+            }
+            else if(m_event.button.button == SDL_BUTTON_WHEELDOWN){
+                m_mouse_wheel[1] = true;
+            }
             break;
 
         case SDL_MOUSEBUTTONUP:
             m_mouse_button[m_event.button.button]= false;
+            m_mouse_wheel[0] = false;
+            m_mouse_wheel[1] = false;
             break;
+
 
         case SDL_QUIT:
             m_quit = true;
@@ -181,6 +190,11 @@ bool* InputManager::getMouse()
 bool InputManager::getMouse(int mouseButton)
 {
     return m_mouse_button[mouseButton];
+}
+
+bool InputManager::getMouseWheel(int mouseWheel)
+{
+    return m_mouse_wheel[mouseWheel];
 }
 
 bool InputManager::getQuit() {

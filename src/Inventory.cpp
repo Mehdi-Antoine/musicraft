@@ -6,13 +6,12 @@
 //  
 
 Inventory::Inventory()
-	: m_max_size(50), m_current_cube(-1)
+	: m_max_size(100), m_current_cube(-1)
 {
-	for(int i=0; i < m_max_size/2;i++){
+	for(int i=0; i < 5;i++){
 		this->addCube(1);
 		this->addCube(2);
 	}
-	this->addCube(3);
 
 }
 
@@ -30,7 +29,7 @@ bool Inventory::isEmpty() const{
 
 int Inventory::getNumberCubes() const{
 	int result = 0;
-	for (std::map<int,int>::const_iterator it=m_list.begin(); it!=m_list.end(); ++it){
+	for (std::map<char,int>::const_iterator it=m_list.begin(); it!=m_list.end(); ++it){
     	result += it->second;
 	}
 	return result;
@@ -40,11 +39,29 @@ int Inventory::getCurrentCube(){
 	return m_current_cube;
 }
 
-void Inventory::setCurrentCube(int cube){
+void Inventory::setCurrentCube(char cube){
 	m_current_cube = cube;
 }
 
-bool Inventory::addCube(int cube){
+void Inventory::setNextCurrentCube(){
+	if(m_list.upper_bound(m_current_cube) != m_list.end()){
+		m_current_cube = m_list.upper_bound(m_current_cube)->first;	
+	}
+	else{
+		m_current_cube = m_list.begin()->first;
+	}
+	
+}
+void Inventory::setPrevCurrentCube(){
+	if(m_list.lower_bound(m_current_cube) != m_list.end()){
+		m_current_cube = m_list.lower_bound(m_current_cube)->first;
+	}
+	else{
+		m_current_cube = ((m_list.end())--)->first;
+	}
+}
+
+bool Inventory::addCube(char cube){
 	if (this->getNumberCubes() < m_max_size){
 		if(m_list.find(cube) == m_list.end()){
 			if(m_list.size() >= m_max_size){
@@ -62,7 +79,7 @@ bool Inventory::addCube(int cube){
 	return false;
 }
 
-bool Inventory::removeCube(int cube){
+bool Inventory::removeCube(char cube){
 	if(m_list.find(cube) == m_list.end()){
 		if(m_list[cube] > 0){
 			m_list[cube]--;
@@ -83,8 +100,8 @@ bool Inventory::removeCurrentCube(){
 
 void Inventory::show() const{
 	std::cout << "*****************INVENTAIRE :*****************" << std::endl;
-	for (std::map<int,int>::const_iterator it=m_list.begin(); it!=m_list.end(); ++it){
-    	std::cout << "Cube " << it->first << " : " << it->second << std::endl;
+	for (std::map<char,int>::const_iterator it=m_list.begin(); it!=m_list.end(); ++it){
+    	std::cout << "Cube " << (int)it->first << " : " << it->second << std::endl;
 	}
 	std::cout << "**********************************************" << std::endl;
 }

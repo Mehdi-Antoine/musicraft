@@ -141,7 +141,7 @@ glm::vec3 Player::getTarget(float scale){
 	return target;
 }
 
-int Player::foundCube(const World &world, glm::vec3 &target){
+int Player::foundCube(const World &world, glm::vec3 &target,char & type){
 
 	float scale = 0.5;
 	int i = 0;
@@ -157,6 +157,7 @@ int Player::foundCube(const World &world, glm::vec3 &target){
 
 		if(world.getCubeType(target) != EMPTY){
 			found_cube = true;
+			type = world.getCubeType(target);
 		}
 		
 		++i;
@@ -204,10 +205,12 @@ void Player::foundPreviousVoid(const World &world, glm::vec3 &target){
 void Player::pickCube(World &world){
 
 	glm::vec3 target;
+	char type;
 
-	if(foundCube(world, target) != -1){
+	if(foundCube(world, target, type) != -1){
 		std::cout << " PICKED"<< std::endl;
 		world.setCubeType(target, EMPTY);
+		catchCube(type);
 	}
 
 }
@@ -216,8 +219,9 @@ void Player::pickCube(World &world){
 void Player::addCube(World &world){
 
 	glm::vec3 target;
+	char type;
 
-	int i = foundCube(world, target);
+	int i = foundCube(world, target, type);
 
 	if(i != -1){
 		std::cout << " ADDED"<< std::endl;
@@ -225,7 +229,7 @@ void Player::addCube(World &world){
 		foundPreviousVoid(world, target);
 
 		if(glm::length(target) > 3){
-			world.setCubeType(target, BASIC);
+			world.setCubeType(target, BASIC1);
 		}
 		
 		
@@ -234,7 +238,7 @@ void Player::addCube(World &world){
 
 }
 
-bool Player::catchCube(int cube){
+bool Player::catchCube(char cube){
 	return this->m_inventory.addCube(cube);
 }
 
@@ -242,7 +246,7 @@ bool Player::dropCube(){
 	return this->m_inventory.removeCurrentCube();
 }
 
-bool Player::deleteCube(int cube){
+bool Player::deleteCube(char cube){
 	return this->m_inventory.removeCube(cube);
 }
  

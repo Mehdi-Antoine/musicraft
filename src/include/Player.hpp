@@ -59,7 +59,7 @@ public:
   void moveFront(int t);
   void moveLeft(int t);
 
-  int foundCube(const World &world, glm::vec3 &target);
+  int foundCube(const World &world, glm::vec3 &target, char &type);
 
   void foundPreviousVoid(const World &world, glm::vec3 &target);
 
@@ -69,9 +69,9 @@ public:
 
   void addCube(World &world);
 
-  bool catchCube(int cube);
+  bool catchCube(char cube);
   bool dropCube();
-  bool deleteCube(int cube);
+  bool deleteCube(char cube);
 
 };
 
