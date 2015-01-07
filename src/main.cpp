@@ -150,6 +150,7 @@ int main(int argc, char** argv){
     Chunk chunk;
 
     char cubeType;
+    glm::vec3 current_cube_color;
 
     //SOL
     for (int x = 0; x < SIZE; ++x)
@@ -158,10 +159,13 @@ int main(int argc, char** argv){
         {   
             int y = 0;
 
-            cubeType = 1;
+            cubeType = BASIC1;
+
+            current_cube_color = Chunk::getColorFromType(cubeType);
+
             chunk.setCubeType(x, y, z, cubeType);
             cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-            cube_color.push_back(glm::vec3(cubeType));      
+            cube_color.push_back(current_cube_color);      
         }
     }
 
@@ -171,21 +175,26 @@ int main(int argc, char** argv){
         int y = 1;
         int z = 0;
 
-        cubeType = 1;
+        cubeType = BASIC2;
+
+        current_cube_color = Chunk::getColorFromType(cubeType);
 
         chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
-        cube_color.push_back(glm::vec3(cubeType));          
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+        cube_color.push_back(current_cube_color);           
     }
     for (int x = 0; x < SIZE; ++x)
     {   
         int z = SIZE - 1;
         for(int y = 1; y < 4; ++y){
-            cubeType = 1;
+
+            cubeType = BASIC3;
+
+            current_cube_color = Chunk::getColorFromType(cubeType);
 
             chunk.setCubeType(x, y, z, cubeType);
-            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
-            cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));  
+            cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+            cube_color.push_back(current_cube_color);  
         }              
     }   
     for (int z = 0; z < SIZE; ++z)
@@ -193,22 +202,26 @@ int main(int argc, char** argv){
         int x = 0;
         int y = 1;
 
-        cubeType = 1;
+        cubeType = BASIC2;
+
+        current_cube_color = Chunk::getColorFromType(cubeType);
 
         chunk.setCubeType(x, y, z, cubeType);
-        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2)); 
-        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));        
+        cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
+        cube_color.push_back(current_cube_color);        
     }
     for (int z = 0; z < SIZE ; ++z)
     {   
         int x = SIZE - 1;
         int y = 1;
 
-        cubeType = 1;
+        cubeType = BASIC3;
+
+        current_cube_color = Chunk::getColorFromType(cubeType);
 
         chunk.setCubeType(x, y, z, cubeType);
         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));  
-        cube_color.push_back(glm::vec3(cubeType-1, cubeType, 0));       
+        cube_color.push_back(current_cube_color);       
     }
 
 //-----------------------------------WORLD CREATION-------------------------------------------------
@@ -277,15 +290,22 @@ int main(int argc, char** argv){
 //------------------------------------UPDATE VBO-------------------------------------------------------
 
         cube_position.clear();
+        cube_color.clear();
 
         for (int x = 0; x < SIZE; ++x)
         {
             for (int y = 0; y < SIZE; ++y)
             {
                 for (int z = 0; z < SIZE; ++z)
-                {
-                    if(world.getCubeType(x,y,z) != EMPTY){
+                {   
+                    cubeType = world.getCubeType(x,y,z);
+                    if(cubeType != EMPTY){
+
                         cube_position.push_back(glm::vec3(x * 2, y * 2, z * 2));
+
+                        current_cube_color = Chunk::getColorFromType(cubeType);
+
+                        cube_color.push_back(current_cube_color); 
                     }
                 }
             }

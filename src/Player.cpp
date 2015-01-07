@@ -220,7 +220,7 @@ void Player::addCube(World &world){
 		foundPreviousVoid(world, target);
 
 		if(glm::length(target) > 3){
-			world.setCubeType(target, BASIC);
+			world.setCubeType(target, BASIC1);
 		}
 		
 		

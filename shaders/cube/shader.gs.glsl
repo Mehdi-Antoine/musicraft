@@ -9,15 +9,11 @@ in Vertex
 } vertex[];
 
 layout(std140) uniform global_vec3{
-    vec3  light_position;
-    vec3  light_intensity;
-    vec3  light_ks;
+    vec3 light_position;
+    vec3 light_intensity;
+    vec3 light_ks;
     vec3 camera_position;
     vec3 front_vector;
-};
-
-layout(std140) uniform global_float{
-    float light_shininess;
 };
 
 layout(std140) uniform global_matrix{
@@ -29,6 +25,7 @@ out vec3 g_Color;
 out vec3 g_Normal;
 out vec2 g_TexCoords;
 out vec3 g_Position;
+out vec3 g_cube_position;
 
 const float f = 1.f;
 
@@ -129,6 +126,7 @@ void main()
             g_Color = vertex[0].color;  
             g_Normal = normals[iTri];
             g_TexCoords = texCoord[triangle_Nb + iVert];
+            g_cube_position = vec3(vertex[0].position);
             EmitVertex();         
         }
 

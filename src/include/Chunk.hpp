@@ -8,8 +8,9 @@
 
 enum CubeType{ 
   EMPTY = 0,
-  BASIC = 1,
-  STING = 2
+  BASIC1 = 1,
+  BASIC2 = 2,
+  BASIC3 = 3
 };
 
 class Chunk{
@@ -39,5 +40,7 @@ public:
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
 	int getIndex(float value) const;
+
+	static glm::vec3 getColorFromType(char type);
 
 };
