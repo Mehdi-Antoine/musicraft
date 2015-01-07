@@ -44,4 +44,8 @@ public:
 
 	void stopUse(GLenum texture); //GL_TEXTURE0, GL_TEXTURE1, ...
 
+	void bind();
+
+	void unbind();
+
 };

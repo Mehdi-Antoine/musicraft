@@ -44,21 +44,29 @@ void Inventory::setCurrentCube(char cube){
 }
 
 void Inventory::setNextCurrentCube(){
-	if(m_list.upper_bound(m_current_cube) != m_list.end()){
-		m_current_cube = m_list.upper_bound(m_current_cube)->first;	
-	}
-	else{
+	
+	if(m_current_cube == -1){
+		std::cout <<"begin"<<std::endl;
 		m_current_cube = m_list.begin()->first;
 	}
+	else{
+		if(m_list.upper_bound(m_current_cube) != m_list.end())
+			m_current_cube = m_list.upper_bound(m_current_cube)->first;
+		else
+			m_current_cube = -1;
+	}
+	std::cout << "Current : "<<(int)m_list.find(m_current_cube)->first<<std::endl;
 	
 }
 void Inventory::setPrevCurrentCube(){
 	if(m_list.lower_bound(m_current_cube) != m_list.end()){
+
 		m_current_cube = m_list.lower_bound(m_current_cube)->first;
 	}
 	else{
 		m_current_cube = ((m_list.end())--)->first;
 	}
+	std::cout << "Current : "<<(int)m_list.find(m_current_cube)->first<<std::endl;
 }
 
 bool Inventory::addCube(char cube){
@@ -72,7 +80,6 @@ bool Inventory::addCube(char cube){
 		}
 		
 		m_list[cube]++;
-		std::cout << "Cube ajouté!" << std::endl;
 		return true;
 	}
 	std::cout << "Ineventaire plein!" << std::endl;

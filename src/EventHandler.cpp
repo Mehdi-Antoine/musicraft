@@ -81,10 +81,12 @@ void EventHandler::updatePlayer(World &world){
 
     //Mouse wheel : change current cube in inventory
     if(m_input.getMouseWheel(0) == true){
-        m_player_manager.getPlayer().getInventory().setPrevCurrentCube();
+        m_player_manager.getPlayer().getInventory().setNextCurrentCube();
+        m_input.setMouseWheelFalse(0);
     }
     if(m_input.getMouseWheel(1) == true){
-        m_player_manager.getPlayer().getInventory().setNextCurrentCube();
+        m_player_manager.getPlayer().getInventory().setPrevCurrentCube();
+        m_input.setMouseWheelFalse(1);
     }
 
     //mousemotion orientation camera
@@ -98,6 +100,7 @@ void EventHandler::updatePlayer(World &world){
 
     int WINDOW_WIDTH = world.getWindowWidth();
     int WINDOW_HEIGHT = world.getWindowHeight();
+    
     float angle = 1.5;
 
     float rel_x = m_input.getMouseRel(0);

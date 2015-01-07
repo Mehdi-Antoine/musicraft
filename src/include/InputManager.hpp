@@ -17,6 +17,7 @@ public:
     bool getMouse(int mouseButton);
 
     bool getMouseWheel(int mouseWheel);
+    void setMouseWheelFalse(int mouseWheel);
 
     bool getQuit();
 

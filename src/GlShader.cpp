@@ -3,6 +3,7 @@
 
 #include "include/GlShader.hpp"
 #include "include/GlUniform.hpp"
+#include "include/GlTexture.hpp"
 
 using namespace glimac;
 
@@ -26,6 +27,12 @@ GlShader::GlShader(const GlShader & shader){
 
 
 GlShader::~GlShader(){
+}
+
+void GlShader::attachTexture(const char* uniform_name, int binding) const{
+	useShader();
+    GLint uTexture = glGetUniformLocation(getProgramId(), uniform_name);
+    glUniform1i(uTexture, binding);
 }
 
 
@@ -53,3 +60,4 @@ void GlShader::linkUniform(UniformType uniform_type, const char* uniform_name){
 
 
 }
+

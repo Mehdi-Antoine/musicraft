@@ -24,7 +24,9 @@ private:
 
 	GlGlobalUniformMatrix  m_global_matrix;
 	
-	GlGlobalUniformLight   m_global_light;
+	GlGlobalUniformVec4    m_global_vec4;
+
+	GlGlobalUniformFloat   m_global_float;
 
 	FilePath               m_dir_path;
 

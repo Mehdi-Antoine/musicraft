@@ -8,10 +8,21 @@ in Vertex
   vec3 color; 
 } vertex[];
 
+layout(std140) uniform global_vec4{
+    vec3  light_position;
+    vec3  light_intensity;
+    vec3  light_ks;
+    vec3 camera_position;
+    vec3 front_vector;
+};
+
+layout(std140) uniform global_float{
+    float light_shininess;
+};
+
 layout(std140) uniform global_matrix{
     mat4 p_matrix;
-    mat4 v_matrix;
-    vec3 camera_position;
+    mat4 v_matrix;   
 };
 
 out vec3 g_Color;
@@ -43,7 +54,11 @@ const int elements[] = int[]
 );
 
 void main()
-{
+{   
+    vec3 vector_a = vec3(vertex[0].position) - 2 * camera_position;
+
+    vec3 vector_b = front_vector;
+
     vec4 vertices[] = vec4[]
     (
         vec4(-f,-f,-f, 1), // 0
@@ -95,6 +110,7 @@ void main()
 
     int triangle_Nb;
 
+    
     for(int iTri = 0; iTri < 12; ++iTri)
     {
         if(iTri %2 == 0){
