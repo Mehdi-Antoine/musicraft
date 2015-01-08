@@ -57,21 +57,25 @@ void Inventory::prevIndex(){
 }
 
 void Inventory::addCube(char cube){
-	if (this->getNumberCubes() < m_max_size){
-		int pos = std::find(m_type_list.begin(), m_type_list.end(), cube) - m_type_list.begin();
-		if(pos < m_type_list.size()){
-			m_nb_list[pos]++;
+	if((int) cube > 0 && (int) cube < 4){
+		if (this->getNumberCubes() < m_max_size){
+			int pos = std::find(m_type_list.begin(), m_type_list.end(), cube) - m_type_list.begin();
+			if(pos < m_type_list.size()){
+				m_nb_list[pos]++;			}
+			else{
+				if(m_type_list.size() >= m_max_size){
+					std::cout << "Plus de place pour un nouveau cube!"<< std::endl;
+				}
+				m_type_list.push_back(cube);
+				m_nb_list.push_back(1);
+			}
 		}
 		else{
-			if(m_type_list.size() >= m_max_size){
-				std::cout << "Plus de place pour un nouveau cube!"<< std::endl;
-			}
-			m_type_list.push_back(cube);
-			m_nb_list.push_back(1);
+			std::cout << "Ineventaire plein!" << std::endl;	
 		}
 	}
 	else{
-		std::cout << "Ineventaire plein!" << std::endl;	
+		std::cout << "Type de cube inconnu (pas d'ajout)" << std::endl;
 	}
 
 }

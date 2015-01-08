@@ -73,10 +73,7 @@ void EventHandler::updatePlayer(World &world){
 
     if(m_input.getMouse(3) == true){
         m_player_manager.getPlayer().addCube(world);
-    }
-
-    if(m_input.getMouse(3) == true){
-        m_player_manager.getPlayer().addCube(world);
+        m_input.setMouseFalse(3);
     }
 
     //Mouse wheel : change current cube in inventory

@@ -189,6 +189,10 @@ bool InputManager::getMouse(int mouseButton)
     return m_mouse_button[mouseButton];
 }
 
+void InputManager::setMouseFalse(int mouseButton){
+    m_mouse_button[mouseButton] = false;
+}
+
 bool InputManager::getMouseWheel(int mouseWheel)
 {
     return m_mouse_wheel[mouseWheel];

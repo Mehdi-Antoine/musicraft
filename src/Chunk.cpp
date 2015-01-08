@@ -33,14 +33,14 @@ Chunk::~Chunk(){
 
 char Chunk::getCubeType(float x, float y, float z) const{
 
-	return m_chunk[getIndex(x)][getIndex(y)][getIndex(z)];
+	return m_chunk[Chunk::getIndex(x)][Chunk::getIndex(y)][Chunk::getIndex(z)];
 }
 
 char Chunk::getCubeType(const glm::vec3 &position) const{
-	//std::cout << getIndex(position.x) << " " << getIndex(position.y) << " " << getIndex(position.z) << std::endl;
-	return m_chunk[getIndex(position.x)]
-				  [getIndex(position.y)]
-				  [getIndex(position.z)];
+	//std::cout << Chunk::getIndex(position.x) << " " << Chunk::getIndex(position.y) << " " << Chunk::getIndex(position.z) << std::endl;
+	return m_chunk[Chunk::getIndex(position.x)]
+				  [Chunk::getIndex(position.y)]
+				  [Chunk::getIndex(position.z)];
 
 }
 
@@ -50,25 +50,26 @@ char Chunk::getCubeType(const glm::vec3 &position) const{
 
 void Chunk::setCubeType(int x, int y, int z, char cube_type){
 
-	m_chunk[getIndex(x)][getIndex(y)][getIndex(z)] = cube_type;
+	m_chunk[Chunk::getIndex(x)][Chunk::getIndex(y)][Chunk::getIndex(z)] = cube_type;
 
 }
 
 void Chunk::setCubeType(const glm::vec3 &position, char cube_type){
 
-	m_chunk[getIndex(position.x)]
-		   [getIndex(position.y)]
-		   [getIndex(position.z)] = cube_type;
+	m_chunk[Chunk::getIndex(position.x)]
+		   [Chunk::getIndex(position.y)]
+		   [Chunk::getIndex(position.z)] = cube_type;
 
 }
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
-int Chunk::getIndex(float value) const{
-
-
-	float decimal = value - int(value);
+int Chunk::getIndex(float value){
 	return round(value);
+}
+
+glm::vec3 Chunk::getPositionIndexed(const glm::vec3 & pos){
+	return glm::vec3(Chunk::getIndex(pos.x),Chunk::getIndex(pos.y),Chunk::getIndex(pos.z));
 }
 
 glm::vec3 Chunk::getColorFromType(char cube_type){

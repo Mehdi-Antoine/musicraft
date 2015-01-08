@@ -39,7 +39,8 @@ public:
 
 //-------------------------------------------------FUNCTIONS----------------------------------------------------
 
-	int getIndex(float value) const;
+	static int getIndex(float value);
+	static glm::vec3 getPositionIndexed(const glm::vec3 & pos);
 
 	static glm::vec3 getColorFromType(char type);
 
