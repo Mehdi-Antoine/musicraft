@@ -52,84 +52,96 @@ const int elements[] = int[]
 
 void main()
 {   
-    vec3 vector_a = vec3(vertex[0].position) - 2 * camera_position;
+
+    vec3 vector_a = normalize(vec3(vertex[0].position) - 2 * camera_position);
 
     vec3 vector_b = front_vector;
 
-    vec4 vertices[] = vec4[]
-    (
-        vec4(-f,-f,-f, 1), // 0
-        vec4(-f,-f,+f, 1), // 1
-        vec4(-f,+f,-f, 1), // 2
-        vec4(-f,+f,+f, 1), // 3
-        vec4(+f,-f,-f, 1), // 4
-        vec4(+f,-f,+f, 1), // 5
-        vec4(+f,+f,-f, 1), // 6
-        vec4(+f,+f,+f, 1)  // 7
-    );
+    float dot_product = dot(vector_a, vector_b);
 
-    vec3 normals[] = vec3[]
-    (
-        vec3(-1,0,0), // 0
-        vec3(-1,0,0), // 1  // FACE1
+    if(dot_product > 0.62){
 
-        vec3(0,0,1),  // 2
-        vec3(0,0,1),  // 3  // FACE2
+        vec4 vertices[] = vec4[]
+        (
+            vec4(-f,-f,-f, 1), // 0
+            vec4(-f,-f,+f, 1), // 1
+            vec4(-f,+f,-f, 1), // 2
+            vec4(-f,+f,+f, 1), // 3
+            vec4(+f,-f,-f, 1), // 4
+            vec4(+f,-f,+f, 1), // 5
+            vec4(+f,+f,-f, 1), // 6
+            vec4(+f,+f,+f, 1)  // 7
+        );
 
-        vec3(1,0,0),  // 4
-        vec3(1,0,0),  // 5  // FACE3
+        vec3 normals[] = vec3[]
+        (
+            vec3(-1,0,0), // 0
+            vec3(-1,0,0), // 1  // FACE1
 
-        vec3(0,0,-1), // 6
-        vec3(0,0,-1), // 7  // FACE4
+            vec3(0,0,1),  // 2
+            vec3(0,0,1),  // 3  // FACE2
 
-        vec3(0,1,0),  // 8
-        vec3(0,1,0),  // 9  // FACE5
+            vec3(1,0,0),  // 4
+            vec3(1,0,0),  // 5  // FACE3
 
-        vec3(0,-1,0), // 10
-        vec3(0,-1,0)  // 11 // FACE6
-    );
+            vec3(0,0,-1), // 6
+            vec3(0,0,-1), // 7  // FACE4
 
-    vec2 texCoord[] = vec2[]
-    (
-        vec2(0, 1), //Vertex1  // TRIANGLE 1
-        vec2(0, 0), //Vertex2
-        vec2(1, 1), //Vertex3
+            vec3(0,1,0),  // 8
+            vec3(0,1,0),  // 9  // FACE5
 
-        vec2(0, 0), //Vertex1  // TRIANGLE 2
-        vec2(1, 0), //Vertex2
-        vec2(1, 1) //Vertex3
-    );
+            vec3(0,-1,0), // 10
+            vec3(0,-1,0)  // 11 // FACE6
+        );
 
-    vec4 mv_position;
-    vec4 m_position;
+        vec2 texCoord[] = vec2[]
+        (
+            vec2(0, 1), //Vertex1  // TRIANGLE 1
+            vec2(0, 0), //Vertex2
+            vec2(1, 1), //Vertex3
 
-    int iIndex = 0;
+            vec2(0, 0), //Vertex1  // TRIANGLE 2
+            vec2(1, 0), //Vertex2
+            vec2(1, 1) //Vertex3
+        );
 
-    int triangle_Nb;
+        vec4 mv_position;
+        vec4 m_position;
 
-    
-    for(int iTri = 0; iTri < 12; ++iTri)
-    {
-        if(iTri %2 == 0){
-            triangle_Nb = 0;
-        }
-        else{
-            triangle_Nb = 3;
-        }
+        int iIndex = 0;
 
-        for(int iVert = 0; iVert < 3; ++iVert)
+        int triangle_Nb;
+
+        
+        for(int iTri = 0; iTri < 12; ++iTri)
         {
-            m_position = vertices[elements[iIndex++]] + vertex[0].position;
-            mv_position = v_matrix * m_position;
-            gl_Position = p_matrix * mv_position;
-            g_Position = vec3(m_position);
-            g_Color = vertex[0].color;  
-            g_Normal = normals[iTri];
-            g_TexCoords = texCoord[triangle_Nb + iVert];
-            g_cube_position = vec3(vertex[0].position);
-            EmitVertex();         
-        }
+            if(iTri %2 == 0){
+                triangle_Nb = 0;
+            }
+            else{
+                triangle_Nb = 3;
+            }
 
-        EndPrimitive();
+            for(int iVert = 0; iVert < 3; ++iVert)
+            {
+                m_position = vertices[elements[iIndex++]] + vertex[0].position;
+                mv_position = v_matrix * m_position;
+                gl_Position = p_matrix * mv_position;
+                g_Position = vec3(m_position);
+                g_Color = vertex[0].color;  
+                g_Normal = normals[iTri];
+                g_TexCoords = texCoord[triangle_Nb + iVert];
+                g_cube_position = vec3(vertex[0].position);
+
+                if(dot(vector_b, g_Normal) <= 0){
+                    EmitVertex();                
+                }
+
+                     
+            }
+            //if(dot(vector_b, g_Normal) < 0){
+                EndPrimitive();
+            //}
+        }
     }
 }

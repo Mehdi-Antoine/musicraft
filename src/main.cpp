@@ -112,7 +112,7 @@ int main(int argc, char** argv){
     global_matrix.attachProgram(square_shader.getProgramId());
     global_matrix.attachProgram(cube_shader.getProgramId());
 
-    glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(45.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
     global_matrix.updateProjectionMatrix(projection_matrix);
 
 
@@ -139,47 +139,6 @@ int main(int argc, char** argv){
 
     glEnable(GL_DEPTH_TEST);
 
-
-
-//-----------------------------------WORLD CREATION-------------------------------------------------
-
-    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
-    World world(window);
-
-    std::vector<glm::vec3> cube_color;
-    std::vector<glm::vec3> cube_position;
-
-    glm::vec3 start = glm::vec3(0,0,0);
-    world.addChunk(start);
-    
-    cube_position = world.getChunk(0).getAllCoordinates();
-   
-    for(unsigned int i = 0; i < cube_position.size(); ++i){
-        cube_color.push_back(glm::vec3(1,1,1));
-    }
-
-
-
-    //2
-   /* std::vector<glm::vec3> cube_color2;
-    std::vector<glm::vec3> cube_position2;
-    Chunk chunky = Chunk(1245, glm::vec3(50,0,0));
-
-    chunky.root.genAllCoordinates(pow(2,(float)chunky.profondeur), 0, chunky.profondeur);
-
-    cube_position2 = chunky.getAllCoordinates();
-
-    std::cout << "Count unlightened: " << cube_position2.size()<< std::endl;
-
-    chunky.lighten();
-
-    cube_position2 = chunky.getAllCoordinates();
-    std::cout << "Count lightened: " << cube_position2.size()<< std::endl;
-
-    for(unsigned int i = 0; i < cube_position2.size(); ++i){
-        cube_color2.push_back(glm::vec3(1,1,1));
-    }*/
-
 //------------------------------CREATION CHUNK / GL_CHUNK-------------------------------------------
     
     //std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
@@ -193,7 +152,7 @@ int main(int argc, char** argv){
 
     GlElement ground(GL_POINTS);
     //GlElement ground2(GL_POINTS);
-    ground.update(cube_position, cube_color);
+    //ground.update(cube_position, cube_color);
 
     // gl_chunks.push_back(&gl_chunk0);
 
@@ -248,6 +207,18 @@ int main(int argc, char** argv){
     std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
     std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
 
+//-----------------------------------WORLD CREATION-------------------------------------------------
+
+    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
+    World world(window);
+
+    std::vector<glm::vec3> cube_color;
+    std::vector<glm::vec3> cube_position;
+    glm::vec3 pl = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
+    world.createMap(pl);
+    world.updateMap(pl);
+    world.createCoordinates(cube_position, cube_color);
+
 //-----------------------------------------------------------------------------------------------------
 //----------------------------------APPLICATION LOOP---------------------------------------------------
 //-----------------------------------------------------------------------------------------------------
@@ -283,14 +254,18 @@ int main(int argc, char** argv){
 
         global_vec4.updateCameraFrontVector(front_vector);
 
+        //std::cout << World::getChunkCoord(camera_position)<<std::endl;
+
+
+
 
 //----------------------------------UPDATE VBO----------------------------------------------------
         cube_position.clear();
-        //cube_color.clear();
+        cube_color.clear();
 
-        //world.getChunk(0).genAllCoordinates();
-            
-        cube_position = world.getChunk(0).getAllCoordinates();
+        pl = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
+        world.updateMap(pl);
+        world.createCoordinates(cube_position, cube_color);
         ground.update(cube_position, cube_color);
 
         /*cube_position2.clear();

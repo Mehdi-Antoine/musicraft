@@ -15,6 +15,7 @@ private:
 	std::vector<Chunk> m_chunks;
 	Window m_window;
 	PerlinNoise m_noise;
+	int m_current_index = 0;
 
 public:
 
@@ -55,7 +56,10 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 
 	void addChunk(Chunk &chunk);
-	void addChunk(glm::vec3 &pos);
+	void addChunk(glm::vec3 pos);
+	void createMap(glm::vec3 &player);
+	void createCoordinates(std::vector<glm::vec3> &cubePosition, std::vector<glm::vec3> &cubeColor);
+	void updateMap(glm::vec3 &player);
 
 	static glm::vec3 getChunkCoord(const glm::vec3 &position);
 

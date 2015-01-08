@@ -29,13 +29,15 @@ glm::vec3 Octree::getCoordinates(){
 	return coo;
 }
 
-void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const int profondeur){
+void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, std::vector<char> &color, int etage, const int profondeur){
 	for(int i = 0; i < 8; ++i){
 		if(children[i] != NULL){
 			if(etage < profondeur)
-				children[i]->getAllCoordinates(centres, etage+1, profondeur);
-			else if(children[i]->cubeType > 0)
+				children[i]->getAllCoordinates(centres, color, etage+1, profondeur);
+			else if(children[i]->cubeType > 0){
+				color.push_back(children[i]->cubeType);
 				centres.push_back(float(2)*children[i]->coo);
+			}
 		}
 	}
 }
@@ -100,7 +102,7 @@ void Octree::setCubeType(glm::vec3 pos, char type, int etage, const int profonde
 	else{
 		children[index]->insert(type);
 		if(type == 0){
-			checkCubes(profondeur, taille, root);
+			root.checkCubes(profondeur, taille, root);
 		}
 	}
 }
@@ -134,7 +136,7 @@ void Octree::lighten(int etage, const int profondeur, Octree &root){
 				if(result != 0){
 					int tmp = (int)children[i]->cubeType;
 					tmp = -tmp;
-					children[i]->insert((char)tmp);	
+					children[i]->insert((char)tmp);
 				}
 			}
 		}
@@ -147,7 +149,7 @@ void Octree::checkCubes(const int profondeur, float taille, Octree &root){
 	for(int j = 1; j < 5; ++j){
 		if(j == 3) j++;
 		glm::vec3 pos = glm::vec3(coo.x + (j&1), coo.y + ((j>>1)&1), coo.z + ((j>>2)&1));
-		root.getCubeType(result, coo, 0, profondeur);
+		root.getCubeType(result, pos, 0, profondeur);
 		if(result < 0){
 			root.setCubeType(pos*glm::vec3(.5,.5,.5),1,0, profondeur, taille, root);
 		}
@@ -155,7 +157,7 @@ void Octree::checkCubes(const int profondeur, float taille, Octree &root){
 	for(int j = 1; j < 5; ++j){
 		if(j == 3) j++;
 		glm::vec3 pos = glm::vec3(coo.x - (j&1), coo.y - ((j>>1)&1), coo.z - ((j>>2)&1));
-		root.getCubeType(result, coo, 0, profondeur);
+		root.getCubeType(result, pos, 0, profondeur);
 		if(result < 0){
 			root.setCubeType(pos*glm::vec3(.5,.5,.5),1,0, profondeur, taille, root);	
 		}

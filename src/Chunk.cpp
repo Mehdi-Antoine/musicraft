@@ -8,7 +8,7 @@ Chunk::Chunk(PerlinNoise &noise, glm::vec3 pos){
 	root = Octree();
 	root.coo = pos;
 	int etage = 0;
-	std::cout << noise.GetHeight(0,0) << std::endl;
+	//std::cout << noise.GetHeight(pos.x,pos.z) << std::endl;
 	genTerrain(root, etage, taille, noise);
 }
 
@@ -56,17 +56,16 @@ void Chunk::genFullCube(Octree &subTree, int etage){
 }
 
 void Chunk::genTerrain(Octree &subTree, int etage, float taille, PerlinNoise &noise){
-	for(int x = -taille; x < taille; ++x){
-		for(int z = -taille; z < taille; ++z){
+	for(int x = -taille + root.coo.x; x < taille + root.coo.x; ++x){
+		for(int z = -taille + root.coo.z; z < taille + root.coo.z; ++z){
 			int height = (int)noise.GetHeight(x, z);
 
-			if (height > taille)
-				height = taille;
-			if(height < -taille)
-				height = -taille;
+			if (height > taille + root.coo.y)
+				height = taille + root.coo.y;
+			if(height < -taille +root.coo.y)
+				height = -taille + root.coo.y;
 
-			//std::cout << height << std::endl;
-			for(int y = -taille; y <= height ; ++y){
+			for(int y = -taille + root.coo.y; y < height ; ++y){
 				glm::vec3 pos = glm::vec3(x, y, z);
 				setCubeType(pos, 1);
 			}
@@ -86,10 +85,12 @@ void Chunk::setCubeType(const glm::vec3 &pos, char type){
 	root.setCubeType(pos, type, etage, profondeur, taille, root);
 }
 
-std::vector<glm::vec3> Chunk::getAllCoordinates(){
-	std::vector<glm::vec3> result;
-	root.getAllCoordinates(result, 0, profondeur);
-	return result;
+void Chunk::getAllCoordinates(std::vector<glm::vec3> &centres, std::vector<glm::vec3> &color){
+	std::vector<char> typeCube;
+	root.getAllCoordinates(centres, typeCube, 0, profondeur);
+	for(int i = 0; i < typeCube.size(); ++i){
+		color.push_back(Chunk::getColorFromType(typeCube[i]));
+	}
 }
 
 void Chunk::genAllCoordinates(){
@@ -98,6 +99,37 @@ void Chunk::genAllCoordinates(){
 
 void Chunk::lighten(){
 	root.lighten(0, profondeur, root);
+}
+
+glm::vec3 Chunk::getColorFromType(char cube_type){
+	switch (cube_type) {
+
+		case EMPTY:
+		  return glm::vec3(0,0,0);
+		  break;
+
+		case BASIC1:
+		  return glm::vec3(0.75,
+						   0.17,
+						   0.62);
+		  break;
+
+		case BASIC2:
+		  return glm::vec3(0.17,
+						   0.75,
+						   0.47);
+		  break;
+
+		case BASIC3:
+		  return glm::vec3(0.22,
+						   0.4,
+						   0.75);
+		  break;
+
+		default:
+		  return glm::vec3(1,1,1);
+		  break;
+	}
 }
 
 /*void Chunk::culling(std::vector<float> centres, Octree &subTree, int &etage, float taille){
