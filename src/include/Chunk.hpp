@@ -20,7 +20,7 @@ class Chunk{
 	public:
 		Octree root;
 		int profondeur = 4;
-		float taille = pow(2, profondeur);
+		float taille = pow(2, profondeur-1);
 
 		Chunk();
 		Chunk(int seed, glm::vec3 racine);

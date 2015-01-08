@@ -230,8 +230,6 @@ int main(int argc, char** argv){
 
     // gl_chunks.push_back(&gl_chunk3);
 
-
-
     world.addChunk(chunk_norris);
     world.addChunk(chunky);
 
