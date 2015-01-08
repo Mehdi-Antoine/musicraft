@@ -94,13 +94,14 @@ void World::addChunk(Chunk &chunk){
 
 void World::addChunk(glm::vec3 pos){
 	Chunk c = Chunk(m_noise, pos);
+	std::cout << pos << std::endl;
 	c.lighten();
 	m_chunks.push_back(c);
 }
 
 void World::createMap(glm::vec3 &player){
 	glm::vec3 pos = getChunkCoord(player);
-	std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+	//std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
 	addChunk(glm::vec3(pos.x, pos.y, pos.z + SIZE));
 	addChunk(glm::vec3(pos.x, pos.y, pos.z - SIZE));
 	addChunk(pos);
@@ -139,33 +140,32 @@ void World::createCoordinates(std::vector<glm::vec3> &cubePosition, std::vector<
 }
 
 void World::updateMap(glm::vec3 &player){
-	const glm::vec3 pos = getChunkCoord(player);
+	glm::vec3 pos = getChunkCoord(player);
 	int newIndex = findChunkIndex(pos);
-	std::cout << m_current_index << " " << newIndex << std::endl;
 	if(newIndex != m_current_index){
-		m_chunks.clear();
-		createMap(player);
 		m_current_index = newIndex;
+		m_chunks.clear();
+		createMap(pos);
 	}
 }
 
 
 char World::getCubeType(const glm::vec3 &position) const{
 
-	glm::vec3 chunk_position = World::getChunkCoord(position);
+	//glm::vec3 chunk_position = World::getChunkCoord(position);
 
 	//std::cout << "chunk_position = " << chunk_position << std::endl;
 
-	int index = findChunkIndex(chunk_position);
+	//int index = findChunkIndex(chunk_position);
 
-	if(index >= 0){
+	//if(index >= 0){
 		//std::cout << "in chunk : " << index << std::endl;
-
-		return m_chunks[index].getCubeType(position);
-	}
+		glm::vec3 pos = position;
+		return m_chunks[m_current_index].getCubeType(position);
+	/*}
 	else{
 		return -1;
-	}
+	}*/
 	
 }
 
@@ -181,13 +181,13 @@ int World::findChunkIndex(const glm::vec3 &position) const{
 	for(int i = 0; i<m_chunks.size(); ++i){
 
 		chunk_position = m_chunks[i].root.coo;
-		std::cout << "chunk pos " << chunk_position << " pos " << position << std::endl;
+		//std::cout << "chunk pos " << chunk_position << " pos " << position << std::endl;
 		if(position == chunk_position){
 			return i;
 		}
 	}
 
-	std::cout << "CHUNK NOT FOUND : " << position << std::endl;
+	//std::cout << "CHUNK NOT FOUND : " << position << std::endl;
 
 	return -1;
 
@@ -196,9 +196,9 @@ int World::findChunkIndex(const glm::vec3 &position) const{
 glm::vec3 World::getChunkCoord(const glm::vec3 &position){
 
 	//trouve les coordonnées du chunk correspondant 
-	float x = int(position.x / SIZE*2)*SIZE/2;
-	float y = int(position.y / SIZE*2)*SIZE/2;
-	float z = int(position.z / SIZE*2)*SIZE/2;
+	float x = int((position.x/2) / SIZE*2)*SIZE;
+	float y = int((position.y/2) / SIZE*2)*SIZE;
+	float z = int((position.z/2) / SIZE*2)*SIZE;
 	//std::cout << x << " " << y << " " << z << std::endl;
 	return glm::vec3(x, y ,z);
 
