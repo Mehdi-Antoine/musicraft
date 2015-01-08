@@ -80,8 +80,9 @@ int main(int argc, char** argv){
 
     GlShader cube_shader(dir_path, "cube");
 
-    std::cout << "OK." << std::endl << std::endl;
+    GlShader2D flat_shader(dir_path, "2d");
 
+    std::cout << "OK." << std::endl << std::endl;
 
     cube_shader.useShader();
 
@@ -112,7 +113,7 @@ int main(int argc, char** argv){
     global_matrix.attachProgram(square_shader.getProgramId());
     global_matrix.attachProgram(cube_shader.getProgramId());
 
-    glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(45.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
     global_matrix.updateProjectionMatrix(projection_matrix);
 
 
@@ -173,6 +174,34 @@ int main(int argc, char** argv){
 
     world.addChunk(chunk_norris);
 
+//-----------------------------------CIBE CREATION--------------------------------------------------
+
+    std::vector<glm::vec3>cible_position;
+    std::vector<glm::vec3>cible_color;
+
+    cible_position.push_back(glm::vec3(0,     0.01,    0));
+    cible_position.push_back(glm::vec3(0,     0.02,     0));
+
+    cible_position.push_back(glm::vec3(0.01,  0,       0));
+    cible_position.push_back(glm::vec3(0.02,   0,       0));
+
+    cible_position.push_back(glm::vec3(0,     -0.01,   0));
+    cible_position.push_back(glm::vec3(0,     -0.02,    0));
+
+    cible_position.push_back(glm::vec3(-0.01,  0,      0));
+    cible_position.push_back(glm::vec3(-0.02,   0,      0));
+
+    cible_color.push_back(glm::vec3(1, 1, 1));
+    cible_color.push_back(glm::vec3(1, 1, 1));
+    cible_color.push_back(glm::vec3(1, 1, 1));
+    cible_color.push_back(glm::vec3(1, 1, 1));
+    cible_color.push_back(glm::vec3(1, 1, 1));
+    cible_color.push_back(glm::vec3(1, 1, 1));
+    cible_color.push_back(glm::vec3(1, 1, 1));
+    cible_color.push_back(glm::vec3(1, 1, 1));   
+
+    GlElement cible(cible_position, cible_color, SQUARE , GL_LINES);
+
 //-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
 
     std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
@@ -229,14 +258,16 @@ int main(int argc, char** argv){
 
         global_vec4.updateCameraFrontVector(front_vector);
 
-//----------------------------------UPDATE VBO----------------------------------------------------
+
+        //std::cout << front_vector << std::endl;
+
+//------------------------------------UPDATE VBO-------------------------------------------------------
+
         cube_position.clear();
         cube_color.clear();
         //world.getChunk(0).lighten();
         cube_position = world.getChunk(0).getAllCoordinates();
         ground.update(cube_position, cube_color);
-
-
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
         
@@ -249,6 +280,9 @@ int main(int argc, char** argv){
 
         cube_shader.useShader();
         ground.draw();
+
+        flat_shader.useShader();
+        cible.draw();
 
         glActiveTexture(GL_TEXTURE0);
         texture_tron.unbind();
