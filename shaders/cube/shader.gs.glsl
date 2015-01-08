@@ -133,7 +133,7 @@ void main()
                 g_TexCoords = texCoord[triangle_Nb + iVert];
                 g_cube_position = vec3(vertex[0].position);
 
-                if(dot(vector_b, g_Normal) <= 0){
+                if(dot(vector_b, g_Normal) <= 0.55){
                     EmitVertex();                
                 }
 
