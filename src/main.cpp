@@ -113,7 +113,7 @@ int main(int argc, char** argv){
     global_matrix.attachProgram(square_shader.getProgramId());
     global_matrix.attachProgram(cube_shader.getProgramId());
 
-    glm::mat4 projection_matrix = glm::perspective(glm::radians(50.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(45.f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.f);
     global_matrix.updateProjectionMatrix(projection_matrix);
 
 
@@ -286,6 +286,8 @@ int main(int argc, char** argv){
         global_vec4.updateCameraPosition(camera_position);
 
         global_vec4.updateCameraFrontVector(front_vector);
+
+        //std::cout << front_vector << std::endl;
 
 //------------------------------------UPDATE VBO-------------------------------------------------------
 
