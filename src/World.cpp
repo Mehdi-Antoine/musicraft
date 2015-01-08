@@ -115,7 +115,7 @@ int World::findChunkIndex(const glm::vec3 &position) const{
 
 	for(int i = 0; i<m_chunks.size(); ++i){
 
-		chunk_position = m_chunks[i].getWorldPosition() / float(SIZE);
+		//chunk_position = m_chunks[i].getWorldPosition() / float(SIZE);
 
 		if(position == chunk_position){
 			return i;
@@ -151,34 +151,12 @@ glm::vec3 World::getLocalPosition(const glm::vec3 &position){
 
 }
 
-Chunk World::createFlatChunk(char cube_type, const glm::vec3 &world_position){
-	
-	Chunk chunk;
-
-	chunk.setWorldPosition(world_position);
-
-	glm::vec3 current_cube_color;
-
-    for (int x = 0; x < SIZE; ++x)
-    {
-        for (int z = 0; z < SIZE; ++z)
-        {   
-            int y = 0;
-
-            chunk.setCubeType(x, y, z, cube_type);
-       
-        }
-    }
-
-    return chunk;
-}
-
 void World::updateGlElement(GlElement &gl_element, int chunk_index){
 
 	std::vector<glm::vec3> cube_position;
 	std::vector<glm::vec3> cube_color;
 
-	glm::vec3 world_position = m_chunks[chunk_index].getWorldPosition();
+	glm::vec3 world_position;// = m_chunks[chunk_index].getWorldPosition();
 
 	glm::vec3 gl_cube_position;
 
@@ -186,7 +164,7 @@ void World::updateGlElement(GlElement &gl_element, int chunk_index){
 
 
 	char cube_type;
-
+/*
 	for (int x = 0; x < SIZE; ++x)
     {
         for (int y = 0; y < SIZE; ++y)
@@ -207,7 +185,7 @@ void World::updateGlElement(GlElement &gl_element, int chunk_index){
                 }
             }
         }
-    }
+    }*/
 
     gl_element.data(cube_position, cube_color);
 

@@ -54,8 +54,6 @@ public:
 
 	void addChunk(Chunk &chunk);
 
-	static Chunk createFlatChunk(char cube_type, const glm::vec3 &world_position = glm::vec3(0,0,0));
-
 	static glm::vec3 getChunkCoord(const glm::vec3 &position);
 
 	static glm::vec3 getLocalPosition(const glm::vec3 &position);
