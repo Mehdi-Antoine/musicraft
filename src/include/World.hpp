@@ -5,6 +5,7 @@
 #include "Chunk.hpp"
 #include "Window.hpp"
 #include "GlElement.hpp"
+#include "PerlinNoise.hpp"
 
 
 
@@ -13,6 +14,7 @@ private:
 
 	std::vector<Chunk> m_chunks;
 	Window m_window;
+	PerlinNoise m_noise;
 
 public:
 
@@ -53,6 +55,7 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 
 	void addChunk(Chunk &chunk);
+	void addChunk(glm::vec3 &pos);
 
 	static glm::vec3 getChunkCoord(const glm::vec3 &position);
 

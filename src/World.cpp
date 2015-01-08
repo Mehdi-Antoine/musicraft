@@ -11,11 +11,19 @@
 //--------------------------------------------------------------------------------------------------------------
 
 World::World(){
-	
+
 }
 
 World::World(Window window)
 : m_window(window){
+
+	double persistence = 0.9;
+	double frequency = .2;
+	double amplitude = 60;
+	int octaves = 1;
+	int randomseed = 1245;
+
+	m_noise = PerlinNoise(persistence, frequency, amplitude, octaves, randomseed);
 }
 
 World::~World(){
@@ -84,17 +92,23 @@ void World::addChunk(Chunk &chunk){
 	m_chunks.push_back(chunk);
 }
 
+void World::addChunk(glm::vec3 &pos){
+	Chunk c = Chunk(m_noise, pos);
+	c.lighten();
+	m_chunks.push_back(c);
+}
+
 
 char World::getCubeType(const glm::vec3 &position) const{
 
 	glm::vec3 chunk_position = World::getChunkCoord(position);
 
-	std::cout << "chunk_position = " << chunk_position << std::endl;
+	//std::cout << "chunk_position = " << chunk_position << std::endl;
 
 	int index = findChunkIndex(chunk_position);
 
 	if(index >= 0){
-		std::cout << "in chunk : " << index << std::endl;
+		//std::cout << "in chunk : " << index << std::endl;
 
 		return m_chunks[index].getCubeType(position);
 	}

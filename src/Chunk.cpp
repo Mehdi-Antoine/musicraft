@@ -4,15 +4,12 @@
 #include "include/PerlinNoise.hpp"
 #include <glimac/glm.hpp>
 
-
-Chunk::Chunk(int seed, glm::vec3 pos){
-	int etage = 0;
+Chunk::Chunk(PerlinNoise &noise, glm::vec3 pos){
 	root = Octree();
 	root.coo = pos;
-	genTerrain(root, etage, taille, seed);
-	//genFullCube(root, 0);
-	//genFlatFloor(root, 0);
-	//root.genAllCoordinates(taille);
+	int etage = 0;
+	std::cout << noise.GetHeight(0,0) << std::endl;
+	genTerrain(root, etage, taille, noise);
 }
 
 
@@ -58,21 +55,17 @@ void Chunk::genFullCube(Octree &subTree, int etage){
 	}
 }
 
-void Chunk::genTerrain(Octree &subTree, int etage, float taille, int seed){
-	double persistence = 0.9;
-	double frequency = .2;
-	double amplitude = 60;
-	int octaves = 1;
-	int randomseed = seed;
-	PerlinNoise noise = PerlinNoise(persistence, frequency, amplitude, octaves, randomseed);
-	
+void Chunk::genTerrain(Octree &subTree, int etage, float taille, PerlinNoise &noise){
 	for(int x = -taille; x < taille; ++x){
 		for(int z = -taille; z < taille; ++z){
-			int height = (int)noise.GetHeight(x, z) - taille;
+			int height = (int)noise.GetHeight(x, z);
+
 			if (height > taille)
 				height = taille;
 			if(height < -taille)
 				height = -taille;
+
+			//std::cout << height << std::endl;
 			for(int y = -taille; y <= height ; ++y){
 				glm::vec3 pos = glm::vec3(x, y, z);
 				setCubeType(pos, 1);
@@ -97,6 +90,10 @@ std::vector<glm::vec3> Chunk::getAllCoordinates(){
 	std::vector<glm::vec3> result;
 	root.getAllCoordinates(result, 0, profondeur);
 	return result;
+}
+
+void Chunk::genAllCoordinates(){
+	root.genAllCoordinates(taille, 0, profondeur);
 }
 
 void Chunk::lighten(){

@@ -27,7 +27,7 @@ out vec2 g_TexCoords;
 out vec3 g_Position;
 out vec3 g_cube_position;
 
-const float f = 1f;
+const float f = 1.f;
 
 const int elements[] = int[]
 (

@@ -137,26 +137,31 @@ int main(int argc, char** argv){
 
     std::cout << "OK." << std::endl << std::endl;
 
+    glEnable(GL_DEPTH_TEST);
 
+
+
+//-----------------------------------WORLD CREATION-------------------------------------------------
+
+    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
+    World world(window);
 
     std::vector<glm::vec3> cube_color;
     std::vector<glm::vec3> cube_position;
 
-    Chunk chunk_norris = Chunk(1245, glm::vec3(0,0,0));
-    chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur), 0, chunk_norris.profondeur);
-    cube_position = chunk_norris.getAllCoordinates();
-    std::cout << "Count unlightened: " << cube_position.size()<< std::endl;
-    chunk_norris.lighten();
-
-    cube_position = chunk_norris.getAllCoordinates();
-    std::cout << "Count lightened: " << cube_position.size()<< std::endl;
-
+    glm::vec3 start = glm::vec3(0,0,0);
+    world.addChunk(start);
+    
+    cube_position = world.getChunk(0).getAllCoordinates();
+   
     for(unsigned int i = 0; i < cube_position.size(); ++i){
         cube_color.push_back(glm::vec3(1,1,1));
     }
 
+
+
     //2
-    std::vector<glm::vec3> cube_color2;
+   /* std::vector<glm::vec3> cube_color2;
     std::vector<glm::vec3> cube_position2;
     Chunk chunky = Chunk(1245, glm::vec3(50,0,0));
 
@@ -173,19 +178,7 @@ int main(int argc, char** argv){
 
     for(unsigned int i = 0; i < cube_position2.size(); ++i){
         cube_color2.push_back(glm::vec3(1,1,1));
-    }
-
-
-
-
-    glEnable(GL_DEPTH_TEST);
-
-
-
-//-----------------------------------WORLD CREATION-------------------------------------------------
-
-    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
-    World world(window);
+    }*/
 
 //------------------------------CREATION CHUNK / GL_CHUNK-------------------------------------------
     
@@ -199,7 +192,8 @@ int main(int argc, char** argv){
     // world.addChunk(chunk0);  
 
     GlElement ground(GL_POINTS);
-    GlElement ground2(GL_POINTS);
+    //GlElement ground2(GL_POINTS);
+    ground.update(cube_position, cube_color);
 
     // gl_chunks.push_back(&gl_chunk0);
 
@@ -230,8 +224,8 @@ int main(int argc, char** argv){
 
     // gl_chunks.push_back(&gl_chunk3);
 
-    world.addChunk(chunk_norris);
-    world.addChunk(chunky);
+   /* world.addChunk(chunk_norris);
+    world.addChunk(chunky);*/
 
     /*for(int i = 0; i< gl_chunks.size(); ++i){
         world.updateGlElement(*gl_chunks[i], i);
@@ -292,16 +286,19 @@ int main(int argc, char** argv){
 
 //----------------------------------UPDATE VBO----------------------------------------------------
         cube_position.clear();
-        cube_color.clear();
-        //world.getChunk(0).lighten();
+        //cube_color.clear();
+
+        //world.getChunk(0).genAllCoordinates();
+            
         cube_position = world.getChunk(0).getAllCoordinates();
         ground.update(cube_position, cube_color);
 
-        cube_position2.clear();
+        /*cube_position2.clear();
         cube_color2.clear();
-        //world.getChunk(0).lighten();
+        world.getChunk(1).lighten();
+
         cube_position2 = world.getChunk(1).getAllCoordinates();
-        ground2.update(cube_position2, cube_color2);
+        ground2.update(cube_position2, cube_color2);*/
 
 
 //------------------------------------UPDATE VBO-------------------------------------------------------
@@ -326,7 +323,7 @@ int main(int argc, char** argv){
 
         cube_shader.useShader();
         ground.draw();
-        ground2.draw();
+        //ground2.draw();
         //world.drawWorld(gl_chunks);
 
         glActiveTexture(GL_TEXTURE0);

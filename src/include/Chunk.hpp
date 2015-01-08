@@ -23,17 +23,16 @@ class Chunk{
 		float taille = pow(2, profondeur-1);
 
 		Chunk();
-		Chunk(int seed, glm::vec3 racine);
+		Chunk(PerlinNoise &noise, glm::vec3 pos);
 
 		char getCubeType(const glm::vec3 &pos) const;
 		void setCubeType(const glm::vec3 &pos, char type);
 		void genFlatFloor(Octree &subTree, int etage);
 		void genFullCube(Octree &subTree, int etage);
-		void genTerrain(Octree &subTree, int etage, float taille, int seed);
+		void genTerrain(Octree &subTree, int etage, float taille, PerlinNoise &noise);
 		void fillTerrain(Octree &subTree, int etage, float taille, int x, int z, int y);
 		void culling(std::vector<float> centres, Octree &subTree, int etage, float taille);
 		std::vector<glm::vec3> getAllCoordinates();
+		void genAllCoordinates();
 		void lighten();
-
-		//void setWorldPosition(glm::vec3 world_position);
 };

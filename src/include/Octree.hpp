@@ -26,5 +26,5 @@ public:
 	void getCubeType(char &result, const glm::vec3 &pos, int etage, const int profondeur) const;
 	void setCubeType(glm::vec3 pos, char type, int etage, const int profondeur, float taille, Octree &root);
 	void lighten(int etage, const int profondeur, Octree &root);
-	void checkCubes(const int profondeur, Octree &root);
+	void checkCubes(const int profondeur, float taille, Octree &root);
 };
