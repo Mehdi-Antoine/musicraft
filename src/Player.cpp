@@ -224,7 +224,7 @@ void Player::addCube(World &world){
 	if(i != -1){
 
 		do{
-			target *=0.95;
+			target *= 0.995;
 
 			if(world.getCubeType(target) == EMPTY){
 				found_void = true;
