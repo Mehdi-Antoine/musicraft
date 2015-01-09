@@ -29,18 +29,14 @@ glm::vec3 Octree::getCoordinates(){
 	return coo;
 }
 
-void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const int profondeur){
+void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, std::vector<char> &color, int etage, const int profondeur){
 	for(int i = 0; i < 8; ++i){
 		if(children[i] != NULL){
-			if(etage < profondeur){
-				children[i]->getAllCoordinates(centres, etage+1, profondeur);
-			}
-			else{
-
-				if(children[i]->cubeType > 0){
-					//std::cout << children[i]->coo[0] << " " << children[i]->coo[1] << " " << children[i]->coo[2] << std::endl;
-					centres.push_back(float(2)*children[i]->coo);
-				}
+			if(etage < profondeur)
+				children[i]->getAllCoordinates(centres, color, etage+1, profondeur);
+			else if(children[i]->cubeType > 0){
+				color.push_back(children[i]->cubeType);
+				centres.push_back(float(2)*children[i]->coo);
 			}
 		}
 	}
@@ -55,7 +51,6 @@ void Octree::genAllCoordinates(float taille, int etage, const int profondeur){
 			children[i]->coo[0] = coo[0] + (((i&1)*2)-1)*taille;
 			children[i]->coo[1] = coo[1] + ((((i&(1<<1))>>1)*2)-1)*taille;
 			children[i]->coo[2] = coo[2] + ((((i&(1<<2))>>2)*2)-1)*taille;
-			//std::cout << "cubes " << children[i]->coo.x << " " << children[i]->coo.y << " " << children[i]->coo.z << std::endl;
 			if(etage < profondeur)
 				children[i]->genAllCoordinates(taille, etage+1, profondeur);
 		}
@@ -100,7 +95,6 @@ void Octree::setCubeType(glm::vec3 pos, char type, int etage, const int profonde
 	children[index]->coo[1] = coo[1] + ((top*2)-1)*taille;
 	children[index]->coo[2] = coo[2] + ((far*2)-1)*taille;
 	taille *= 0.5;
-	//std::cout << "coo : " << " " << children[index]->coo[0] << " " << children[index]->coo[1] << " " << children[index]->coo[2] << std::endl;
 
 	if(etage < profondeur){
 		children[index]->setCubeType(pos, type, etage+1, profondeur, taille, root);
@@ -108,7 +102,7 @@ void Octree::setCubeType(glm::vec3 pos, char type, int etage, const int profonde
 	else{
 		children[index]->insert(type);
 		if(type == 0){
-			checkCubes(profondeur, root);
+			root.checkCubes(profondeur, taille, root);
 		}
 	}
 }
@@ -142,30 +136,30 @@ void Octree::lighten(int etage, const int profondeur, Octree &root){
 				if(result != 0){
 					int tmp = (int)children[i]->cubeType;
 					tmp = -tmp;
-					children[i]->insert((char)tmp);	
+					children[i]->insert((char)tmp);
 				}
 			}
 		}
 	}
 }
 
-void Octree::checkCubes(const int profondeur, Octree &root){
+void Octree::checkCubes(const int profondeur, float taille, Octree &root){
 
 	char result = 1;
 	for(int j = 1; j < 5; ++j){
 		if(j == 3) j++;
 		glm::vec3 pos = glm::vec3(coo.x + (j&1), coo.y + ((j>>1)&1), coo.z + ((j>>2)&1));
-		root.getCubeType(result, coo, 0, profondeur);
-		if(result > 0){
-			insert(1);	
+		root.getCubeType(result, pos, 0, profondeur);
+		if(result < 0){
+			root.setCubeType(pos*glm::vec3(.5,.5,.5),1,0, profondeur, taille, root);
 		}
 	}
 	for(int j = 1; j < 5; ++j){
 		if(j == 3) j++;
 		glm::vec3 pos = glm::vec3(coo.x - (j&1), coo.y - ((j>>1)&1), coo.z - ((j>>2)&1));
-		root.getCubeType(result, coo, 0, profondeur);
-		if(result > 0){
-			insert(1);	
+		root.getCubeType(result, pos, 0, profondeur);
+		if(result < 0){
+			root.setCubeType(pos*glm::vec3(.5,.5,.5),1,0, profondeur, taille, root);	
 		}
 	}
 }

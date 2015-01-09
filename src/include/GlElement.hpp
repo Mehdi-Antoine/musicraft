@@ -40,6 +40,10 @@ public:
 			  ShaderProgram          shader_program,
 			  GLenum                 draw_mode);
 
+	GlElement(GLenum                 draw_mode);
+
+	GlElement(const GlElement &gl_element);
+
 	~GlElement();
 
 //--------------------------------------------------------------------------------------------------------------
@@ -53,6 +57,16 @@ public:
 //--------------------------------------------------------------------------------------------------------------
 
 	ShaderProgram getShaderProgram() const;
+
+	int getVertexNumber() const;
+
+	GLenum getDrawMode() const;
+
+	GLuint getVao() const;
+
+	GLuint getColorVbo() const;
+
+	GLuint getPositionVbo() const;
 
 //--------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------FUNCTIONS----------------------------------------------------

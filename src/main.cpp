@@ -138,41 +138,22 @@ int main(int argc, char** argv){
 
     std::cout << "OK." << std::endl << std::endl;
 
-
-//-----------------------------------CHUNKS CREATION------------------------------------------------
-
-    std::vector<glm::vec3> cube_color;
-    std::vector<glm::vec3> cube_position;
-
-
-    Chunk chunk_norris = Chunk(1245, glm::vec3(0,0,0));
-    glm::vec3 pos = glm::vec3(0,-5,0);
-    chunk_norris.setCubeType(pos, 1);
-    chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur), 0, chunk_norris.profondeur);
-
-    cube_position = chunk_norris.getAllCoordinates();
-
-    std::cout << "Count unlightened: " << cube_position.size()<< std::endl;
-
-    chunk_norris.lighten();
-
-    cube_position = chunk_norris.getAllCoordinates();
-    std::cout << "Count lightened: " << cube_position.size()<< std::endl;
-
-    for(unsigned int i = 0; i < cube_position.size(); ++i){
-        cube_color.push_back(glm::vec3(1,1,1));
-    }
-
     glEnable(GL_DEPTH_TEST);
 
+//------------------------------CREATION CHUNK / GL_CHUNK-------------------------------------------
+    
+    //std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
+
+    // std::vector<GlElement*> gl_chunks;
+
+    // //CHUNK0
+    // Chunk chunk0 = World::createFlatChunk(BASIC1, glm::vec3(0,0,0));
+
+    // world.addChunk(chunk0);  
+
+    GlElement ground(GL_POINTS);
 
 
-//-----------------------------------WORLD CREATION-------------------------------------------------
-
-    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
-    World world(window);
-
-    world.addChunk(chunk_norris);
 
 //-----------------------------------CIBE CREATION--------------------------------------------------
 
@@ -202,11 +183,6 @@ int main(int argc, char** argv){
 
     GlElement cible(cible_position, cible_color, SQUARE , GL_LINES);
 
-//-----------------------------CHARGEMENT DU VBO ET DU VAO------------------------------------------
-
-    std::cout << "CHARGEMENT VBO/VAO DU SOL..." << std::endl;
-    GlElement ground(cube_position, cube_color, SQUARE, GL_POINTS); //On charge ce vector dans un vbo
-    std::cout << "OK." << std::endl << std::endl;
 
 //--------------------------------------------------------------------------------------------------
 //---------------------------------CONSTRUCTION PLAYER----------------------------------------------
@@ -222,6 +198,18 @@ int main(int argc, char** argv){
     EventHandler eventhandler(inputmanager, playermanager);
     std::cout << "position body: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getPosition().z << std::endl;
     std::cout << "position camera: " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().x << " " <<  eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().y << " " << eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition().z << std::endl;
+
+//-----------------------------------WORLD CREATION-------------------------------------------------
+
+    Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
+    World world(window);
+
+    std::vector<glm::vec3> cube_color;
+    std::vector<glm::vec3> cube_position;
+    glm::vec3 pl = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
+    world.createMap(pl);
+    world.updateMap(pl);
+    world.createCoordinates(cube_position, cube_color);
 
 //-----------------------------------------------------------------------------------------------------
 //----------------------------------APPLICATION LOOP---------------------------------------------------
@@ -259,27 +247,51 @@ int main(int argc, char** argv){
         global_vec4.updateCameraFrontVector(front_vector);
 
 
-        //std::cout << front_vector << std::endl;
 
-//------------------------------------UPDATE VBO-------------------------------------------------------
+//----------------------------------UPDATE VBO----------------------------------------------------
 
         cube_position.clear();
         cube_color.clear();
-        //world.getChunk(0).lighten();
-        cube_position = world.getChunk(0).getAllCoordinates();
+
+        pl = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
+        world.updateMap(pl);
+        world.createCoordinates(cube_position, cube_color);
         ground.update(cube_position, cube_color);
+
+
+        /*cube_position2.clear();
+        cube_color2.clear();
+        world.getChunk(1).lighten();
+
+        cube_position2 = world.getChunk(1).getAllCoordinates();
+        ground2.update(cube_position2, cube_color2);*/
+
+
+//------------------------------------UPDATE VBO-------------------------------------------------------
+
+
+        // std::cout << "chunk : " << world.getChunkCoord(camera_position) << std::endl;
+        // std::cout << "player in world: " << camera_position << std::endl;
+        // std::cout << "player in chunk: " << world.getLocalPosition(camera_position) << std::endl;
+
+
+        //world.updateGlChunks(gl_chunks);
+        //for(int i = 0; i<gl_chunks.size(); ++i){
+        //world.updateGlElement(gl_chunks[0], 0);
+        //}
+
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
         
         glActiveTexture(GL_TEXTURE0);
         texture_tron.bind();
-
         glActiveTexture(GL_TEXTURE1);
         texture_grille.bind();
 
-
         cube_shader.useShader();
         ground.draw();
+        //ground2.draw();
+        //world.drawWorld(gl_chunks);
 
         flat_shader.useShader();
         cible.draw();
@@ -301,12 +313,12 @@ int main(int argc, char** argv){
 
             float res = ellapsedTime / nbFrames;
 
-           if(res > 0.04){
+            if(res > 0.04){
                 std::cout << "Warning ! : ";
             }
 
-            std::cout << res << " sec" << std::endl;
-            std::cout << 1 / res << " fps" << std::endl<< std::endl;
+            //std::cout << res << " sec" << std::endl;
+            //std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
             nbFrames = 0;
 
