@@ -7,6 +7,13 @@
 
 using namespace glimac;
 
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+//----------------------------------------------CLASS GL SHADER-------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+
+
 GlShader::GlShader(FilePath dir_path, const std::string & file){
 	m_dir_path = dir_path;
 	m_file = file;
@@ -30,7 +37,7 @@ GlShader::~GlShader(){
 }
 
 void GlShader::attachTexture(const char* uniform_name, int binding) const{
-	useShader();
+	GlShader::useShader();
     GLint uTexture = glGetUniformLocation(getProgramId(), uniform_name);
     glUniform1i(uTexture, binding);
 }
@@ -44,20 +51,46 @@ GLuint GlShader::getProgramId() const{
 	return m_program.getGLId();
 }
 
-void GlShader::linkUniform(UniformType uniform_type, const char* uniform_name){
-	if(uniform_type == VEC3){
-		GlUniformVec3 uniform(getProgramId(), uniform_name);
-		m_uniforms.push_back(&uniform);
-	}
-	else if(uniform_type == MAT4){
-		GlUniformMat4 uniform(getProgramId(), uniform_name);
-		m_uniforms.push_back(&uniform);
-	}
-	else if(uniform_type == FLOAT){
-		GlUniformFloat uniform(getProgramId(), uniform_name);
-		m_uniforms.push_back(&uniform);
-	}
 
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------CLASS GL SHADER 2D------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+
+
+GlShader2D::GlShader2D(FilePath dir_path, const std::string & file){
+
+	m_dir_path = dir_path;
+	m_file = file;
+
+	m_program = loadProgram(m_dir_path+"shaders/"+m_file+"/shader.vs.glsl",
+							m_dir_path+"shaders/"+m_file+"/shader.fs.glsl");
 
 }
 
+GlShader2D::GlShader2D(const GlShader2D & shader){
+	m_dir_path = shader.m_dir_path;
+	m_file = shader.m_file;
+	m_program = loadProgram(m_dir_path+"shaders/"+m_file+"/shader.vs.glsl",
+							m_dir_path+"shaders/"+m_file+"/shader.fs.glsl");
+}
+
+
+GlShader2D::~GlShader2D(){
+}
+
+void GlShader2D::attachTexture(const char* uniform_name, int binding) const{
+	GlShader2D::useShader();
+    GLint uTexture = glGetUniformLocation(getProgramId(), uniform_name);
+    glUniform1i(uTexture, binding);
+}
+
+
+void GlShader2D::useShader() const{
+	m_program.use();
+}
+
+GLuint GlShader2D::getProgramId() const{
+	return m_program.getGLId();
+}

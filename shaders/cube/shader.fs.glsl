@@ -66,8 +66,8 @@ vec3 blinnPhongDirectionnal(vec3 position){
 
 void main() {
 
-    fFragColor += max(blinnPhongDirectionnal(light_position), 0);       //Lumière directionnelle
-    fFragColor += 0.1 * texture(texture0, g_TexCoords).rgb;             //Ambiance globale	
-    fFragColor += max(blinnPhongPoint(2 * camera_position, 100), 0);    //Lumière Point
+    fFragColor += max(blinnPhongDirectionnal(light_position), 0);      //Lumière directionnelle
+    fFragColor += 0.1 * texture(texture0, g_TexCoords).rgb;            //Ambiance globale	
+    fFragColor += max(blinnPhongPoint(2 * camera_position, 100), 0);   //Lumière Point
     
 }
