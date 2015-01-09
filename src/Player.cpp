@@ -212,7 +212,7 @@ void Player::pickCube(World &world){
 
 }
 
- 
+
 void Player::addCube(World &world){
 
 	glm::vec3 target;
@@ -221,28 +221,63 @@ void Player::addCube(World &world){
 
 	int i = foundCube(world, target, type);
 
-	if(foundVoid(world, target)){
-		std::cout << " OUI"<< std::endl;
-		target = Chunk::getPositionIndexed(target);
-		if(world.getCubeType(target + glm::vec3(1,0,0)) != EMPTY
-			|| world.getCubeType(target + glm::vec3(-1,0,0)) != EMPTY
-			|| world.getCubeType(target + glm::vec3(0,1,0)) != EMPTY
-			|| world.getCubeType(target + glm::vec3(0,-1,0)) != EMPTY
-			|| world.getCubeType(target + glm::vec3(0,0,1)) != EMPTY
-			|| world.getCubeType(target + glm::vec3(0,0,-1)) != EMPTY){
+	if(i != -1){
+
+		do{
+			target *=0.95;
+
+			if(world.getCubeType(target) == EMPTY){
+				found_void = true;
+			}
+
+		}while(found_void == false);
+
+		if(found_void == true){
+
 			if(m_inventory.removeCurrentCube(type)){
 				world.setCubeType(target, type);
 				std::cout << " ADDED"<< std::endl;
 			}
+
 		}
 		
 
-		
-		
+
 	}
 	
 
 }
+
+// void Player::addCube(World &world){
+
+// 	glm::vec3 target;
+// 	char type;
+// 	bool found_void = false;
+
+// 	int i = foundCube(world, target, type);
+
+// 	if(foundVoid(world, target)){
+// 		std::cout << " OUI"<< std::endl;
+// 		target = Chunk::getPositionIndexed(target);
+// 		if(world.getCubeType(target + glm::vec3(1,0,0)) != EMPTY
+// 			|| world.getCubeType(target + glm::vec3(-1,0,0)) != EMPTY
+// 			|| world.getCubeType(target + glm::vec3(0,1,0)) != EMPTY
+// 			|| world.getCubeType(target + glm::vec3(0,-1,0)) != EMPTY
+// 			|| world.getCubeType(target + glm::vec3(0,0,1)) != EMPTY
+// 			|| world.getCubeType(target + glm::vec3(0,0,-1)) != EMPTY){
+// 			if(m_inventory.removeCurrentCube(type)){
+// 				world.setCubeType(target, type);
+// 				std::cout << " ADDED"<< std::endl;
+// 			}
+// 		}
+		
+
+		
+		
+// 	}
+	
+
+// }
 
 void Player::catchCube(char cube){
 	m_inventory.addCube(cube);
