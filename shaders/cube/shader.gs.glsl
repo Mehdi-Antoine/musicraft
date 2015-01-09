@@ -29,26 +29,6 @@ out vec3 g_cube_position;
 
 const float f = 1f;
 
-const int elements[] = int[]
-(
-    0,2,1,
-    2,3,1,
-
-    1,3,5,
-    3,7,5,
-
-    5,7,4,
-    7,6,4,
-
-    4,6,0,
-    6,2,0,
-
-    3,2,7,
-    2,6,7,
-
-    5,4,1,
-    4,0,1
-);
 
 void main()
 {   
@@ -60,6 +40,28 @@ void main()
     float dot_product = dot(vector_a, vector_b);
 
     if(dot_product > 0.62){
+
+        const int elements[] = int[]
+        (
+            0,2,1,
+            2,3,1,
+
+            1,3,5,
+            3,7,5,
+
+            5,7,4,
+            7,6,4,
+
+            4,6,0,
+            6,2,0,
+
+            3,2,7,
+            2,6,7,
+
+            5,4,1,
+            4,0,1
+        );
+
 
         vec4 vertices[] = vec4[]
         (
