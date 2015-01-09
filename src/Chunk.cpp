@@ -61,7 +61,7 @@ void Chunk::genFullCube(Octree &subTree, int etage){
 void Chunk::genTerrain(Octree &subTree, int etage, float taille, int seed){
 	double persistence = 0.9;
 	double frequency = .2;
-	double amplitude = 20;
+	double amplitude = 50;
 	int octaves = 1;
 	int randomseed = seed;
 	PerlinNoise noise = PerlinNoise(persistence, frequency, amplitude, octaves, randomseed);

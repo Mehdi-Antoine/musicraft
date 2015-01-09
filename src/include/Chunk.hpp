@@ -6,7 +6,7 @@
 #include "Octree.hpp"
 #include "PerlinNoise.hpp"
 
-#define SIZE 32
+#define SIZE 64
 
 enum CubeType{ 
   EMPTY = 0,
@@ -21,7 +21,7 @@ enum CubeType{
 class Chunk{
 	public:
 		Octree root;
-		const int profondeur = 5;
+		const int profondeur = 6;
 		float taille = pow(2, profondeur-1);
 
 		Chunk();
