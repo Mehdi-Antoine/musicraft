@@ -64,6 +64,26 @@ void InputManager::updateInput() {
                 m_key[SDLK_F3] = true;
                 break;
 
+            case SDLK_F4:
+                m_key[SDLK_F4] = true;
+                break;
+
+            case SDLK_KP1:
+                m_key[SDLK_KP1] = true;
+                break;
+
+            case SDLK_KP2:
+                m_key[SDLK_KP2] = true;
+                break;
+
+            case SDLK_KP3:
+                m_key[SDLK_KP3] = true;
+                break;
+
+            case SDLK_KP4:
+                m_key[SDLK_KP4] = true;
+                break;
+
             case SDLK_ESCAPE:
                 m_quit = true;
                 break;
@@ -120,6 +140,26 @@ void InputManager::updateInput() {
 
             case SDLK_F3:
                 m_key[SDLK_F3] = false;
+                break;
+
+            case SDLK_F4:
+                m_key[SDLK_F4] = false;
+                break;
+
+            case SDLK_KP1:
+                m_key[SDLK_KP1] = false;
+                break;
+
+            case SDLK_KP2:
+                m_key[SDLK_KP2] = false;
+                break;
+
+            case SDLK_KP3:
+                m_key[SDLK_KP3] = false;
+                break;
+
+            case SDLK_KP4:
+                m_key[SDLK_KP4] = false;
                 break;
 
             default:

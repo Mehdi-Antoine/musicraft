@@ -148,18 +148,20 @@ int main(int argc, char** argv){
 
     chunk_norris.root.genAllCoordinates(pow(2,(float)chunk_norris.profondeur), 0, chunk_norris.profondeur);
 
-    cube_position = chunk_norris.getAllCoordinates();
-
-    std::cout << "Count unlightened: " << cube_position.size()<< std::endl;
 
     chunk_norris.lighten();
-
+/*
     cube_position = chunk_norris.getAllCoordinates();
     std::cout << "Count lightened: " << cube_position.size()<< std::endl;
 
+    srand(0);
+
+
     for(unsigned int i = 0; i < cube_position.size(); ++i){
-        cube_color.push_back(glm::vec3(1,1,1));
-    }
+        int cube_type_rand = rand()%(4-1) +1;
+        glm::vec3 vec_cube_color = Chunk::getColorFromType(cube_type_rand);
+        cube_color.push_back(vec_cube_color);
+    }*/
 
     glEnable(GL_DEPTH_TEST);
 
@@ -171,6 +173,8 @@ int main(int argc, char** argv){
     World world(window);
 
     world.addChunk(chunk_norris);
+
+    world.createCoordinates(cube_position, cube_color);
 
 //-----------------------------------CIBE CREATION--------------------------------------------------
 
@@ -264,7 +268,8 @@ int main(int argc, char** argv){
         cube_position.clear();
         cube_color.clear();
         //world.getChunk(0).lighten();
-        cube_position = world.getChunk(0).getAllCoordinates();
+        //cube_position = world.getChunk(0).getAllCoordinates();
+        world.createCoordinates(cube_position, cube_color);
         ground.update(cube_position, cube_color);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------

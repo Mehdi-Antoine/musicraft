@@ -39,6 +39,10 @@ int Inventory::getCurrentIndex() const{
 	return m_current_index;
 }
 
+void Inventory::setCurrentIndex(int index){
+	m_current_index = index;
+}
+
 void Inventory::nextIndex(){
 	if(m_current_index == -1 || m_current_index < m_nb_list.size()-1){
 		m_current_index++;

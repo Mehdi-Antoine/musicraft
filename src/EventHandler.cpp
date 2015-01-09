@@ -86,6 +86,21 @@ void EventHandler::updatePlayer(World &world){
         m_input.setMouseWheelFalse(1);
     }
 
+    if(m_input.getKey(SDLK_KP1) == true) {
+        m_player_manager.getPlayer().getInventory().setCurrentIndex(0);        
+    }
+    if(m_input.getKey(SDLK_KP2) == true) {
+        m_player_manager.getPlayer().getInventory().setCurrentIndex(1);        
+    }
+    if(m_input.getKey(SDLK_KP3) == true) {
+        m_player_manager.getPlayer().getInventory().setCurrentIndex(2);        
+    }
+    if(m_input.getKey(SDLK_KP4) == true) {
+        m_player_manager.getPlayer().getInventory().setCurrentIndex(3);        
+    }
+
+
+
     //mousemotion orientation camera
     int click = 0;
     if(m_input.getMouse(1) == true){

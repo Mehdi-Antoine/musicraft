@@ -97,11 +97,23 @@ void Chunk::setCubeType(const glm::vec3 &pos, char type){
 	int etage = 0;
 	root.setCubeType(pos, type, etage, profondeur, taille, root);
 }
-
+/*
 std::vector<glm::vec3> Chunk::getAllCoordinates(){
 	std::vector<glm::vec3> result;
 	root.getAllCoordinates(result, 0, profondeur);
 	return result;
+}*/
+
+void Chunk::getAllCoordinates(std::vector<glm::vec3> &centres, std::vector<glm::vec3> &color){
+	std::vector<char> typeCube;
+	root.getAllCoordinates(centres, typeCube, 0, profondeur);
+	for(int i = 0; i < typeCube.size(); ++i){
+	color.push_back(Chunk::getColorFromType(typeCube[i]));
+	}
+}
+
+void Chunk::genAllCoordinates(){
+	root.genAllCoordinates(taille, 0, profondeur);
 }
 
 void Chunk::lighten(){

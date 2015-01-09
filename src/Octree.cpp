@@ -28,7 +28,7 @@ void Octree::insert(Octree &tree){
 glm::vec3 Octree::getCoordinates(){
 	return coo;
 }
-
+/*
 void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const int profondeur){
 	for(int i = 0; i < 8; ++i){
 		if(children[i] != NULL){
@@ -41,6 +41,19 @@ void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, int etage, const
 					//std::cout << children[i]->coo[0] << " " << children[i]->coo[1] << " " << children[i]->coo[2] << std::endl;
 					centres.push_back(float(2)*children[i]->coo);
 				}
+			}
+		}
+	}
+}*/
+
+void Octree::getAllCoordinates(std::vector<glm::vec3> &centres, std::vector<char> &color, int etage, const int profondeur){
+	for(int i = 0; i < 8; ++i){
+		if(children[i] != NULL){
+			if(etage < profondeur)
+				children[i]->getAllCoordinates(centres, color, etage+1, profondeur);
+			else if(children[i]->cubeType > 0){
+				color.push_back(children[i]->cubeType);
+				centres.push_back(float(2)*children[i]->coo);
 			}
 		}
 	}

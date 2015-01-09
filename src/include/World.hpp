@@ -48,6 +48,7 @@ public:
 
 	void addChunk(Chunk &chunk);
 
-	
+	void createCoordinates(std::vector<glm::vec3> &cubePosition, std::vector<glm::vec3> &cubeColor);
+
 	
 };

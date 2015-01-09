@@ -77,3 +77,9 @@ void World::addChunk(Chunk &chunk){
 	m_chunks.push_back(chunk);
 }
 
+
+void World::createCoordinates(std::vector<glm::vec3> &cubePosition, std::vector<glm::vec3> &cubeColor){
+
+	m_chunks[0].getAllCoordinates(cubePosition, cubeColor);
+
+}

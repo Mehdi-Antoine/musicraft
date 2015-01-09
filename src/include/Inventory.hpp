@@ -17,6 +17,7 @@ public:
 	bool isEmpty() const;
 	int getNumberCubes() const;
 	int getCurrentIndex() const;
+	void setCurrentIndex(int index);
 	void nextIndex();
 	void prevIndex();
 

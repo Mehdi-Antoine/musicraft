@@ -21,7 +21,7 @@ enum CubeType{
 class Chunk{
 	public:
 		Octree root;
-		int profondeur = 4;
+		const int profondeur = 5;
 		float taille = pow(2, profondeur-1);
 
 		Chunk();
@@ -34,7 +34,10 @@ class Chunk{
 		void genTerrain(Octree &subTree, int etage, float taille, int seed);
 		void fillTerrain(Octree &subTree, int etage, float taille, int x, int z, int y);
 		void culling(std::vector<float> centres, Octree &subTree, int etage, float taille);
-		std::vector<glm::vec3> getAllCoordinates();
+		//std::vector<glm::vec3> getAllCoordinates();
+		void getAllCoordinates(std::vector<glm::vec3> &centres, std::vector<glm::vec3> &color);
+		void genAllCoordinates();
+
 		void lighten();
 
 
