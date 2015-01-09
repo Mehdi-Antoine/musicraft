@@ -230,7 +230,7 @@ void Player::addCube(World &world){
 				found_void = true;
 			}
 
-		}while(found_void == false);
+		}while(found_void == false && glm::length(target) > 0.1);
 
 		if(found_void == true){
 
