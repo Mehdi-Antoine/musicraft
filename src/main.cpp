@@ -286,10 +286,27 @@ int main(int argc, char** argv){
 
         cube_shader.useShader();
 
-        for(int i = 0; i < World::tab_size; ++i){
-            ground.update(world.m_cubes_position[i], world.m_cubes_color[i]);
-            ground.draw();
+        glm::vec3 vector_a;
+        glm::vec3 vector_b = front_vector;
+
+        for (int i = 0; i < World::tab_size; ++i)
+        {
+            vector_a = glm::normalize(world.getChunkCoordFromIndex(i) - camera_position);
+            float dot_product = glm::dot(vector_a, vector_b);
+            float dist = glm::distance(camera_position, world.getChunkCoordFromIndex(i));
+
+            if(dot_product > 0.62 || dist < SIZE*2){
+                ground.update(world.m_cubes_position[i], world.m_cubes_color[i]);
+                ground.draw();
+            }
         }
+
+        // for(int i = 0; i < World::tab_size; ++i){
+
+
+        //     ground.update(world.m_cubes_position[i], world.m_cubes_color[i]);
+        //     ground.draw();
+        // }
         
 
         glActiveTexture(GL_TEXTURE0);

@@ -189,6 +189,10 @@ int World::findChunkIndex(const glm::vec3 &position) const{
 
 }
 
+glm::vec3 World::getChunkCoordFromIndex(int index){
+	return m_chunks[index].root.coo;
+}
+
 glm::vec3 World::getChunkCoord(const glm::vec3 &position){
 
 	//trouve les coordonnées du chunk correspondant 
