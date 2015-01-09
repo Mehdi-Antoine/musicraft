@@ -7,9 +7,9 @@
 //  
 
 Inventory::Inventory()
-	: m_max_size(100),m_current_index(-1)
+	: m_max_size(100),m_current_index(0)
 {
-	for(int i=0; i < 5;i++){
+	for(int i=0; i < 10;i++){
 		this->addCube(1);
 		this->addCube(2);
 	}

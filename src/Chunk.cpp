@@ -67,12 +67,14 @@ void Chunk::genTerrain(Octree &subTree, int etage, float taille, int seed){
 	PerlinNoise noise = PerlinNoise(persistence, frequency, amplitude, octaves, randomseed);
 	
 	for(int x = -taille; x < taille; ++x){
+		srand(time(NULL));
 		for(int z = -taille; z < taille; ++z){
 			int height = (int)noise.GetHeight(x, z) - taille;
 			if (height > taille)
 				height = taille;
 			if(height < -taille)
 				height = -taille;
+
 			for(int y = -taille; y <= height ; ++y){
 				glm::vec3 pos = glm::vec3(x, y, z);
 				setCubeType(pos, 1);
@@ -80,6 +82,8 @@ void Chunk::genTerrain(Octree &subTree, int etage, float taille, int seed){
 		}
 	}
 }
+
+
 
 char Chunk::getCubeType(const glm::vec3 &pos) const{
 	int etage = 0;
