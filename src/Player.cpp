@@ -233,15 +233,12 @@ void Player::addCube(World &world){
 		}while(found_void == false && glm::length(target) > 0.1);
 
 		if(found_void == true){
-
 			if(m_inventory.removeCurrentCube(type)){
 				world.setCubeType(target, type);
 				std::cout << " ADDED"<< std::endl;
 			}
 
 		}
-		
-
 
 	}
 	
