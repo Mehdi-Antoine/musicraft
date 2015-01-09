@@ -212,12 +212,10 @@ int main(int argc, char** argv){
     Window window(WINDOW_WIDTH,WINDOW_HEIGHT);
     World world(window);
 
-    std::vector<glm::vec3> cube_color;
-    std::vector<glm::vec3> cube_position;
     glm::vec3 pl = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
     world.createMap(pl);
     world.updateMap(pl);
-    world.createCoordinates(cube_position, cube_color);
+    //world.createCoordinates(world.m_cube_position, world.m_cube_color);
 
 //-----------------------------------------------------------------------------------------------------
 //----------------------------------APPLICATION LOOP---------------------------------------------------
@@ -260,20 +258,10 @@ int main(int argc, char** argv){
 
 
 //----------------------------------UPDATE VBO----------------------------------------------------
-        cube_position.clear();
-        cube_color.clear();
-
         pl = eventhandler.getPlayerManager().getPlayer().getBody().getCamera().getPosition();
         world.updateMap(pl);
-        world.createCoordinates(cube_position, cube_color);
-        ground.update(cube_position, cube_color);
-
-        /*cube_position2.clear();
-        cube_color2.clear();
-        world.getChunk(1).lighten();
-
-        cube_position2 = world.getChunk(1).getAllCoordinates();
-        ground2.update(cube_position2, cube_color2);*/
+        
+        
 
 
 //------------------------------------UPDATE VBO-------------------------------------------------------
@@ -297,9 +285,12 @@ int main(int argc, char** argv){
         texture_grille.bind();
 
         cube_shader.useShader();
-        ground.draw();
-        //ground2.draw();
-        //world.drawWorld(gl_chunks);
+
+        for(int i = 0; i < World::tab_size; ++i){
+            ground.update(world.m_cubes_position[i], world.m_cubes_color[i]);
+            ground.draw();
+        }
+        
 
         glActiveTexture(GL_TEXTURE0);
         texture_tron.unbind();
@@ -322,8 +313,8 @@ int main(int argc, char** argv){
                 std::cout << "Warning ! : ";
             }
 
-            //std::cout << res << " sec" << std::endl;
-            //std::cout << 1 / res << " fps" << std::endl<< std::endl;
+            std::cout << res << " sec" << std::endl;
+            std::cout << 1 / res << " fps" << std::endl<< std::endl;
 
             nbFrames = 0;
 

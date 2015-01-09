@@ -19,6 +19,10 @@ private:
 
 public:
 
+	static const int tab_size = 729;
+	std::vector<glm::vec3> m_cubes_color[tab_size];
+    std::vector<glm::vec3> m_cubes_position[tab_size];
+
 //--------------------------------------------------------------------------------------------------------------
 //------------------------------------------------CONSTRUCTOR---------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
@@ -58,8 +62,8 @@ public:
 	void addChunk(Chunk &chunk);
 	void addChunk(glm::vec3 pos);
 	void createMap(glm::vec3 &player);
-	void createCoordinates(std::vector<glm::vec3> &cubePosition, std::vector<glm::vec3> &cubeColor);
-	void updateMap(glm::vec3 &player);
+	//void createCoordinates(std::vector<glm::vec3> &cubePosition, std::vector<glm::vec3> &cubeColor);
+	int updateMap(glm::vec3 &player);
 
 	static glm::vec3 getChunkCoord(const glm::vec3 &position);
 

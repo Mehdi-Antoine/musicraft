@@ -77,7 +77,12 @@ int World::getChunkVectorSize(){
 
 void World::setCubeType(const glm::vec3 &position, char cube_type){
 	glm::vec3 pos = position*glm::vec3(.5,.5,.5);
-	m_chunks[0].setCubeType(position, cube_type);
+	m_chunks[m_current_index].setCubeType(position, cube_type);
+	std::vector<glm::vec3> cube_position;
+	std::vector<glm::vec3> cube_color;
+	m_chunks[m_current_index].getAllCoordinates(cube_position, cube_color);
+	m_cubes_position[m_current_index] = cube_position;
+	m_cubes_color[m_current_index] = cube_color;
 }
 /*
 void World::setCubeType(float x, float y, float z, char cube_type){
@@ -94,59 +99,49 @@ void World::addChunk(Chunk &chunk){
 
 void World::addChunk(glm::vec3 pos){
 	Chunk c = Chunk(m_noise, pos);
-	std::cout << pos << std::endl;
 	c.lighten();
 	m_chunks.push_back(c);
+	std::vector<glm::vec3> cube_position;
+	std::vector<glm::vec3> cube_color;
+	c.getAllCoordinates(cube_position, cube_color);
+	m_cubes_position[findChunkIndex(c.root.coo)] = cube_position;
+	m_cubes_color[findChunkIndex(c.root.coo)] = cube_color;
 }
 
 void World::createMap(glm::vec3 &player){
 	glm::vec3 pos = getChunkCoord(player);
-	//std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
-	addChunk(glm::vec3(pos.x, pos.y, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x, pos.y, pos.z - SIZE));
-	addChunk(pos);
-	addChunk(glm::vec3(pos.x + SIZE, pos.y, pos.z));
-	addChunk(glm::vec3(pos.x + SIZE, pos.y, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x + SIZE, pos.y, pos.z - SIZE));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y, pos.z));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y, pos.z - SIZE));
-
-	addChunk(glm::vec3(pos.x, pos.y - SIZE, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x, pos.y - SIZE, pos.z - SIZE));
-	addChunk(glm::vec3(pos.x, pos.y - SIZE, pos.z));
-	addChunk(glm::vec3(pos.x + SIZE, pos.y - SIZE, pos.z));
-	addChunk(glm::vec3(pos.x + SIZE, pos.y - SIZE, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x + SIZE, pos.y - SIZE, pos.z - SIZE));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y - SIZE, pos.z));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y - SIZE, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y - SIZE, pos.z - SIZE));
-
-	addChunk(glm::vec3(pos.x, pos.y + SIZE, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x, pos.y + SIZE, pos.z - SIZE));
-	addChunk(glm::vec3(pos.x, pos.y + SIZE, pos.z));
-	addChunk(glm::vec3(pos.x + SIZE, pos.y + SIZE, pos.z));
-	addChunk(glm::vec3(pos.x + SIZE, pos.y + SIZE, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x + SIZE, pos.y + SIZE, pos.z - SIZE));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y + SIZE, pos.z));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y + SIZE, pos.z + SIZE));
-	addChunk(glm::vec3(pos.x - SIZE, pos.y + SIZE, pos.z - SIZE));
-}
-
-void World::createCoordinates(std::vector<glm::vec3> &cubePosition, std::vector<glm::vec3> &cubeColor){
-	for(int i = 0; i < m_chunks.size(); ++i){
-		m_chunks[i].getAllCoordinates(cubePosition, cubeColor);
+	glm::vec3 posi;
+	for(int x = -4; x < 5; ++x){
+		for(int y = -4; y < 5; ++y){
+			for(int z = -4; z < 5; ++z){
+				posi = glm::vec3(pos.x + x*SIZE, pos.y + y*SIZE, pos.z + z*SIZE);
+				//if(findChunkIndex(posi) != -1)
+					addChunk(posi);
+			}
+		}
 	}
 }
 
-void World::updateMap(glm::vec3 &player){
+/*void World::createCoordinates(std::vector<glm::vec3> &cubePosition, std::vector<glm::vec3> &cubeColor){
+	for(int i = 0; i < m_chunks.size(); ++i){
+		std::vector<glm::vec3> cube_position;
+		std::vector<glm::vec3> cube_color;
+		m_chunks[i].getAllCoordinates(cubePosition, cubeColor);
+		m_cubes_position[findChunkIndex(m_chunks[i].root.coo)] = cube_position;
+		m_cubes_color[findChunkIndex(m_chunks[i].root.coo)] = cube_color;
+	}
+}*/
+
+int World::updateMap(glm::vec3 &player){
 	glm::vec3 pos = getChunkCoord(player);
 	int newIndex = findChunkIndex(pos);
 	if(newIndex != m_current_index){
 		m_current_index = newIndex;
 		m_chunks.clear();
 		createMap(pos);
+		return 1;
 	}
+	return 0;
 }
 
 
@@ -161,7 +156,8 @@ char World::getCubeType(const glm::vec3 &position) const{
 	//if(index >= 0){
 		//std::cout << "in chunk : " << index << std::endl;
 		glm::vec3 pos = position;
-		return m_chunks[m_current_index].getCubeType(position);
+		//std::cout << m_current_index << std::endl;
+		return m_chunks[m_current_index].getCubeType(pos);
 	/*}
 	else{
 		return -1;
