@@ -221,7 +221,11 @@ void Player::addCube(World &world){
 
 	int i = foundCube(world, target, type);
 
-	if(foundVoid(world, target)){
+
+
+
+
+	if(foundVoid(world, target) && i == -1){
 		std::cout << " OUI"<< std::endl;
 		target = Chunk::getPositionIndexed(target);
 		if(world.getCubeType(target + glm::vec3(1,0,0)) != EMPTY
@@ -229,16 +233,13 @@ void Player::addCube(World &world){
 			|| world.getCubeType(target + glm::vec3(0,1,0)) != EMPTY
 			|| world.getCubeType(target + glm::vec3(0,-1,0)) != EMPTY
 			|| world.getCubeType(target + glm::vec3(0,0,1)) != EMPTY
-			|| world.getCubeType(target + glm::vec3(0,0,-1)) != EMPTY){
+			|| world.getCubeType(target + glm::vec3(0,0,-1)) != EMPTY
+		){
 			if(m_inventory.removeCurrentCube(type)){
 				world.setCubeType(target, type);
 				std::cout << " ADDED"<< std::endl;
 			}
 		}
-		
-
-		
-		
 	}
 	
 

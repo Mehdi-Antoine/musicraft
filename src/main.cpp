@@ -267,9 +267,10 @@ int main(int argc, char** argv){
 
         cube_position.clear();
         cube_color.clear();
-        //world.getChunk(0).lighten();
+        
         //cube_position = world.getChunk(0).getAllCoordinates();
         world.createCoordinates(cube_position, cube_color);
+        //world.getChunk(0).lighten();
         ground.update(cube_position, cube_color);
 
 //---------------------------------------DRAW !!!!-----------------------------------------------------
