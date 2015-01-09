@@ -68,9 +68,14 @@ bool Player::getIsFlying() const{
 	return m_is_flying;
 }
 
+Inventory & Player::getInventory(){
+	return m_inventory;
+}
+
 //--------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------SETTERS----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
+
 
 void Player::setBody(Body body){
 	m_body = body;
@@ -134,11 +139,14 @@ glm::vec3 Player::getTarget(float scale){
 	return target;
 }
 
-int Player::foundCube(const World &world, glm::vec3 &target){
 
-	float scale = 0.5;
+int Player::foundCube(const World &world, glm::vec3 &target,char & type){
+
+	float scale = 0.01;
 	int i = 0;
 	bool found_cube = false;
+	float distance;
+	glm::vec3 camera_position = m_body.getCamera().getPosition();
 
 	do{
 
@@ -146,19 +154,18 @@ int Player::foundCube(const World &world, glm::vec3 &target){
 
 		target  = getTarget(scale);
 
-		//std::cout << "target length" << glm::length(getTarget(1)) << std::endl;
-
 		if(world.getCubeType(target) != EMPTY){
 			found_cube = true;
+			type = world.getCubeType(target);
 		}
 		
 		++i;
+		distance = dot(target - camera_position ,target - camera_position);
 
-	}while(found_cube == false && i < 4);
+	}while(found_cube == false && sqrt(distance) < 2);
 
 	if(found_cube){
-		std::cout << "CUBE AT COORD : " << target << std::endl;
-		//std::cout << "i : " << i << std::endl;
+		//std::cout << "CUBE AT COORD : " << target << std::endl;
 		return i;
 	}
 	
@@ -166,30 +173,25 @@ int Player::foundCube(const World &world, glm::vec3 &target){
 
 }
 
-void Player::foundPreviousVoid(const World &world, glm::vec3 &target){
-	float scale = 0.99;
-	int i = 0;
+bool Player::foundVoid(const World &world, glm::vec3 &target){
+	float scale = 1.0f;
 	bool found_void = false;
 
 	do{
 
-		scale -= 0.01;
-
-		target  *= scale;
-
-		if(world.getCubeType(target) == EMPTY){
+		if(world.getCubeType(target*scale) == EMPTY){
 			found_void = true;
+			target *= scale;
 		}
-		
-		++i;
 
-		std::cout << i << std::endl;
-
+		scale -= 0.01;
 	}while(found_void == false && scale > 0);
 
 	if(found_void){
 		std::cout << "VOID AT COORD : " << target << std::endl;
 	}
+
+	return found_void;
 	
 }
 
@@ -197,10 +199,13 @@ void Player::foundPreviousVoid(const World &world, glm::vec3 &target){
 void Player::pickCube(World &world){
 
 	glm::vec3 target;
+	char type;
 
-	if(foundCube(world, target) != -1){
+	if(foundCube(world, target, type) != -1){
 		std::cout << " PICKED"<< std::endl;
 		world.setCubeType(target, EMPTY);
+		catchCube(type);
+		std::cout << "Cube ajouté dans inventaire!"<< std::endl;
 	}
 
 }
@@ -209,17 +214,27 @@ void Player::pickCube(World &world){
 void Player::addCube(World &world){
 
 	glm::vec3 target;
+	char type;
+	bool found_void = false;
 
-	int i = foundCube(world, target);
+	int i = foundCube(world, target, type);
 
-	if(i != -1){
-		std::cout << " ADDED"<< std::endl;
-
-		foundPreviousVoid(world, target);
-
-		if(glm::length(target) > 3){
-			world.setCubeType(target, BASIC1);
+	if(foundVoid(world, target)){
+		std::cout << " OUI"<< std::endl;
+		target = Chunk::getPositionIndexed(target);
+		if(world.getCubeType(target + glm::vec3(1,0,0)) != EMPTY
+			|| world.getCubeType(target + glm::vec3(-1,0,0)) != EMPTY
+			|| world.getCubeType(target + glm::vec3(0,1,0)) != EMPTY
+			|| world.getCubeType(target + glm::vec3(0,-1,0)) != EMPTY
+			|| world.getCubeType(target + glm::vec3(0,0,1)) != EMPTY
+			|| world.getCubeType(target + glm::vec3(0,0,-1)) != EMPTY){
+			if(m_inventory.removeCurrentCube(type)){
+				world.setCubeType(target, type);
+				std::cout << " ADDED"<< std::endl;
+			}
 		}
+		
+
 		
 		
 	}
@@ -227,16 +242,12 @@ void Player::addCube(World &world){
 
 }
 
-bool Player::catchCube(int cube){
-	return this->m_inventory.addCube(cube);
+void Player::catchCube(char cube){
+	m_inventory.addCube(cube);
 }
 
-bool Player::dropCube(){
-	return this->m_inventory.removeCurrentCube();
-}
-
-bool Player::deleteCube(int cube){
-	return this->m_inventory.removeCube(cube);
+bool Player::dropCube(char & result){
+	return this->m_inventory.removeCurrentCube(result);
 }
  
 

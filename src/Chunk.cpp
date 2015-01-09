@@ -88,6 +88,7 @@ char Chunk::getCubeType(const glm::vec3 &pos) const{
 	return result;
 }
 
+
 void Chunk::setCubeType(const glm::vec3 &pos, char type){
 	int etage = 0;
 	root.setCubeType(pos, type, etage, profondeur, taille, root);
@@ -134,3 +135,45 @@ centres.push_back(coo);
 }
 }
 }*/
+
+//-------------------------------------------------FUNCTIONS----------------------------------------------------
+
+int Chunk::getIndex(float value){
+	return round(value);
+}
+
+glm::vec3 Chunk::getPositionIndexed(const glm::vec3 & pos){
+	return glm::vec3(Chunk::getIndex(pos.x),Chunk::getIndex(pos.y),Chunk::getIndex(pos.z));
+}
+
+glm::vec3 Chunk::getColorFromType(char cube_type){
+	switch (cube_type) {
+
+		case EMPTY:
+		  return glm::vec3(0,0,0);
+		  break;
+
+		case BASIC1:
+		  return glm::vec3(0.75,
+						   0.17,
+						   0.62);
+		  break;
+
+		case BASIC2:
+		  return glm::vec3(0.17,
+						   0.75,
+						   0.47);
+		  break;
+
+		case BASIC3:
+		  return glm::vec3(0.22,
+						   0.4,
+						   0.75);
+		  break;
+
+		default:
+		  return glm::vec3(1,1,1);
+		  break;
+	}
+}
+

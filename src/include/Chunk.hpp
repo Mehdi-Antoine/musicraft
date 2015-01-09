@@ -16,6 +16,8 @@ enum CubeType{
 };
 
 
+
+
 class Chunk{
 	public:
 		Octree root;
@@ -34,4 +36,11 @@ class Chunk{
 		void culling(std::vector<float> centres, Octree &subTree, int etage, float taille);
 		std::vector<glm::vec3> getAllCoordinates();
 		void lighten();
+
+
+			static int getIndex(float value);
+	static glm::vec3 getPositionIndexed(const glm::vec3 & pos);
+
+	static glm::vec3 getColorFromType(char type);
+
 };

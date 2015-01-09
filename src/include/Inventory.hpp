@@ -1,26 +1,31 @@
 #pragma once
+#include <map>
 #include <vector>
 
 class Inventory {
 private:
-	std::vector<int> m_list;
-	int m_current_cube;
+	std::map<char, int> m_list;
+	std::vector<char> m_type_list;
+	std::vector<int> m_nb_list;
+	int m_nb_max_items = 8;
+	int m_current_index;
 	int m_max_size;
 public:
 	Inventory();
 	~Inventory();
 
 	bool isEmpty() const;
-	int size() const;
-	int getCurrentCube();
-	void setCurrentCube(int cube);
+	int getNumberCubes() const;
+	int getCurrentIndex() const;
+	void nextIndex();
+	void prevIndex();
 
-	bool addCube(int cube);
+	void addCube(char cube);
 
-	bool removeCube(int cube);
-	bool removeCurrentCube();
+	bool removeCube(char &result,int index);
+	bool removeCurrentCube(char &result);
 
-
+	void show() const;
 
 
 	/* data */

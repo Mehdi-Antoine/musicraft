@@ -37,6 +37,7 @@ public:
   bool getIsRunning() const;
 
   bool getIsFlying() const;
+  Inventory& getInventory();
 
 //---------------------------------------------------SETTERS----------------------------------------------------
 
@@ -59,8 +60,8 @@ public:
   void moveLeft(int t);
 
   int foundCube(const World &world, glm::vec3 &target);
-
-  void foundPreviousVoid(const World &world, glm::vec3 &target);
+  int foundCube(const World &world, glm::vec3 &target, char &type);
+  bool foundVoid(const World &world, glm::vec3 &target);
 
   glm::vec3 getTarget(float scale);
 
@@ -68,9 +69,8 @@ public:
 
   void addCube(World &world);
 
-  bool catchCube(int cube);
-  bool dropCube();
-  bool deleteCube(int cube);
+  void catchCube(char cube);
+  bool dropCube(char & result);
 
 };
 

@@ -15,6 +15,10 @@ public:
 
     bool* getMouse();
     bool getMouse(int mouseButton);
+    void setMouseFalse(int mouseButton);
+
+    bool getMouseWheel(int mouseWheel);
+    void setMouseWheelFalse(int mouseWheel);
 
     bool getQuit();
 
@@ -23,7 +27,6 @@ public:
 
     int* getMouseRel();
     int getMouseRel(int orientation);
-
 
     InputManager();
     InputManager(InputManager & input);
@@ -34,6 +37,7 @@ private:
     bool m_key[SDLK_LAST];
     bool m_mouse_button[8];
     bool m_quit;
+    bool m_mouse_wheel[2];
     int m_mouse_pos[2];
     int m_mouse_pos_rel[2];
     SDL_Event m_event;

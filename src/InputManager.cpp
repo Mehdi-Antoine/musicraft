@@ -24,6 +24,9 @@ void InputManager::updateInput() {
 
             //Quelle touche
             switch(m_event.key.keysym.sym) {
+            case SDLK_TAB:
+                m_key[SDLK_TAB] = true;
+                break;
 
             case SDLK_z:
                 m_key[SDLK_z] = true;
@@ -78,6 +81,10 @@ void InputManager::updateInput() {
 
             //Quelle touche
             switch(m_event.key.keysym.sym) {
+            
+            case SDLK_TAB:
+                m_key[SDLK_TAB] = false;
+                break;
 
             case SDLK_z:
                 m_key[SDLK_z] = false;
@@ -136,6 +143,12 @@ void InputManager::updateInput() {
                 m_mouse_pos[0] = m_event.button.x;
                 m_mouse_pos[1] = m_event.button.y;
             }
+            else if(m_event.button.button == SDL_BUTTON_WHEELDOWN){
+                m_mouse_wheel[0] = true;
+            }
+            else if(m_event.button.button == SDL_BUTTON_WHEELUP){
+                m_mouse_wheel[1] = true;
+            }
             break;
 
         case SDL_MOUSEBUTTONUP:
@@ -174,6 +187,19 @@ bool* InputManager::getMouse()
 bool InputManager::getMouse(int mouseButton)
 {
     return m_mouse_button[mouseButton];
+}
+
+void InputManager::setMouseFalse(int mouseButton){
+    m_mouse_button[mouseButton] = false;
+}
+
+bool InputManager::getMouseWheel(int mouseWheel)
+{
+    return m_mouse_wheel[mouseWheel];
+}
+
+void InputManager::setMouseWheelFalse(int mouseWheel){
+    m_mouse_wheel[mouseWheel] = false;
 }
 
 bool InputManager::getQuit() {

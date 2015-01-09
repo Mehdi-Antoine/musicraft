@@ -20,6 +20,11 @@ void EventHandler::updatePlayer(World &world){
     bool fly = false;
     bool run = false;
 
+    //TAB -> show inventory
+    if(m_input.getKey(SDLK_TAB) == true) {
+        m_player_manager.getPlayer().getInventory().show();
+    }
+
     //Saut et sprint
     if(m_input.getKey(SDLK_SPACE) == true) {
         fly = true;
@@ -29,7 +34,7 @@ void EventHandler::updatePlayer(World &world){
         run = true;
     }
 
-    //Marche avant arri�re
+    //Marche avant arrière
     if(m_input.getKey(SDLK_z) == true) {
         directionFrontBack++;
     }
@@ -68,8 +73,18 @@ void EventHandler::updatePlayer(World &world){
 
     if(m_input.getMouse(3) == true){
         m_player_manager.getPlayer().addCube(world);
+        m_input.setMouseFalse(3);
     }
 
+    //Mouse wheel : change current cube in inventory
+    if(m_input.getMouseWheel(0) == true){
+        m_player_manager.getPlayer().getInventory().nextIndex();
+        m_input.setMouseWheelFalse(0);
+    }
+    if(m_input.getMouseWheel(1) == true){
+        m_player_manager.getPlayer().getInventory().prevIndex();
+        m_input.setMouseWheelFalse(1);
+    }
 
     //mousemotion orientation camera
     int click = 0;
